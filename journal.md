@@ -782,3 +782,25 @@ Chronological decision log tracking major architectural milestones and engineeri
     - `npm run lint`: 0 warnings/errors.
     - `npm run build`: 18/18 static routes pre-rendered in 324ms.
     - Verified generated output of `.next/server/app/robots.txt.body` and `.next/server/app/sitemap.xml.body`.
+
+---
+
+## Milestone 11: Supabase Backend Integration & Full-Control Content Dashboard Foundation
+
+- **Date:** September 2026
+- **Scope:**
+  - **Core SDK & SSR Package Installation:**
+    - Installed `@supabase/supabase-js` and `@supabase/ssr` with full Next.js 16 App Router compatibility.
+  - **Supabase Client Architecture (`lib/supabase/`):**
+    - `lib/supabase/client.ts`: Browser client initialization (`createBrowserClient`) reading `NEXT_PUBLIC_` environment variables.
+    - `lib/supabase/server.ts`: Server client initialization (`createServerClient`) handling asynchronous Next.js 16 cookies (`await cookies()`).
+    - `lib/supabase/middleware.ts`: Session management helper for server-side auth and cookie synchronization.
+  - **Environment Configuration:**
+    - Set active project credentials in `.env.local` (`NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`).
+    - Updated `.env.example` with documented environment variable keys for the team.
+  - **Agent Skills & Supabase CLI Integration:**
+    - Added official Supabase skills (`supabase`, `supabase-postgres-best-practices`) to `.agents/skills/`.
+    - Initialized Supabase CLI structure (`supabase init`, `supabase/config.toml`) for database migrations, declarative schemas, and seed files.
+  - **Live Connectivity Verification:**
+    - Pinged Supabase Auth & REST services against `https://qdeegiucxasdiyzasepa.supabase.co` — verified live 200 OK connection.
+    - Verified TypeScript strict type safety (`npm run typecheck` - 0 errors) and production compilation (`npm run build` - successful).
