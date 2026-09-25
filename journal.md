@@ -746,3 +746,39 @@ Chronological decision log tracking major architectural milestones and engineeri
     - Lightbox full-screen video playback verified.
     - `npx tsc --noEmit`: 0 errors.
     - `npm run build`: 14/14 static routes compiled in 648ms.
+
+---
+
+## Milestone 10: Production SEO Architecture, Sitemaps, Structured Data & Search Engine Publishing
+
+- **Date:** September 2026
+- **Scope:**
+  - **Dynamic Multilingual XML Sitemap (`app/sitemap.ts`):**
+    - Built native Next.js App Router sitemap generation capturing all 8 canonical routes (`/`, `/about`, `/properties`, `/properties/[slug]` for all 3 commercial flagships, `/ceo-message`, `/contact`).
+    - Configured bilingual `xhtml:link` hreflang alternates (`ar` and `en`) for localized search engine crawlers.
+    - Explicit `priority` tiers (1.0 for home, 0.9 for assets, 0.8 for corporate) and `changeFrequency` attributes.
+  - **Search Engine Crawlers Control (`app/robots.ts`):**
+    - Standardized `robots.txt` granting full crawler access to public routes while isolating `/api/` endpoints.
+    - Declared canonical `Host: https://tafawok.co` and dynamic `Sitemap: https://tafawok.co/sitemap.xml`.
+  - **Progressive Web App Manifest (`app/manifest.ts`):**
+    - PWA `/manifest.webmanifest` defining bilingual corporate branding, dark obsidian surface theme, bronze accent, and SVG/PNG app icons.
+  - **Rich OpenGraph & Social Cards (`app/opengraph-image.tsx` & `public/og-image.png`):**
+    - Implemented high-resolution (1200x630) social sharing preview banner displaying TAFAWOK CRE branding, corporate credentials (25+ years, 5 decades heritage), and flagship asset chips.
+    - Generated static fallback at `public/og-image.png` (122 KB) for external scrapers (WhatsApp, LinkedIn, X, Facebook, Slack).
+  - **Schema.org Structured Data (JSON-LD) (`lib/seo/schema.ts` & `components/seo/JsonLd.tsx`):**
+    - Injected `@type: ["Organization", "RealEstateAgent", "GeneralContractor"]` in `app/layout.tsx` with legal name, executive leadership (Eng. Tarek Ahmed), contact points, and New Cairo HQ address.
+    - Injected `WebSite` schema with multilingual language alternates.
+    - Injected `BreadcrumbList` schema across `/properties`, `/properties/[slug]`, `/about`, `/ceo-message`, and `/contact`.
+    - Injected `["Place", "ShoppingCenter", "CommercialBuilding"]` schema for all asset detail pages with geo coordinates, floor plans, and tenant directories.
+  - **Metadata Hardening & Webmaster Verification:**
+    - Standardized `metadataBase` to `https://tafawok.co` across all pages.
+    - Configured `verification` hooks in `app/layout.tsx` and `.env.example` for Google Search Console, Bing Webmaster Tools, and Yandex.
+    - Added logical canonical URLs and bilingual hreflang alternates across all route handlers.
+  - **Production Analytics Integration (`@vercel/analytics`):**
+    - Integrated native `@vercel/analytics/next` inside [`app/layout.tsx`](file:///Users/omartemsah/WebProjects/Tafawok/app/layout.tsx).
+    - Automatically collects real-time pageviews, visitors, top devices, referrers, and geography on Vercel deployment without blocking hydration or initial paint.
+  - **Quality Gates Verification:**
+    - `npx tsc --noEmit`: 0 errors.
+    - `npm run lint`: 0 warnings/errors.
+    - `npm run build`: 18/18 static routes pre-rendered in 324ms.
+    - Verified generated output of `.next/server/app/robots.txt.body` and `.next/server/app/sitemap.xml.body`.

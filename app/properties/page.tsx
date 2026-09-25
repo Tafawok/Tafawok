@@ -1,6 +1,8 @@
 import type { Metadata } from "next"
 import { PROPERTIES } from "@/content/cre-data"
 import { PropertiesDirectoryClient } from "@/components/properties/PropertiesDirectoryClient"
+import { JsonLd } from "@/components/seo/JsonLd"
+import { getBreadcrumbSchema } from "@/lib/seo/schema"
 
 export const metadata: Metadata = {
   title: "Commercial Properties & Real Estate Developments",
@@ -24,8 +26,50 @@ export const metadata: Metadata = {
     "Commercial Leasing Cairo",
     "محلات تجارية للإيجار",
   ],
+  alternates: {
+    canonical: "/properties",
+    languages: {
+      "ar-EG": "/properties",
+      "en-US": "/properties",
+      "x-default": "/properties",
+    },
+  },
+  openGraph: {
+    title:
+      "Commercial Properties & Real Estate Developments | TAFAWOK CRE",
+    description:
+      "Explore TAFAWOK's flagship commercial developments in Egypt: Fagala Plaza (Nasr City), Mall ChillOut (El Shorouk), and October Festival Mall (6th of October).",
+    url: "https://tafawok.co/properties",
+    type: "website",
+    images: [
+      {
+        url: "/og-image.png",
+        width: 1200,
+        height: 630,
+        alt: "TAFAWOK Commercial Real Estate Portfolio",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title:
+      "Commercial Properties & Real Estate Developments | TAFAWOK CRE",
+    description:
+      "Explore TAFAWOK's flagship commercial developments in Egypt: Fagala Plaza, Mall ChillOut, and October Festival Mall.",
+    images: ["/og-image.png"],
+  },
 }
 
 export default function PropertiesPage() {
-  return <PropertiesDirectoryClient properties={PROPERTIES} />
+  const breadcrumbSchema = getBreadcrumbSchema([
+    { name: "Home", url: "/" },
+    { name: "Commercial Properties", url: "/properties" },
+  ])
+
+  return (
+    <>
+      <JsonLd data={breadcrumbSchema} />
+      <PropertiesDirectoryClient properties={PROPERTIES} />
+    </>
+  )
 }

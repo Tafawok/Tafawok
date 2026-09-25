@@ -1,5 +1,7 @@
 import type { Metadata } from "next"
 import { AboutUsClient } from "@/components/about/AboutUsClient"
+import { JsonLd } from "@/components/seo/JsonLd"
+import { getBreadcrumbSchema } from "@/lib/seo/schema"
 
 export const metadata: Metadata = {
   title:
@@ -18,15 +20,48 @@ export const metadata: Metadata = {
     "تاريخ شركة تفوق",
     "م طارق أحمد",
   ],
+  alternates: {
+    canonical: "/about",
+    languages: {
+      "ar-EG": "/about",
+      "en-US": "/about",
+      "x-default": "/about",
+    },
+  },
   openGraph: {
     title: "About TAFAWOK | Corporate Heritage & CRE Excellence",
     description:
       "Backed by 25+ years of multidisciplinary execution and five decades of regional Gulf heritage, TAFAWOK develops enduring commercial assets in Egypt.",
     type: "website",
     url: "https://tafawok.co/about",
+    images: [
+      {
+        url: "/og-image.png",
+        width: 1200,
+        height: 630,
+        alt: "About TAFAWOK Corporate Heritage",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "About TAFAWOK | Corporate Heritage & CRE Excellence",
+    description:
+      "Backed by 25+ years of multidisciplinary execution and five decades of regional Gulf heritage, TAFAWOK develops enduring commercial assets in Egypt.",
+    images: ["/og-image.png"],
   },
 }
 
 export default function AboutPage() {
-  return <AboutUsClient />
+  const breadcrumbSchema = getBreadcrumbSchema([
+    { name: "Home", url: "/" },
+    { name: "About Us", url: "/about" },
+  ])
+
+  return (
+    <>
+      <JsonLd data={breadcrumbSchema} />
+      <AboutUsClient />
+    </>
+  )
 }

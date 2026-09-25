@@ -11,6 +11,9 @@ import { Navbar } from "@/components/layout/Navbar"
 import { Footer } from "@/components/layout/Footer"
 import { cn } from "@/lib/utils"
 import type { Locale } from "@/types/cre"
+import { JsonLd } from "@/components/seo/JsonLd"
+import { getOrganizationSchema, getWebSiteSchema } from "@/lib/seo/schema"
+import { Analytics } from "@vercel/analytics/next"
 
 const inter = Inter({
   subsets: ["latin"],
@@ -24,29 +27,100 @@ const cairo = Cairo({
   display: "swap",
 })
 
+const organizationSchema = getOrganizationSchema()
+const webSiteSchema = getWebSiteSchema()
+
 export const metadata: Metadata = {
   metadataBase: new URL(
-    process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"
+    process.env.NEXT_PUBLIC_SITE_URL || "https://tafawok.co"
   ),
   title: {
     template: "%s | TAFAWOK Real Estate Investment & Contracting",
-    default: "TAFAWOK — Commercial Real Estate Investment & Contracting Co.",
+    default:
+      "TAFAWOK — Commercial Real Estate Investment & Contracting Co. | شركة تفوق",
   },
   description:
-    "Multilingual enterprise platform for TAFAWOK CRE — Developer and contractor of prime corporate office parks, destination retail centers, and integrated logistics assets in Egypt and the Middle East.",
+    "TAFAWOK Real Estate Investment & Contracting (شركة تفوق للاستثمار العقاري والمقاولات) — Premier developer and turnkey contractor of commercial real estate assets in Egypt: Fagala Plaza in Nasr City, Mall ChillOut in El Shorouk, and October Festival Mall on Gamal Abdel Nasser Axis.",
   keywords: [
-    "Commercial Real Estate",
+    "Commercial Real Estate Egypt",
     "TAFAWOK",
-    "New Cairo Office Spaces",
-    "Building 360",
-    "Tafawok Mall",
-    "Contracting Egypt",
-    "Turnkey EPC",
-    "Commercial Leasing",
-    "استثمار عقاري تجاري",
+    "TAFAWOK Real Estate Investment",
+    "Contracting Company Egypt",
+    "Building 360 New Cairo",
+    "Fagala Plaza Nasr City",
+    "Mall ChillOut El Shorouk",
+    "October Festival Mall",
+    "Turnkey EPC Contracting",
+    "Commercial Leasing Cairo",
+    "Stationery Wholesale Plaza",
+    "شركة تفوق للاستثمار العقاري والمقاولات",
+    "تفوق العقارية",
     "مكاتب التجمع الخامس",
-    "شركة تفوق للمقاولات",
+    "فجالة بلازا مدينة نصر",
+    "مول شل أوت الشروق",
+    "مول أكتوبر فيستيفال",
+    "استثمار عقاري تجاري مصر",
+    "محلات تجارية للإيجار",
+    "م طارق أحمد",
   ],
+  authors: [{ name: "TAFAWOK Real Estate Investment & Contracting" }],
+  creator: "TAFAWOK Real Estate Investment & Contracting",
+  publisher: "TAFAWOK Real Estate Investment & Contracting",
+  category: "Commercial Real Estate",
+  classification: "Commercial Real Estate Investment & Contracting",
+  alternates: {
+    canonical: "/",
+    languages: {
+      "ar-EG": "/",
+      "en-US": "/",
+      "x-default": "/",
+    },
+  },
+  openGraph: {
+    type: "website",
+    locale: "ar_EG",
+    alternateLocale: ["en_US"],
+    url: "https://tafawok.co",
+    siteName: "TAFAWOK Real Estate Investment & Contracting",
+    title:
+      "TAFAWOK — Commercial Real Estate Investment & Contracting Co. | شركة تفوق",
+    description:
+      "Premier developer and contractor of commercial real estate developments in Egypt. Explore Fagala Plaza (Nasr City), Mall ChillOut (El Shorouk), and October Festival Mall.",
+    images: [
+      {
+        url: "/og-image.png",
+        width: 1200,
+        height: 630,
+        alt: "TAFAWOK Real Estate Investment & Contracting",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title:
+      "TAFAWOK — Commercial Real Estate Investment & Contracting Co. | شركة تفوق",
+    description:
+      "Premier developer and contractor of commercial real estate developments in Egypt: Fagala Plaza, Mall ChillOut, and October Festival Mall.",
+    images: ["/og-image.png"],
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
+  verification: {
+    google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION,
+    yandex: process.env.NEXT_PUBLIC_YANDEX_VERIFICATION,
+    other: {
+      "msvalidate.01": process.env.NEXT_PUBLIC_BING_VERIFICATION || "",
+    },
+  },
   icons: {
     icon: [
       { url: "/Tafawok_Logo_NoWord.svg", type: "image/svg+xml" },
@@ -89,6 +163,8 @@ export default async function RootLayout({
       )}
     >
       <body className="flex min-h-screen flex-col bg-background text-foreground selection:bg-primary/20 selection:text-primary">
+        <JsonLd data={organizationSchema} />
+        <JsonLd data={webSiteSchema} />
         <ThemeProvider defaultTheme={theme}>
           <ScrollProgressBar />
           <TargetCursor />
@@ -100,6 +176,7 @@ export default async function RootLayout({
             </div>
           </LanguageProvider>
         </ThemeProvider>
+        <Analytics />
       </body>
     </html>
   )
