@@ -32,7 +32,7 @@ const webSiteSchema = getWebSiteSchema()
 
 export const metadata: Metadata = {
   metadataBase: new URL(
-    process.env.NEXT_PUBLIC_SITE_URL || "https://tafawok.co"
+    process.env.NEXT_PUBLIC_SITE_URL || "https://www.tafawok.co"
   ),
   title: {
     template: "%s | TAFAWOK Real Estate Investment & Contracting",
@@ -80,7 +80,7 @@ export const metadata: Metadata = {
     type: "website",
     locale: "ar_EG",
     alternateLocale: ["en_US"],
-    url: "https://tafawok.co",
+    url: process.env.NEXT_PUBLIC_SITE_URL || "https://www.tafawok.co",
     siteName: "TAFAWOK Real Estate Investment & Contracting",
     title:
       "TAFAWOK — Commercial Real Estate Investment & Contracting Co. | شركة تفوق",

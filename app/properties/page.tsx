@@ -39,7 +39,7 @@ export const metadata: Metadata = {
       "Commercial Properties & Real Estate Developments | TAFAWOK CRE",
     description:
       "Explore TAFAWOK's flagship commercial developments in Egypt: Fagala Plaza (Nasr City), Mall ChillOut (El Shorouk), and October Festival Mall (6th of October).",
-    url: "https://tafawok.co/properties",
+    url: "/properties",
     type: "website",
     images: [
       {

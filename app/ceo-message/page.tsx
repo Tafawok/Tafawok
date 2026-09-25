@@ -31,7 +31,7 @@ export const metadata: Metadata = {
     description:
       "Direct executive address by Eng. Tarek Ahmed on institutional CRE development, tangible asset value, and uncompromised engineering integrity.",
     type: "website",
-    url: "https://tafawok.co/ceo-message",
+    url: "/ceo-message",
     images: [
       {
         url: "/og-image.png",

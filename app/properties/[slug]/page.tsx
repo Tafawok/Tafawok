@@ -29,7 +29,7 @@ export async function generateMetadata({
 
   const pageTitle = `${property.name.en} (${property.name.ar}) — ${property.tagline.en}`
   const pageDescription = `${property.name.ar} — ${property.description.ar} | ${property.description.en}`
-  const pageUrl = `https://tafawok.co/properties/${slug}`
+  const pageUrl = `/properties/${slug}`
 
   return {
     title: pageTitle,

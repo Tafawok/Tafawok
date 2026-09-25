@@ -33,7 +33,7 @@ export const metadata: Metadata = {
     description:
       "Backed by 25+ years of multidisciplinary execution and five decades of regional Gulf heritage, TAFAWOK develops enduring commercial assets in Egypt.",
     type: "website",
-    url: "https://tafawok.co/about",
+    url: "/about",
     images: [
       {
         url: "/og-image.png",

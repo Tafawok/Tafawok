@@ -33,7 +33,7 @@ export const metadata: Metadata = {
     description:
       "Direct engagement with TAFAWOK's executive ownership and commercial leasing desk. Submit inquiries for Building 360, Fagala Plaza, Mall ChillOut, and October Festival Mall.",
     type: "website",
-    url: "https://tafawok.co/contact",
+    url: "/contact",
     images: [
       {
         url: "/og-image.png",

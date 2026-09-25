@@ -1,7 +1,7 @@
 import { Property } from "@/types/cre"
 import { COMPANY_IDENTITY, OWNER_DETAILS } from "@/content/cre-data"
 
-const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://tafawok.co"
+const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://www.tafawok.co"
 
 /**
  * Generates Schema.org Organization, GeneralContractor, and RealEstateAgent metadata
