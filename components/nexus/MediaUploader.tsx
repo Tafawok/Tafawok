@@ -16,6 +16,11 @@ import {
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
+import {
+  Tooltip,
+  TooltipTrigger,
+  TooltipContent,
+} from "@/components/ui/tooltip"
 
 export type MediaAcceptType = "image" | "video" | "all"
 
@@ -312,16 +317,26 @@ export function MediaUploader({
               )}
               Replace
             </Button>
-            <Button
-              type="button"
-              variant="destructive"
-              size="sm"
-              disabled={isUploading}
-              onClick={handleRemove}
-              className="h-7 bg-destructive/90 px-2 text-[11px] hover:bg-destructive"
-            >
-              <X className="size-3" />
-            </Button>
+            <Tooltip>
+              <TooltipTrigger
+                render={
+                  <Button
+                    type="button"
+                    variant="destructive"
+                    size="sm"
+                    disabled={isUploading}
+                    onClick={handleRemove}
+                    className="h-7 bg-destructive/90 px-2 text-[11px] hover:bg-destructive"
+                    aria-label="Remove media"
+                  />
+                }
+              >
+                <X className="size-3" />
+              </TooltipTrigger>
+              <TooltipContent side="top">
+                Remove media
+              </TooltipContent>
+            </Tooltip>
           </div>
         </div>
       ) : (

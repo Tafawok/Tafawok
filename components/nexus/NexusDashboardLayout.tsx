@@ -49,6 +49,11 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import { LanguageToggle } from "@/components/layout/LanguageToggle"
 import { ThemeToggle } from "@/components/layout/ThemeToggle"
 import { PageImpactGuide } from "@/components/nexus/PageImpactGuide"
+import {
+  Tooltip,
+  TooltipTrigger,
+  TooltipContent,
+} from "@/components/ui/tooltip"
 
 export interface CurrentAdmin {
   id?: string
@@ -395,28 +400,47 @@ export function NexusDashboardLayout({
               </div>
 
               <div className="flex items-center gap-1 group-data-[collapsible=icon]:hidden">
-                <Link
-                  href="/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex size-7 items-center justify-center rounded-md border border-border bg-background text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
-                  title="View Live Site"
-                >
-                  <ExternalLink className="size-3.5" />
-                </Link>
-                <button
-                  type="button"
-                  onClick={handleSignOut}
-                  disabled={signingOut}
-                  className="inline-flex size-7 items-center justify-center rounded-md border border-border bg-background text-muted-foreground transition-colors hover:border-destructive/40 hover:bg-destructive/10 hover:text-destructive"
-                  title="Sign Out"
-                >
-                  {signingOut ? (
-                    <Loader2 className="size-3.5 animate-spin" />
-                  ) : (
-                    <LogOut className="size-3.5" />
-                  )}
-                </button>
+                <Tooltip>
+                  <TooltipTrigger
+                    render={
+                      <Link
+                        href="/"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex size-7 items-center justify-center rounded-md border border-border bg-background text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+                        aria-label={isArabic ? "معاينة الموقع المباشر" : "View Live Site"}
+                      />
+                    }
+                  >
+                    <ExternalLink className="size-3.5" />
+                  </TooltipTrigger>
+                  <TooltipContent side="top">
+                    {isArabic ? "معاينة الموقع المباشر" : "View Live Site"}
+                  </TooltipContent>
+                </Tooltip>
+
+                <Tooltip>
+                  <TooltipTrigger
+                    render={
+                      <button
+                        type="button"
+                        onClick={handleSignOut}
+                        disabled={signingOut}
+                        className="inline-flex size-7 items-center justify-center rounded-md border border-border bg-background text-muted-foreground transition-colors hover:border-destructive/40 hover:bg-destructive/10 hover:text-destructive cursor-pointer"
+                        aria-label={isArabic ? "تسجيل الخروج" : "Sign Out"}
+                      />
+                    }
+                  >
+                    {signingOut ? (
+                      <Loader2 className="size-3.5 animate-spin" />
+                    ) : (
+                      <LogOut className="size-3.5" />
+                    )}
+                  </TooltipTrigger>
+                  <TooltipContent side="top">
+                    {isArabic ? "تسجيل الخروج" : "Sign Out"}
+                  </TooltipContent>
+                </Tooltip>
               </div>
             </div>
           </SidebarFooter>
@@ -444,16 +468,28 @@ export function NexusDashboardLayout({
 
             {/* Right Controls Cluster */}
             <div className="flex items-center gap-2 sm:gap-3">
-              {/* View Live Website Button */}
-              <Link
-                href="/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="hidden items-center gap-1.5 rounded-lg border border-border bg-card px-2.5 py-1.5 text-xs font-medium text-foreground shadow-xs transition-all hover:border-primary/40 hover:bg-muted md:inline-flex"
-              >
-                <span>{isArabic ? "الموقع المباشر" : "Live Website"}</span>
-                <ExternalLink className="size-3 text-muted-foreground" />
-              </Link>
+              {/* View Live Website Button with Tooltip */}
+              <Tooltip>
+                <TooltipTrigger
+                  render={
+                    <Link
+                      href="/"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="hidden items-center gap-1.5 rounded-lg border border-border bg-card px-2.5 py-1.5 text-xs font-medium text-foreground shadow-xs transition-all hover:border-primary/40 hover:bg-muted md:inline-flex"
+                      aria-label={isArabic ? "فتح الموقع العام في نافذة جديدة" : "Open public website in new tab"}
+                    />
+                  }
+                >
+                  <span>{isArabic ? "الموقع المباشر" : "Live Website"}</span>
+                  <ExternalLink className="size-3 text-muted-foreground" />
+                </TooltipTrigger>
+                <TooltipContent side="bottom">
+                  {isArabic
+                    ? "فتح الموقع العام في نافذة جديدة"
+                    : "Open public website in a new tab"}
+                </TooltipContent>
+              </Tooltip>
 
               <LanguageToggle />
               <ThemeToggle />

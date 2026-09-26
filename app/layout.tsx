@@ -15,6 +15,7 @@ import { JsonLd } from "@/components/seo/JsonLd"
 import { getOrganizationSchema, getWebSiteSchema } from "@/lib/seo/schema"
 import { Analytics } from "@vercel/analytics/next"
 import { Toaster } from "@/components/ui/sonner"
+import { TooltipProvider } from "@/components/ui/tooltip"
 import {
   getProperties,
   getCompanyIdentity,
@@ -187,19 +188,21 @@ export default async function RootLayout({
           <ScrollProgressBar />
           <TargetCursor />
           <LanguageProvider initialLocale={locale}>
-            <div className="flex min-h-screen flex-col">
-              <Navbar
-                properties={properties}
-                ownerDetails={ownerDetails}
-                identity={identity}
-              />
-              <main className="flex flex-1 flex-col">{children}</main>
-              <Footer
-                properties={properties}
-                ownerDetails={ownerDetails}
-                identity={identity}
-              />
-            </div>
+            <TooltipProvider delay={100}>
+              <div className="flex min-h-screen flex-col">
+                <Navbar
+                  properties={properties}
+                  ownerDetails={ownerDetails}
+                  identity={identity}
+                />
+                <main className="flex flex-1 flex-col">{children}</main>
+                <Footer
+                  properties={properties}
+                  ownerDetails={ownerDetails}
+                  identity={identity}
+                />
+              </div>
+            </TooltipProvider>
           </LanguageProvider>
         </ThemeProvider>
         <Analytics />

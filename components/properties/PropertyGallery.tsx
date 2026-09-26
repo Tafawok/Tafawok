@@ -11,6 +11,11 @@ import {
   DialogTitle,
   DialogDescription,
 } from "@/components/ui/dialog"
+import {
+  Tooltip,
+  TooltipTrigger,
+  TooltipContent,
+} from "@/components/ui/tooltip"
 import { cn } from "@/lib/utils"
 
 export interface GalleryMediaItem {
@@ -264,20 +269,39 @@ export function PropertyGallery({
           </span>
 
           <div className="pointer-events-auto flex items-center gap-2">
-            <button
-              onClick={handlePrev}
-              aria-label={t("propertyGallery.prev")}
-              className="flex size-9 items-center justify-center rounded-full bg-black/70 text-white shadow-md backdrop-blur-md transition-colors hover:bg-primary"
-            >
-              <ChevronLeft className="size-4 rtl:rotate-180" />
-            </button>
-            <button
-              onClick={handleNext}
-              aria-label={t("propertyGallery.next")}
-              className="flex size-9 items-center justify-center rounded-full bg-black/70 text-white shadow-md backdrop-blur-md transition-colors hover:bg-primary"
-            >
-              <ChevronRight className="size-4 rtl:rotate-180" />
-            </button>
+            <Tooltip>
+              <TooltipTrigger
+                render={
+                  <button
+                    onClick={handlePrev}
+                    aria-label={t("propertyGallery.prev")}
+                    className="flex size-9 items-center justify-center rounded-full bg-black/70 text-white shadow-md backdrop-blur-md transition-colors hover:bg-primary cursor-pointer"
+                  />
+                }
+              >
+                <ChevronLeft className="size-4 rtl:rotate-180" />
+              </TooltipTrigger>
+              <TooltipContent side="top">
+                {t("propertyGallery.prev")}
+              </TooltipContent>
+            </Tooltip>
+
+            <Tooltip>
+              <TooltipTrigger
+                render={
+                  <button
+                    onClick={handleNext}
+                    aria-label={t("propertyGallery.next")}
+                    className="flex size-9 items-center justify-center rounded-full bg-black/70 text-white shadow-md backdrop-blur-md transition-colors hover:bg-primary cursor-pointer"
+                  />
+                }
+              >
+                <ChevronRight className="size-4 rtl:rotate-180" />
+              </TooltipTrigger>
+              <TooltipContent side="top">
+                {t("propertyGallery.next")}
+              </TooltipContent>
+            </Tooltip>
           </div>
         </div>
       </div>
@@ -351,32 +375,59 @@ export function PropertyGallery({
               )}
             </div>
 
-            <button
-              onClick={() => setLightboxOpen(false)}
-              aria-label={t("propertyGallery.close")}
-              className="flex size-9 items-center justify-center rounded-lg border border-border/70 bg-secondary/80 text-foreground transition-colors hover:border-primary/40 hover:bg-secondary focus-visible:ring-2 focus-visible:ring-primary"
-            >
-              <X className="size-4" />
-            </button>
+            <Tooltip>
+              <TooltipTrigger
+                render={
+                  <button
+                    onClick={() => setLightboxOpen(false)}
+                    aria-label={t("propertyGallery.close")}
+                    className="flex size-9 items-center justify-center rounded-lg border border-border/70 bg-secondary/80 text-foreground transition-colors hover:border-primary/40 hover:bg-secondary focus-visible:ring-2 focus-visible:ring-primary cursor-pointer"
+                  />
+                }
+              >
+                <X className="size-4" />
+              </TooltipTrigger>
+              <TooltipContent side="bottom">
+                {t("propertyGallery.close")}
+              </TooltipContent>
+            </Tooltip>
           </div>
 
           {/* Main Modal Media Area with Navigation Arrows */}
           <div className="relative flex flex-1 items-center justify-center overflow-hidden p-2 sm:p-4">
-            <button
-              onClick={handlePrev}
-              aria-label={t("propertyGallery.prev")}
-              className="cursor-target absolute inset-s-4 z-20 flex size-11 items-center justify-center rounded-full border border-border/80 bg-background/80 text-foreground shadow-lg backdrop-blur-md transition-all hover:border-primary hover:bg-primary hover:text-primary-foreground focus-visible:ring-2 focus-visible:ring-primary"
-            >
-              <ChevronLeft className="size-5 rtl:rotate-180" />
-            </button>
+            <Tooltip>
+              <TooltipTrigger
+                render={
+                  <button
+                    onClick={handlePrev}
+                    aria-label={t("propertyGallery.prev")}
+                    className="cursor-target absolute inset-s-4 z-20 flex size-11 items-center justify-center rounded-full border border-border/80 bg-background/80 text-foreground shadow-lg backdrop-blur-md transition-all hover:border-primary hover:bg-primary hover:text-primary-foreground focus-visible:ring-2 focus-visible:ring-primary cursor-pointer"
+                  />
+                }
+              >
+                <ChevronLeft className="size-5 rtl:rotate-180" />
+              </TooltipTrigger>
+              <TooltipContent side="top">
+                {t("propertyGallery.prev")}
+              </TooltipContent>
+            </Tooltip>
 
-            <button
-              onClick={handleNext}
-              aria-label={t("propertyGallery.next")}
-              className="cursor-target absolute inset-e-4 z-20 flex size-11 items-center justify-center rounded-full border border-border/80 bg-background/80 text-foreground shadow-lg backdrop-blur-md transition-all hover:border-primary hover:bg-primary hover:text-primary-foreground focus-visible:ring-2 focus-visible:ring-primary"
-            >
-              <ChevronRight className="size-5 rtl:rotate-180" />
-            </button>
+            <Tooltip>
+              <TooltipTrigger
+                render={
+                  <button
+                    onClick={handleNext}
+                    aria-label={t("propertyGallery.next")}
+                    className="cursor-target absolute inset-e-4 z-20 flex size-11 items-center justify-center rounded-full border border-border/80 bg-background/80 text-foreground shadow-lg backdrop-blur-md transition-all hover:border-primary hover:bg-primary hover:text-primary-foreground focus-visible:ring-2 focus-visible:ring-primary cursor-pointer"
+                  />
+                }
+              >
+                <ChevronRight className="size-5 rtl:rotate-180" />
+              </TooltipTrigger>
+              <TooltipContent side="top">
+                {t("propertyGallery.next")}
+              </TooltipContent>
+            </Tooltip>
 
             <div className="relative flex h-full w-full items-center justify-center">
               {activeItem.type === "video" ? (

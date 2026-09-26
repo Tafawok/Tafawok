@@ -9,6 +9,7 @@ import { ContactForm } from "@/components/contact/ContactForm"
 import { OwnerCard } from "@/components/contact/OwnerCard"
 import { HqMap } from "@/components/contact/HqMap"
 import { OperatingHoursSection } from "@/components/contact/OperatingHoursSection"
+import ContactLoading from "@/app/contact/loading"
 import type { Property, CompanyIdentity, OwnerContact } from "@/types/cre"
 
 interface ContactPageClientProps {
@@ -105,13 +106,7 @@ function ContactContent({
 
 export function ContactPageClient(props: ContactPageClientProps) {
   return (
-    <Suspense
-      fallback={
-        <div className="flex min-h-[60vh] items-center justify-center">
-          <div className="size-8 animate-spin rounded-full border-2 border-primary border-t-transparent" />
-        </div>
-      }
-    >
+    <Suspense fallback={<ContactLoading />}>
       <ContactContent {...props} />
     </Suspense>
   )
