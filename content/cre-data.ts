@@ -50,12 +50,12 @@ export const COMPANY_IDENTITY = {
 
 export const OWNER_DETAILS: OwnerContact = {
   name: {
-    en: "Eng. Tarek Ahmed",
-    ar: "م. طارق أحمد",
+    en: "TAFAWOK Executive Leadership",
+    ar: "القيادة التنفيذية لتفوق",
   },
   role: {
-    en: "Chief Executive Officer & Company Owner",
-    ar: "الرئيس التنفيذي ومالك الشركة",
+    en: "Commercial Real Estate Stewardship & Management",
+    ar: "رعاية وإدارة الأصول العقارية التجارية",
   },
   company: {
     en: "TAFAWOK Real Estate Investment & Contracting Co.",
@@ -1854,10 +1854,10 @@ export const HSE_CHARTER: HseCharter = {
     ar: "تهدف شركة تفوق إلى تحقيق أعلى معايير الصحة والسلامة المهنية والبيئة من خلال ترسيخ مبادئ التحسين المستمر في جميع أنشطتها وأعمالها. ويشارك كل فرد في مؤسستنا في الالتزام بالقضاء على الممارسات غير الآمنة والظروف الخطرة عبر التفكير الآمن والعمل الواعي في كل الأوقات.",
   },
   signatory: {
-    name: { en: "Eng. Tarek Ahmed", ar: "م. طارق أحمد" },
+    name: { en: "TAFAWOK Executive Leadership", ar: "القيادة التنفيذية لتفوق" },
     role: {
-      en: "Chief Executive Officer & Company Owner",
-      ar: "الرئيس التنفيذي ومالك الشركة",
+      en: "Corporate HSE & Quality Stewardship",
+      ar: "إدارة الجودة والسلامة والصحة المهنية",
     },
   },
   principles: [
@@ -2067,20 +2067,20 @@ export const CRE_INVESTMENT_THESIS: InvestmentPillar[] = [
 
 export const CEO_PROFILE: CeoProfile = {
   name: {
-    en: "Eng. Tarek Ahmed",
-    ar: "المهندس طارق أحمد",
+    en: "TAFAWOK Executive Leadership",
+    ar: "القيادة التنفيذية لتفوق",
   },
   role: {
-    en: "Chief Executive Officer & Company Owner",
-    ar: "الرئيس التنفيذي ومالك الشركة",
+    en: "Commercial Real Estate Stewardship & Development",
+    ar: "رعاية وتطوير الأصول العقارية التجارية",
   },
   company: {
     en: "TAFAWOK Real Estate Investment & Contracting Company",
     ar: "شركة تفوق للاستثمار العقاري والمقاولات",
   },
   education: {
-    en: "B.Sc. in Civil Engineering, Specialized in Structural Dynamics & Regional Megaprojects",
-    ar: "بكالوريوس الهندسة المدنية، متخصص في الهندسة الإنشائية والمشروعات الإقليمية الكبرى",
+    en: "Institutional Engineering Cadre & Regional Megaprojects Directorate",
+    ar: "كادر هندسي مؤسسي متخصص في الإشراف على المشروعات الإقليمية الكبرى",
   },
   experienceYears: 25,
   regionalHeritageDecades: 5,
@@ -2107,8 +2107,8 @@ export const CEO_PROFILE: CeoProfile = {
         ar: "نعتز كثيراً بكادرنا الهندسي والفني الدائم الذي يتجاوز 50 مهندساً واستشارياً متخصصاً. وخلافاً للعديد من المطورين، تحتفظ تفوق بإشراف هندسي وتنفيذي مباشر على كافة تفاصيل الإنشاءات، والأنظمة الكهروميكانيكية، ومعايير السلامة، والإدارة اليومية للمرافق.",
       },
       {
-        en: "In an era of rapid market speculation, our pledge remains steadfast: absolute credibility, physical engineering integrity, and an open executive door. As owner, my direct telephone and office are accessible to every major partner and prospective tenant who shares our belief in building enduring value.",
-        ar: "وفي عصر تتسارع فيه المضاربات العقارية، يبقى عهدنا ثابتاً لا يتزعزع: مصداقية مطلقة، متانة إنشائية فائقة، وباب تنفيذي مفتوح دائماً. وبصفتي مالكاً للشركة، فإن مكتبي وهاتفي متاحان مباشرة لكل شريك ومستأجر يشاركنا الإيمان بصناعة القيمة الحقيقية.",
+        en: "In an era of rapid market speculation, our pledge remains steadfast: absolute credibility, physical engineering integrity, and an open executive door. TAFAWOK's executive team and direct communications desk are accessible to every major partner and prospective tenant who shares our belief in building enduring value.",
+        ar: "وفي عصر تتسارع فيه المضاربات العقارية، يبقى عهدنا ثابتاً لا يتزعزع: مصداقية مطلقة، متانة إنشائية فائقة، وأبواب تنفيذية مفتوحة دائماً. وتضع شركة تفوق قنوات اتصالها المباشرة ومكاتبها التنفيذية في خدمة كل شريك ومستأجر يشاركنا الإيمان بصناعة القيمة الحقيقية المستدامة.",
       },
     ],
     closing: {
@@ -2151,12 +2151,12 @@ export const CEO_PROFILE: CeoProfile = {
       {
         number: "03",
         title: {
-          en: "Open Owner Door: Direct Personal Accountability",
-          ar: "باب المالك المفتوح: مسؤولية تنفيذية مباشرة",
+          en: "Open Executive Door: Direct Corporate Accountability",
+          ar: "الباب التنفيذي المفتوح: مسؤولية قيادية مباشرة",
         },
         description: {
-          en: "Corporate red tape has no place at TAFAWOK. Major tenants, anchor partners, and institutional investors communicate directly with Eng. Tarek Ahmed.",
-          ar: "لا مكان للبيروقراطية في تفوق. كبار المستأجرين والشركاء الاستثماريين يتواصلون مباشرة مع المهندس طارق أحمد لضمان سرعة القرار وثبات الالتزام.",
+          en: "Corporate red tape has no place at TAFAWOK. Major tenants, anchor partners, and institutional investors communicate directly with TAFAWOK Executive Leadership to ensure decisive decisions and steadfast execution.",
+          ar: "لا مكان للبيروقراطية في تفوق. كبار المستأجرين والشركاء الاستثماريين يتواصلون مباشرة مع القيادة التنفيذية لتفوق لضمان سرعة القرار وثبات الالتزام التنفيذي.",
         },
       },
     ],
@@ -2180,8 +2180,8 @@ export const CEO_PROFILE: CeoProfile = {
     {
       period: "2000",
       role: {
-        en: "Founder & Chief Executive Officer",
-        ar: "مؤسس ورئيس تنفيذي",
+        en: "Founding & Strategic Direction",
+        ar: "التأسيس والتوجه الاستراتيجي",
       },
       scope: {
         en: "TAFAWOK Real Estate Investment & Contracting (Cairo, Egypt)",

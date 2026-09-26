@@ -62,7 +62,7 @@ export const metadata: Metadata = {
     "مول أكتوبر فيستيفال",
     "استثمار عقاري تجاري مصر",
     "محلات تجارية للإيجار",
-    "م طارق أحمد",
+    "قيادة تفوق التنفيذية",
   ],
   authors: [{ name: "TAFAWOK Real Estate Investment & Contracting" }],
   creator: "TAFAWOK Real Estate Investment & Contracting",

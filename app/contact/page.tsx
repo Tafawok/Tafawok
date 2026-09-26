@@ -6,13 +6,13 @@ import { getBreadcrumbSchema } from "@/lib/seo/schema"
 export const metadata: Metadata = {
   title: "Contact & Official RFQ | Executive Commercial Inquiries",
   description:
-    "Direct engagement with TAFAWOK Real Estate Investment & Contracting Company. Connect with Eng. Tarek Ahmed (CEO), submit formal leasing RFQs, and coordinate meetings at our Cairo Executive Headquarters in Building 360, Fifth Settlement.",
+    "Direct engagement with TAFAWOK Real Estate Investment & Contracting Company. Connect with TAFAWOK Executive Leadership, submit formal leasing RFQs, and coordinate meetings at our Cairo Executive Headquarters in Building 360, Fifth Settlement.",
   keywords: [
     "Contact TAFAWOK",
     "TAFAWOK RFQ",
     "Commercial Leasing Inquiry",
     "New Cairo Office Lease",
-    "Eng Tarek Ahmed Phone",
+    "TAFAWOK Executive Line",
     "Building 360 New Cairo",
     "Commercial Real Estate Developer Egypt",
     "اتصل بشركة تفوق",
@@ -47,7 +47,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Contact & Official RFQ | TAFAWOK Commercial Real Estate",
     description:
-      "Direct engagement with TAFAWOK's executive ownership and commercial leasing desk. Connect directly with Eng. Tarek Ahmed.",
+      "Direct engagement with TAFAWOK's executive leadership and commercial leasing desk. Connect directly with TAFAWOK Leadership.",
     images: ["/og-image.png"],
   },
 }

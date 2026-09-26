@@ -186,11 +186,11 @@ export function NexusDashboardLayout({
           {
             id: "ceo",
             href: "/nexus-portal/ceo",
-            label: "CEO Profile & Vision",
-            labelAr: "كلمة ورؤية الإدارة",
+            label: "Executive Leadership Statement",
+            labelAr: "بيان القيادة التنفيذية",
             icon: UserCheck,
             description:
-              "Executive profile, credentials, and official corporate address by Eng. Tarek Ahmed.",
+              "Executive profile, credentials, and official corporate address by TAFAWOK Leadership.",
           },
           {
             id: "company",

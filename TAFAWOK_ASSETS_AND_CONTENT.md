@@ -27,7 +27,7 @@
 | :----------------------------- | :----------------------------------------------------------------------------------------------------------------------------------------------- |
 | **Full Corporate Name**        | **TAFAWOK Real Estate Investment and Contracting Company**<br>_(شركة تفوق للاستثمار العقاري والمقاولات)_                                         |
 | **Common Trade Brand**         | **TAFAWOK** / تفوق                                                                                                                               |
-| **Leadership**                 | **Eng. Tarek Ahmed**, Chief Executive Officer (CEO)                                                                                              |
+| **Leadership**                 | **TAFAWOK Executive Leadership**                                                                                                                 |
 | **Established Experience**     | Over **25+ years** of active execution; rooted in **5 decades** of Gulf & Middle East construction heritage                                      |
 | **Direct Sponsored Workforce** | **50+** directly sponsored core management, engineering, and specialist staff, scalable across regional megaprojects                             |
 | **Headquarters Address**       | Building 360, Industrial Area, Fifth Settlement, New Cairo, Egypt<br>_(رقم مبنى 360 – المنطقة الصناعية – التجمع الخامس – القاهرة الجديدة – مصر)_ |
@@ -65,7 +65,7 @@
 >
 > _We take great pride in our technical capabilities and the continuous improvement of the standards in our field of business. We believe in innovation, professionalism, and commitment to the success of our projects and long-term business relationships."_
 >
-> — **Eng. Tarek Ahmed**, CEO
+> — **TAFAWOK Executive Leadership**
 
 ---
 
@@ -85,7 +85,7 @@ The company’s corporate philosophy is driven by seven foundational values:
 
 ## 3. Health, Safety & Environment (HSE) Policy
 
-Signed and approved by **Eng. Tarek Ahmed (CEO)**, TAFAWOK enforces strict HSE standards across all construction sites, facilities, and regional operations:
+Approved and overseen by **TAFAWOK Executive Leadership**, TAFAWOK enforces strict HSE standards across all construction sites, facilities, and regional operations:
 
 ### Policy Statement:
 

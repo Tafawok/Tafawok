@@ -10,7 +10,7 @@
 
 Multilingual (Arabic / English) enterprise commercial real estate (CRE) showcase and investment portal for **TAFAWOK Real Estate Investment & Contracting Company** — specialized in prime office developments, destination retail malls, wholesale commercial trading plazas, and turnkey EPC execution across Egypt and the Middle East.
 
-Backed by **25+ years** of multidisciplinary execution and **5 decades** of regional Gulf engineering heritage, under the leadership of **Eng. Tarek Ahmed** (CEO & Company Owner).
+Backed by **25+ years** of multidisciplinary execution and **5 decades** of regional Gulf engineering heritage, under the leadership of **TAFAWOK Executive Leadership**.
 
 ---
 
@@ -70,7 +70,7 @@ Tafawok/
 ├── app/                           # Next.js 16 App Router
 │   ├── about/                     # Corporate heritage & leadership
 │   ├── api/contact/               # Commercial RFQ & inquiry submission API
-│   ├── ceo-message/               # Strategic vision by Eng. Tarek Ahmed
+│   ├── ceo-message/               # Strategic vision & executive address by TAFAWOK Leadership
 │   ├── contact/                   # Executive office coordinates & RFQ form
 │   ├── properties/                # Flagship commercial properties directory
 │   │   └── [slug]/                # Asset details (Fagala, ChillOut, October)

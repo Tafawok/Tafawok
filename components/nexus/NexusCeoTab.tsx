@@ -144,11 +144,10 @@ export function NexusCeoTab({ ceoProfile, onRefresh }: NexusCeoTabProps) {
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <h2 className="text-xl font-bold tracking-tight text-foreground sm:text-2xl">
-            Executive Leadership & CEO Vision
+            Executive Leadership & Strategic Vision
           </h2>
           <p className="text-xs text-muted-foreground sm:text-sm">
-            Eng. Tarek Ahmed&apos;s executive credentials, formal address,
-            direct office reach, and corporate vision.
+            TAFAWOK executive credentials, formal address, direct office reach, and corporate vision.
           </p>
         </div>
 

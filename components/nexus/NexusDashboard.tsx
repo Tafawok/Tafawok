@@ -239,13 +239,13 @@ export function NexusDashboard({
         items: [
           {
             id: "ceo",
-            label: "CEO Profile & Vision",
-            labelAr: "رؤية الرئيس التنفيذي",
+            label: "Executive Leadership Statement",
+            labelAr: "بيان القيادة التنفيذية",
             icon: UserCheck,
             badge: null,
             badgeVariant: undefined,
             description:
-              "Eng. Tarek Ahmed's executive leadership statement and credentials.",
+              "TAFAWOK executive leadership statement and credentials.",
           },
           {
             id: "identity",

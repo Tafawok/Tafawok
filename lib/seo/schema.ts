@@ -24,10 +24,9 @@ export function getOrganizationSchema() {
     description:
       "Enterprise commercial real estate developer and turnkey EPC contractor in Egypt. Specialized in prime corporate office parks, destination retail centers, wholesale trading plazas, and integrated logistics assets.",
     founder: {
-      "@type": "Person",
+      "@type": "Organization",
       name: OWNER_DETAILS.name.en,
       alternateName: OWNER_DETAILS.name.ar,
-      jobTitle: OWNER_DETAILS.role.en,
       telephone: OWNER_DETAILS.phone,
       email: OWNER_DETAILS.email,
     },
