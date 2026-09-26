@@ -804,3 +804,213 @@ Chronological decision log tracking major architectural milestones and engineeri
   - **Live Connectivity Verification:**
     - Pinged Supabase Auth & REST services against `https://qdeegiucxasdiyzasepa.supabase.co` — verified live 200 OK connection.
     - Verified TypeScript strict type safety (`npm run typecheck` - 0 errors) and production compilation (`npm run build` - successful).
+
+---
+
+## Milestone 12: Production PostgreSQL 17 Database Migration, Super Admin Suite & Nexus Portal Dashboard
+
+- **Date:** September 2026
+- **Scope:**
+  - **Live PostgreSQL 17 Schema Migration (`supabase/migrations/20260926000000_create_tafawok_cre_schema.sql`):**
+    - Created 11 production tables with Row-Level Security (RLS) enabled on every table:
+      - `properties`: Commercial asset flagships (Fagala Plaza, Mall ChillOut, October Festival Mall) with JSONB bilingual models, specs, location coordinates, galleries, and videos.
+      - `property_stores`: Retail tenant directories with unit allocations, categories, floors, and statuses.
+      - `commercial_disciplines`: 4 core sectors (Office Towers, Retail, Logistics, EPC).
+      - `corporate_metrics`: 4 hero numerical benchmarks.
+      - `timeline_milestones`: Corporate timeline from 1974 to present.
+      - `corporate_values`: 7 institutional core values.
+      - `investment_pillars`: 4 strategic thesis pillars.
+      - `client_partners`: 12 Tier-1 energy, EPC, and commercial partners.
+      - `site_settings`: Singleton JSONB store for `company_identity`, `ceo_profile`, and `hse_charter`.
+      - `inquiries`: Live commercial RFQs & contact submissions.
+      - `admin_users`: Super Admin access control with `is_admin()` security definer function.
+  - **Comprehensive Data Seeding (`scripts/seed.ts`):**
+    - Executed seeder against live AWS Ireland pooler (`aws-1-eu-west-1.pooler.supabase.com:6543`).
+    - Successfully inserted all 3 flagship assets, 22 retail stores, 4 disciplines, 4 metrics, 6 milestones, 7 values, 4 investment pillars, 12 partners, and 3 singleton settings.
+  - **Super Admin Provisioning (`scripts/create-admin.ts`):**
+    - Created confirmed Super Admin user `superadmin@tafawok.co` in `auth.users` and `public.admin_users`.
+    - Verified live authentication via Supabase Auth client (`signInWithPassword`).
+  - **Content Service Layer & Server Actions (`lib/content/`):**
+    - `cre-service.ts`: Fallback-resilient typed service layer fetching live database rows with automatic fallback to static content.
+    - `actions.ts`: Secure `"use server"` mutations requiring Super Admin authentication with instant multi-path ISR cache revalidation (`revalidatePath`).
+    - Connected `app/api/contact/route.ts` to automatically persist all incoming inquiries into `inquiries` table.
+  - **Hidden Management Suite (`/nexus-portal`):**
+    - `/nexus-portal/login`: Prestigious obsidian & bronze authentication portal.
+    - `/nexus-portal`: Full-control dashboard suite with responsive sidebar, live stats, property editor modal, store manager, discipline editor, metric editor, milestone editor, values/pillars editor, partners manager, CEO profile editor, HQ coordinates editor, HSE charter editor, and live inquiries inbox.
+    - Protected via Next.js 16 `proxy.ts` (redirecting unauthenticated users to `/nexus-portal/login`).
+    - Public isolation: Hides public `Navbar` and `Footer` on portal routes; disallowed in `robots.ts` and excluded from `sitemap.ts`.
+  - **Quality Gates Verification:**
+    - `npm run typecheck`: 0 errors across all types and components.
+    - `npm run build`: 19/19 routes compiled in 423ms without warnings.
+
+---
+
+## Milestone 13: Strict Type Safety, React 19 Hygiene & Complete Zero-Lint Cleanliness
+
+- **Date:** September 2026
+- **Scope:**
+  - **Type Safety Hardening (Strictly Zero `any`):**
+    - Eliminated all 43 `Unexpected any` occurrences across [`lib/content/cre-service.ts`](file:///Users/omartemsah/WebProjects/Tafawok/lib/content/cre-service.ts), [`lib/content/actions.ts`](file:///Users/omartemsah/WebProjects/Tafawok/lib/content/actions.ts), and the entire [`components/nexus/`](file:///Users/omartemsah/WebProjects/Tafawok/components/nexus/) suite.
+    - Bridged Supabase JSONB non-nullable database schema with `type DbJson = NonNullable<Json>`.
+    - Strongly typed company identity with [`CompanyIdentity`](file:///Users/omartemsah/WebProjects/Tafawok/types/cre.ts) interface.
+    - Added typed error guards for all server action try/catch blocks (`catch (err: unknown)`).
+  - **React 19 & ESLint Cascading Render Remediation:**
+    - Re-architected [`NexusPropertyModal.tsx`](file:///Users/omartemsah/WebProjects/Tafawok/components/nexus/NexusPropertyModal.tsx) and [`NexusStoreModal.tsx`](file:///Users/omartemsah/WebProjects/Tafawok/components/nexus/NexusStoreModal.tsx) to eliminate synchronous `setState` in `useEffect`.
+    - Decomposed modals into dedicated keyed form components (`key={property?.id || "new"}`) allowing React to mount fresh state instances with zero cascading re-renders.
+  - **Tailwind CSS v4 & JSX Standards:**
+    - Replaced deprecated Tailwind classes with native Tailwind v4 tokens (`start-` -> `inset-s-`, `end-` -> `inset-e-`, `bg-gradient-` -> `bg-linear-`, arbitrary pixel utilities to v4 fractional sizing).
+    - Escaped unescaped JSX quotes (`&apos;`, `&quot;`).
+    - Cleaned up all unused Lucide icon imports and UI component imports.
+  - **Comprehensive CRE Property Form Coverage:**
+    - Added dedicated bilingual inputs for all location and structural specs in Tab 4 (City, Alt Phone, Commercial Leasing Office, Floors, Arabic Parking Capacity, Zoning Classification, and Direct Google Maps Link).
+  - **Quality Gates Verification:**
+    - `npx tsc --noEmit`: 0 errors across the entire repository.
+    - `npm run lint`: **0 errors, 0 warnings** (completely clean ESLint output).
+    - `npm run build`: 19/19 routes compiled cleanly with Next.js 16 App Router.
+
+---
+
+## Milestone 14: shadcn/ui Sidebar Dashboard Architecture & "The Works" Control Suite
+
+- **Date:** September 2026
+- **Scope:**
+  - **shadcn/ui Sidebar Primitives Integration:**
+    - Installed official shadcn `sidebar` suite (`components/ui/sidebar.tsx`, `components/ui/skeleton.tsx`, `hooks/use-mobile.ts`).
+    - Modernized `hooks/use-mobile.ts` with React 19 `useSyncExternalStore` to eliminate hydration mismatch and cascading renders.
+    - Ensured all imports reference `@/lib/utils` and semantic `--sidebar-*` theme tokens in `app/globals.css`.
+  - **Enterprise Sidebar Composition (`NexusDashboard.tsx`):**
+    - `SidebarHeader`: TAFAWOK CRE brand shield badge, live status dot, and instant client-side search filter (`SidebarInput`).
+    - 4 Structured Menu Groups with bilingual labels & dynamic record count badges:
+      1. **Commercial Portfolio:** Overview, Commercial Assets, Retail Directory, Sectors & Disciplines.
+      2. **Heritage & Scale:** Corporate Benchmarks, Heritage Timeline, Values & Pillars, Strategic Partners & Clients.
+      3. **Leadership & HQ:** CEO Profile & Vision, HQ Coordinates, HSE & Governance Charters.
+      4. **Inbound Leads:** Inquiries & RFQs (with animated destructive badge for unread submissions).
+    - `SidebarFooter`: Super Admin avatar monogram, authenticated email, Live Website quick link, and interactive Sign Out button.
+    - `SidebarRail`: One-click collapse/expand rail with tooltip-supported icon mode.
+  - **Dashboard Shell & Inset Navigation (`SidebarInset`):**
+    - `SidebarTrigger` with keyboard shortcut support (`⌘B` / `Ctrl+B`).
+    - Interactive breadcrumbs (`Nexus Portal` > `[Category]` > `[Active Tab]`).
+    - Live health pill (`PostgreSQL 17.6 • Live` with pulsing indicator).
+    - Instant server data sync action (`RotateCw`) with feedback toast.
+    - Integrated language toggle (`ar` / `en` with true RTL sidebar docking) and dark/light theme switch.
+  - **Quality Gates Verification:**
+    - `npx tsc --noEmit`: 0 errors.
+    - `npm run lint`: 0 errors, 0 warnings.
+    - `npm run build`: 19/19 static and dynamic routes compiled in 146ms.
+
+---
+
+## Milestone 15: Pinned Dialog Architecture & Universal Zod + React Hook Form Standardization
+
+- **Date:** September 2026
+- **Scope:**
+  - **Pinned Dialog Layout Architecture (`components/ui/dialog.tsx`):**
+    - Added and exported dedicated `DialogBody` (`flex-1 overflow-y-auto p-4 sm:p-6`) primitive.
+    - Styled `DialogHeader` as pinned (`shrink-0 border-b border-border/70 p-4 sm:p-6 bg-card`).
+    - Styled `DialogFooter` as pinned (`shrink-0 border-t border-border/70 bg-muted/40 p-4 sm:p-6 m-0`).
+    - Standardized `DialogContent` with explicit responsive width bounds (`sm:max-w-4xl`, `sm:max-w-2xl`, `sm:max-w-lg`), constrained viewport height (`max-h-[90vh]`), and internal vertical flex flow (`flex flex-col p-0 overflow-hidden`).
+    - Re-architected modal forms so `<form onSubmit={handleSubmit(onSubmit)} className="flex flex-col flex-1 min-h-0 overflow-hidden">` wraps the dialog body and footer. The Header (title, description) and Footer (Cancel, Save/Submit buttons) are permanently locked in view at the top and bottom while the form body scrolls smoothly and independently in between.
+  - **Applied Across All System Dialogs:**
+    - **`NexusPropertyModal.tsx`:** Standardized with `sm:max-w-4xl max-h-[90vh]`, pinned header & footer, scrollable tabbed body.
+    - **`NexusStoreModal.tsx`:** Standardized with `sm:max-w-2xl max-h-[90vh]`, pinned header & footer, scrollable body.
+    - **`NexusDisciplinesTab.tsx`:** Standardized with `sm:max-w-2xl max-h-[90vh]`, pinned header & footer, scrollable body.
+    - **`NexusMetricsTab.tsx`:** Standardized with `sm:max-w-lg max-h-[90vh]`, pinned header & footer, scrollable body.
+    - **`NexusTimelineTab.tsx`:** Standardized with `sm:max-w-2xl max-h-[90vh]`, pinned header & footer, scrollable body.
+    - **`NexusValuesPillarsTab.tsx`:** Both Corporate Value Modal and Investment Pillar Modal standardized with `sm:max-w-lg max-h-[90vh]`, pinned headers & footers, scrollable body.
+    - **`NexusPartnersTab.tsx`:** Standardized with `sm:max-w-lg max-h-[90vh]`, pinned header & footer, scrollable body.
+  - **Universal Zod Schema Validation & React Hook Form Integration:**
+    - Centralized strong validation schemas in [`lib/validations/cre-schemas.ts`](file:///Users/omartemsah/WebProjects/Tafawok/lib/validations/cre-schemas.ts).
+    - Standardized all 13 application forms with `useForm` + `zodResolver`:
+      1. `ContactForm.tsx`: Public tenant/investor RFQ form with `useWatch` and Zod schema.
+      2. `app/nexus-portal/login/page.tsx`: Super admin portal authentication.
+      3. `NexusPropertyModal.tsx`: Comprehensive commercial asset editor with numeric casting.
+      4. `NexusStoreModal.tsx`: Retail tenant directory item editor with pure slug generation.
+      5. `NexusDisciplinesTab.tsx`: Commercial capability discipline editor.
+      6. `NexusMetricsTab.tsx`: Corporate metric benchmark editor.
+      7. `NexusTimelineTab.tsx`: Heritage milestone editor with typed category enum and isolated highlights parsing.
+      8. `NexusValuesPillarsTab.tsx` (Values): Corporate value statement editor.
+      9. `NexusValuesPillarsTab.tsx` (Pillars): Investment pillar and key metric editor.
+      10. `NexusPartnersTab.tsx`: Client partner & institutional credential editor.
+      11. `NexusCeoTab.tsx`: Executive profile & formal statement editor with numeric casting.
+      12. `NexusCompanyIdentityTab.tsx`: Corporate credentials & coordinates editor.
+      13. `NexusHseTab.tsx`: HSE charter & ISO standard governance editor.
+  - **Quality Gates Verification:**
+    - `npx tsc --noEmit`: **0 errors** across the entire codebase.
+    - `npm run lint`: **0 errors, 0 warnings** (completely clean ESLint run).
+    - `npm run build`: **19/19 routes compiled successfully** with Turbopack.
+
+---
+
+## Milestone 15.1: Nexus Portal De-cluttering & Authentic Brand Logo Integration
+
+- **Date:** September 2026
+- **Scope:**
+  - **Sidebar Brand Identity Upgrade:**
+    - Replaced generic shield icon with the official [`TafawokEmblem`](file:///Users/omartemsah/WebProjects/Tafawok/components/layout/Logo.tsx#L18) SVG brand mark.
+    - Added bilingual typography (`TAFAWOK` / `تَفَـوُّق`) and `Nexus` portal badge in the sidebar header.
+    - Collapses seamlessly into the standalone centered brand emblem in icon mode (`group-data-[collapsible=icon]`).
+  - **Header De-cluttering & Simplification:**
+    - Removed redundant search filter from the sidebar header.
+    - Removed breadcrumbs, PostgreSQL status badge, and manual data sync button from the top navigation bar.
+    - Streamlined the header to feature clean active section labeling, live site link, language switch, and theme toggle.
+  - **Quality Gates Verification:**
+    - `npx tsc --noEmit`: **0 errors**.
+    - `npm run lint`: **0 errors, 0 warnings**.
+    - `npm run build`: **19/19 routes compiled successfully** with Turbopack.
+
+---
+
+## Milestone 16: Multi-Page App Router Architecture with Route-Level Data Isolation
+
+- **Date:** September 2026
+- **Scope:**
+  - **Decoupled Monolithic Tab Switcher into Independent Next.js Pages:**
+    - Transitioned the Nexus Super Admin dashboard from a monolithic client-side tab switcher into 12 dedicated Next.js App Router sub-routes.
+    - Implemented route grouping via `app/nexus-portal/(dashboard)/` to share persistent sidebar layout while keeping clean URLs (`/nexus-portal/properties`, `/nexus-portal/stores`, etc.) and excluding unauthenticated routes (`/nexus-portal/login`).
+  - **Route-Level Granular Data Fetching (Backend Isolation):**
+    - Eliminated the monolithic 11-way `Promise.all` concurrent database waterfall on load.
+    - Each page is an independent React Server Component (`export const dynamic = "force-dynamic"`) that fetches **only** its relevant domain dataset:
+      - `/nexus-portal`: Overview summary counts and metrics.
+      - `/nexus-portal/properties`: Fetches only `getProperties()`.
+      - `/nexus-portal/stores`: Fetches only `getProperties()`.
+      - `/nexus-portal/disciplines`: Fetches only `getCommercialDisciplines()`.
+      - `/nexus-portal/metrics`: Fetches only `getCorporateMetrics()`.
+      - `/nexus-portal/timeline`: Fetches only `getTimelineMilestones()`.
+      - `/nexus-portal/values`: Fetches only `getCorporateValues()` and `getInvestmentPillars()`.
+      - `/nexus-portal/partners`: Fetches only `getClientPartners()`.
+      - `/nexus-portal/ceo`: Fetches only `getCeoProfile()`.
+      - `/nexus-portal/company`: Fetches only `getCompanyIdentity()`.
+      - `/nexus-portal/hse`: Fetches only `getHseCharter()`.
+      - `/nexus-portal/inquiries`: Fetches only `getInquiriesAction()`.
+  - **Shared Dashboard Shell & Layout Architecture:**
+    - [`app/nexus-portal/(dashboard)/layout.tsx`](<file:///Users/omartemsah/WebProjects/Tafawok/app/nexus-portal/(dashboard)/layout.tsx>): Server-side authentication guard (`getCurrentAdmin()` check, redirecting unauthorized users) and unread inquiry counter.
+    - [`components/nexus/NexusDashboardLayout.tsx`](file:///Users/omartemsah/WebProjects/Tafawok/components/nexus/NexusDashboardLayout.tsx): Shared client shell with official Tafawok emblem, active route recognition via `usePathname()`, `@base-ui/react` `render={<Link href="..." />}` navigation integration, language/theme toggles, and user session menu.
+  - **Tab Component Reusability & Router Refresh Fallback:**
+    - Updated all 11 domain tab components to support optional `onRefresh` callbacks, falling back automatically to Next.js App Router `useRouter().refresh()` so mutations trigger instant server re-renders and re-fetching.
+    - Converted [`NexusOverviewTab.tsx`](file:///Users/omartemsah/WebProjects/Tafawok/components/nexus/NexusOverviewTab.tsx) action cards to direct Next.js `<Link>` navigations.
+  - **Quality Gates Verification:**
+    - `npx tsc --noEmit`: **0 errors** across all TypeScript files.
+    - `npm run lint`: **0 warnings, 0 errors** (ESLint 100% clean).
+    - `npm run build`: **All 27 routes compiled cleanly** with Next.js Turbopack.
+
+---
+
+## Milestone 16.1: RTL Sidebar Border Direction Fix & Edge-to-Edge Group Separators
+
+- **Date:** September 2026
+- **Scope:**
+  - **RTL Sidebar Border Direction Fix (`components/ui/sidebar.tsx`):**
+    - Corrected physical-to-logical inversion in shadcn sidebar borders. Because `side="left"` / `side="right"` represent physical screen edges (`left: 0` / `right: 0`), using Tailwind logical properties `group-data-[side=left]:border-e group-data-[side=right]:border-s` erroneously inverted in RTL:
+      - In RTL, `side="right"` with `border-s` evaluated to `border-right`, placing the 1px dividing border against the screen edge off-canvas, leaving no visible separator between the sidebar and the main content on its left.
+    - Replaced with physical bindings: `group-data-[side=left]:border-r group-data-[side=right]:border-l data-[side=left]:border-r data-[side=right]:border-l border-sidebar-border`. In Arabic (`side="right"`), the dividing border is guaranteed to render on the inner left edge, cleanly partitioning the sidebar from the main content.
+  - **Edge-to-Edge Sidebar Separators:**
+    - Updated `SidebarSeparator` in `components/ui/sidebar.tsx` to use `w-full bg-sidebar-border/70` instead of the constrained `mx-2 w-auto`.
+    - Removed horizontal padding from `SidebarContent` (`px-0 py-2`), while retaining comfortable inset padding on `SidebarGroup` (`px-2 py-1`). Horizontal divider lines between menu groups now span the full width of the sidebar from start to end with zero gaps.
+  - **Unified RTL Direction on Layout Shell:**
+    - Added `dir={isArabic ? "rtl" : "ltr"}` to the main layout wrapper in both `NexusDashboardLayout.tsx` and `NexusDashboard.tsx`, ensuring proper flex order and header trigger positioning.
+  - **TypeScript Props Integrity:**
+    - Re-introduced optional `onSelectTab?: (tabId: string) => void` in `NexusOverviewTabProps` to resolve the IDE error in `NexusDashboard.tsx:548`.
+  - **Quality Gates Verification:**
+    - `npx tsc --noEmit`: **0 errors**.
+    - `npm run lint`: **0 warnings, 0 errors**.
+    - `npm run build`: **All 27 routes compiled successfully** with Next.js Turbopack.

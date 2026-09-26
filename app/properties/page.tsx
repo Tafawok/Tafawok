@@ -1,5 +1,5 @@
 import type { Metadata } from "next"
-import { PROPERTIES } from "@/content/cre-data"
+import { getProperties } from "@/lib/content/cre-service"
 import { PropertiesDirectoryClient } from "@/components/properties/PropertiesDirectoryClient"
 import { JsonLd } from "@/components/seo/JsonLd"
 import { getBreadcrumbSchema } from "@/lib/seo/schema"
@@ -35,8 +35,7 @@ export const metadata: Metadata = {
     },
   },
   openGraph: {
-    title:
-      "Commercial Properties & Real Estate Developments | TAFAWOK CRE",
+    title: "Commercial Properties & Real Estate Developments | TAFAWOK CRE",
     description:
       "Explore TAFAWOK's flagship commercial developments in Egypt: Fagala Plaza (Nasr City), Mall ChillOut (El Shorouk), and October Festival Mall (6th of October).",
     url: "/properties",
@@ -52,15 +51,15 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title:
-      "Commercial Properties & Real Estate Developments | TAFAWOK CRE",
+    title: "Commercial Properties & Real Estate Developments | TAFAWOK CRE",
     description:
       "Explore TAFAWOK's flagship commercial developments in Egypt: Fagala Plaza, Mall ChillOut, and October Festival Mall.",
     images: ["/og-image.png"],
   },
 }
 
-export default function PropertiesPage() {
+export default async function PropertiesPage() {
+  const properties = await getProperties()
   const breadcrumbSchema = getBreadcrumbSchema([
     { name: "Home", url: "/" },
     { name: "Commercial Properties", url: "/properties" },
@@ -69,7 +68,7 @@ export default function PropertiesPage() {
   return (
     <>
       <JsonLd data={breadcrumbSchema} />
-      <PropertiesDirectoryClient properties={PROPERTIES} />
+      <PropertiesDirectoryClient properties={properties} />
     </>
   )
 }

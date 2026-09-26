@@ -14,6 +14,7 @@ import type { Locale } from "@/types/cre"
 import { JsonLd } from "@/components/seo/JsonLd"
 import { getOrganizationSchema, getWebSiteSchema } from "@/lib/seo/schema"
 import { Analytics } from "@vercel/analytics/next"
+import { Toaster } from "@/components/ui/sonner"
 
 const inter = Inter({
   subsets: ["latin"],
@@ -166,6 +167,7 @@ export default async function RootLayout({
         <JsonLd data={organizationSchema} />
         <JsonLd data={webSiteSchema} />
         <ThemeProvider defaultTheme={theme}>
+          <Toaster position="top-center" />
           <ScrollProgressBar />
           <TargetCursor />
           <LanguageProvider initialLocale={locale}>

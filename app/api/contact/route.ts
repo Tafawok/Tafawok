@@ -56,6 +56,23 @@ export async function POST(req: NextRequest) {
       message: message!.trim(),
     }
 
+    // Persist to Supabase database
+    try {
+      const { createClient } = await import("@/lib/supabase/server")
+      const supabase = await createClient()
+      await supabase.from("inquiries").insert({
+        name: cleanPayload.name,
+        email: cleanPayload.email,
+        phone: cleanPayload.phone,
+        interest_type: cleanPayload.inquiryType,
+        property_slug: cleanPayload.property,
+        message: cleanPayload.message,
+        status: "new",
+      })
+    } catch (dbErr) {
+      console.error("[INQUIRIES_DB_PERSIST_ERROR]", dbErr)
+    }
+
     // 2. SMTP Environment Check
     const smtpHost = process.env.SMTP_HOST
     const smtpPort = parseInt(process.env.SMTP_PORT || "587", 10)

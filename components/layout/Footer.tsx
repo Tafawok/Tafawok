@@ -2,6 +2,7 @@
 
 import * as React from "react"
 import Link from "next/link"
+import { usePathname } from "next/navigation"
 import {
   MapPin,
   Mail,
@@ -22,6 +23,7 @@ import {
 } from "@/content/cre-data"
 
 export function Footer() {
+  const pathname = usePathname()
   const { locale, t } = useLocaleStore()
   const isArabic = locale === "ar"
 
@@ -29,6 +31,10 @@ export function Footer() {
 
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: "smooth" })
+  }
+
+  if (pathname?.startsWith("/nexus-portal")) {
+    return null
   }
 
   return (

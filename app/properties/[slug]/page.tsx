@@ -1,6 +1,7 @@
 import type { Metadata } from "next"
 import { notFound } from "next/navigation"
-import { getPropertyBySlug, getAllPropertySlugs } from "@/content/cre-data"
+import { getAllPropertySlugs } from "@/content/cre-data"
+import { getPropertyBySlug } from "@/lib/content/cre-service"
 import { PropertyDetailClient } from "@/components/properties/PropertyDetailClient"
 import { JsonLd } from "@/components/seo/JsonLd"
 import { getPropertyJsonLd, getBreadcrumbSchema } from "@/lib/seo/schema"
@@ -19,7 +20,7 @@ export async function generateMetadata({
   params,
 }: PropertyPageProps): Promise<Metadata> {
   const { slug } = await params
-  const property = getPropertyBySlug(slug)
+  const property = await getPropertyBySlug(slug)
 
   if (!property) {
     return {
@@ -80,9 +81,11 @@ export async function generateMetadata({
   }
 }
 
-export default async function PropertyDetailPage({ params }: PropertyPageProps) {
+export default async function PropertyDetailPage({
+  params,
+}: PropertyPageProps) {
   const { slug } = await params
-  const property = getPropertyBySlug(slug)
+  const property = await getPropertyBySlug(slug)
 
   if (!property) {
     notFound()

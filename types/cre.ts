@@ -81,6 +81,26 @@ export interface Property {
   amenities: LocalizedString[]
 }
 
+export interface CompanyIdentity {
+  name: LocalizedString
+  shortName: LocalizedString
+  tagline: LocalizedString
+  establishedYears: number
+  heritageDecades: number
+  headquarters: {
+    address: LocalizedString
+    googleMapsEmbed: string
+    googleMapsLink: string
+  }
+  contact: {
+    primaryPhone: string
+    secondaryPhone: string
+    fax: string
+    email: string
+    primaryDomain: string
+  }
+}
+
 export interface OwnerContact {
   name: LocalizedString
   role: LocalizedString
