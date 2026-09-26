@@ -1,7 +1,13 @@
 import { Property } from "@/types/cre"
 import { COMPANY_IDENTITY, OWNER_DETAILS } from "@/content/cre-data"
 
-const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://www.tafawok.co"
+const BASE_URL =
+  process.env.NEXT_PUBLIC_SITE_URL ||
+  (process.env.VERCEL_PROJECT_PRODUCTION_URL
+    ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
+    : process.env.VERCEL_URL
+      ? `https://${process.env.VERCEL_URL}`
+      : "https://www.tafawok.co")
 
 /**
  * Generates Schema.org Organization, GeneralContractor, and RealEstateAgent metadata

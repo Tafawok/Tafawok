@@ -38,7 +38,12 @@ const webSiteSchema = getWebSiteSchema()
 
 export const metadata: Metadata = {
   metadataBase: new URL(
-    process.env.NEXT_PUBLIC_SITE_URL || "https://www.tafawok.co"
+    process.env.NEXT_PUBLIC_SITE_URL ||
+      (process.env.VERCEL_PROJECT_PRODUCTION_URL
+        ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
+        : process.env.VERCEL_URL
+          ? `https://${process.env.VERCEL_URL}`
+          : "https://www.tafawok.co")
   ),
   title: {
     template: "%s | TAFAWOK Real Estate Investment & Contracting",
