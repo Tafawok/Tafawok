@@ -1094,3 +1094,28 @@ Chronological decision log tracking major architectural milestones and engineeri
     - `npx tsc --noEmit`: **0 errors** across entire codebase.
     - `npm run lint`: **0 errors** (all linter checks passing).
     - `npm run build`: **All 47 App Router dynamic and static routes compiled successfully** with Next.js Turbopack.
+
+- **Milestone: Dynamic Database-Driven Public Pages & Nexus Homepage / Expand Showcase Management:**
+  - **Dynamic Database Architecture Across All Public Pages:**
+    - Refactored all public App Router routes (`/`, `/about`, `/ceo-message`, `/contact`, `/properties`, `/properties/[slug]`) and global navigation shell (`app/layout.tsx`, `Navbar`, `MobileNav`, `Footer`, `PropertyDropdown`) into asynchronous React Server Components fetching live, synchronized data directly from Supabase PostgreSQL via [`lib/content/cre-service.ts`](file:///Users/omartemsah/WebProjects/Tafawok/lib/content/cre-service.ts).
+    - Preserved exact component hierarchy, styling tokens, animations, and responsive layouts: zero new sections added, zero visual disruption, purely transitioning data sources from static references to live database records with typed fallbacks to `DEFAULT_HOMEPAGE_SETTINGS` and `PROPERTIES`.
+  - **Dynamic Interactive Scroll-Expand Showcase (`ScrollExpandShowcase.tsx`):**
+    - The full-bleed scroll-expand canvas hero visual (`imageUrl`), section title, subtitle, target asset link, floating badge, overlay card headline, description, and the 3-column architectural specs matrix (`stats: [value, label, sub]`) are now dynamically fed from `site_settings.homepage_settings` in PostgreSQL.
+  - **Dynamic Homepage & Public Sections Coverage:**
+    - **Hero Section (`HeroSection.tsx`):** Dynamic primary headline, architectural subheadline, primary CTA text, and 3-part credentials strip.
+    - **Metrics Section (`MetricsSection.tsx`):** Dynamic track record figures, values, labels, and descriptions.
+    - **Featured Portfolio (`FeaturedProperties.tsx`):** Dynamic asset listings, badges, specs, and gallery thumbnails.
+    - **Client Marquee (`ClientMarquee.tsx`):** Dynamic EPC & institutional partner logos and accreditation badges.
+    - **Leadership Quote (`CeoQuoteSection.tsx`):** Dynamic executive quote, corporate vision, and institutional attribution.
+    - **About Us Page (`app/about/page.tsx`):** Dynamic milestones timeline, investment thesis pillars, corporate values, HSE charter, and leadership contact coordinates.
+    - **Executive Vision Page (`app/ceo-message/page.tsx`):** Dynamic executive address, foundational doctrine, and direct reach coordinates.
+    - **Contact Page (`app/contact/page.tsx`):** Dynamic target property dropdown options populated directly from live active assets in `properties`.
+  - **Nexus Admin Portal — Homepage & Showcase Management (`NexusHomepageTab.tsx`):**
+    - Created dedicated admin control view at `/nexus-portal/homepage` integrated with sidebar navigation and dashboard quick actions.
+    - **Interactive Canvas Visual Control:** Powered by [`MediaUploader`](file:///Users/omartemsah/WebProjects/Tafawok/components/nexus/MediaUploader.tsx) supporting direct drag-and-drop file uploads to Supabase Storage, CDN link generation, real-time media preview, and manual URL input.
+    - **Bilingual Content Editing:** Live EN/AR fields for hero headline, subheadline, CTA text, credentials, section headers, overlay card copy, and 3-column showcase statistics.
+    - **Instant Revalidation:** Mutation via `saveSiteSettingAction("homepage_settings", ...)` immediately triggers Next.js tag-based cache revalidation across `/`, `/about`, `/ceo-message`, `/contact`, and `/properties`.
+  - **Quality Gates Verification:**
+    - `npx tsc --noEmit`: **0 errors** across entire codebase.
+    - `npm run lint`: **0 errors, 0 warnings**.
+    - `npm run build`: **Compiled 100% successfully** across all App Router static and dynamic routes.

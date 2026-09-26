@@ -4,9 +4,17 @@ import React from "react"
 import { useLocaleStore } from "@/stores/useLocaleStore"
 import { CEO_PROFILE } from "@/content/cre-data"
 import { MotionFade } from "@/components/motion/MotionFade"
+import type { CeoProfile } from "@/types/cre"
 
-export function CeoDoctrineSection() {
+interface CeoDoctrineSectionProps {
+  profile?: CeoProfile
+}
+
+export function CeoDoctrineSection({
+  profile = CEO_PROFILE,
+}: CeoDoctrineSectionProps) {
   const { t } = useLocaleStore()
+  const activeProfile = profile || CEO_PROFILE
 
   return (
     <section
@@ -18,18 +26,18 @@ export function CeoDoctrineSection() {
         <div className="max-w-3xl">
           <MotionFade direction="up" delay={0.05}>
             <h2 className="text-2xl font-black tracking-tight text-foreground sm:text-3xl lg:text-4xl">
-              {t(CEO_PROFILE.strategicDoctrine.title)}
+              {t(activeProfile.strategicDoctrine.title)}
             </h2>
 
             <p className="mt-3 text-sm leading-relaxed text-muted-foreground sm:text-base">
-              {t(CEO_PROFILE.strategicDoctrine.subtitle)}
+              {t(activeProfile.strategicDoctrine.subtitle)}
             </p>
           </MotionFade>
         </div>
 
         {/* 3 Pillars - Swiss Editorial Numbered Rows */}
         <div className="mt-12 divide-y divide-border/60 sm:mt-16">
-          {CEO_PROFILE.strategicDoctrine.pillars.map((pillar, idx) => (
+          {activeProfile.strategicDoctrine.pillars.map((pillar, idx) => (
             <MotionFade
               key={pillar.number}
               direction="up"

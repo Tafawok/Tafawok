@@ -15,6 +15,11 @@ import { JsonLd } from "@/components/seo/JsonLd"
 import { getOrganizationSchema, getWebSiteSchema } from "@/lib/seo/schema"
 import { Analytics } from "@vercel/analytics/next"
 import { Toaster } from "@/components/ui/sonner"
+import {
+  getProperties,
+  getCompanyIdentity,
+  getOwnerDetails,
+} from "@/lib/content/cre-service"
 
 const inter = Inter({
   subsets: ["latin"],
@@ -150,6 +155,12 @@ export default async function RootLayout({
 
   const isRtl = locale === "ar"
 
+  const [properties, identity, ownerDetails] = await Promise.all([
+    getProperties(),
+    getCompanyIdentity(),
+    getOwnerDetails(),
+  ])
+
   return (
     <html
       lang={locale}
@@ -172,9 +183,17 @@ export default async function RootLayout({
           <TargetCursor />
           <LanguageProvider initialLocale={locale}>
             <div className="flex min-h-screen flex-col">
-              <Navbar />
+              <Navbar
+                properties={properties}
+                ownerDetails={ownerDetails}
+                identity={identity}
+              />
               <main className="flex flex-1 flex-col">{children}</main>
-              <Footer />
+              <Footer
+                properties={properties}
+                ownerDetails={ownerDetails}
+                identity={identity}
+              />
             </div>
           </LanguageProvider>
         </ThemeProvider>

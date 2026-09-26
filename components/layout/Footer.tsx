@@ -21,11 +21,27 @@ import {
   PROPERTIES,
   UI_DICTIONARY,
 } from "@/content/cre-data"
+import type { Property, OwnerContact, CompanyIdentity } from "@/types/cre"
 
-export function Footer() {
+interface FooterProps {
+  properties?: Property[]
+  ownerDetails?: OwnerContact
+  identity?: CompanyIdentity
+}
+
+export function Footer({
+  properties = PROPERTIES,
+  ownerDetails = OWNER_DETAILS,
+  identity = COMPANY_IDENTITY,
+}: FooterProps) {
   const pathname = usePathname()
   const { locale, t } = useLocaleStore()
   const isArabic = locale === "ar"
+
+  const displayProperties =
+    properties && properties.length > 0 ? properties : PROPERTIES
+  const details = ownerDetails || OWNER_DETAILS
+  const activeIdentity = identity || COMPANY_IDENTITY
 
   const ArrowIcon = isArabic ? ArrowLeft : ArrowRight
 
@@ -69,7 +85,7 @@ export function Footer() {
               {t(UI_DICTIONARY.footer.propertiesNav)}
             </h4>
             <ul className="space-y-3">
-              {PROPERTIES.map((prop) => (
+              {displayProperties.map((prop) => (
                 <li key={prop.id}>
                   <Link
                     href={`/properties/${prop.slug}`}
@@ -161,10 +177,10 @@ export function Footer() {
             <div className="space-y-3 text-xs">
               <div>
                 <span className="block text-[11px] text-muted-foreground">
-                  {t(OWNER_DETAILS.role)}
+                  {t(details.role)}
                 </span>
                 <span className="block font-bold text-foreground">
-                  {t(OWNER_DETAILS.name)}
+                  {t(details.name)}
                 </span>
               </div>
 
@@ -172,7 +188,7 @@ export function Footer() {
                 <div className="flex items-center gap-2 text-muted-foreground">
                   <Phone className="h-3.5 w-3.5 shrink-0 text-primary" />
                   <PhoneNumber
-                    phone={OWNER_DETAILS.phone}
+                    phone={details.phone}
                     showIcon={false}
                     className="font-semibold text-foreground transition-colors hover:text-primary"
                   />
@@ -181,22 +197,22 @@ export function Footer() {
                 <div className="flex items-center gap-2 text-muted-foreground">
                   <Mail className="h-3.5 w-3.5 shrink-0 text-primary" />
                   <a
-                    href={`mailto:${OWNER_DETAILS.email}`}
+                    href={`mailto:${details.email}`}
                     className="truncate transition-colors hover:text-primary"
                   >
-                    {OWNER_DETAILS.email}
+                    {details.email}
                   </a>
                 </div>
 
                 <div className="flex items-start gap-2 text-muted-foreground">
                   <MapPin className="mt-0.5 h-3.5 w-3.5 shrink-0 text-primary" />
                   <a
-                    href={COMPANY_IDENTITY.headquarters.googleMapsLink}
+                    href={activeIdentity.headquarters.googleMapsLink}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-[11px] leading-snug transition-colors hover:text-primary"
                   >
-                    {t(COMPANY_IDENTITY.headquarters.address)}
+                    {t(activeIdentity.headquarters.address)}
                   </a>
                 </div>
               </div>
@@ -204,7 +220,7 @@ export function Footer() {
               {/* Direct WhatsApp Reach */}
               <div className="pt-1">
                 <a
-                  href={`https://wa.me/${OWNER_DETAILS.whatsapp.replace(/[^0-9]/g, "")}?text=${encodeURIComponent(
+                  href={`https://wa.me/${details.whatsapp.replace(/[^0-9]/g, "")}?text=${encodeURIComponent(
                     isArabic
                       ? "مرحباً، أود الاستفسار بخصوص الأصول التجارية لشركة تفوق."
                       : "Hello, I would like to inquire regarding TAFAWOK commercial properties."

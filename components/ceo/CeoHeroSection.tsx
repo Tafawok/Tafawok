@@ -4,9 +4,15 @@ import React from "react"
 import { useLocaleStore } from "@/stores/useLocaleStore"
 import { CEO_PROFILE } from "@/content/cre-data"
 import { MotionFade } from "@/components/motion/MotionFade"
+import type { CeoProfile } from "@/types/cre"
 
-export function CeoHeroSection() {
+interface CeoHeroSectionProps {
+  profile?: CeoProfile
+}
+
+export function CeoHeroSection({ profile = CEO_PROFILE }: CeoHeroSectionProps) {
   const { t } = useLocaleStore()
+  const activeProfile = profile || CEO_PROFILE
 
   return (
     <section
@@ -28,13 +34,13 @@ export function CeoHeroSection() {
           {/* Executive Header */}
           <div className="max-w-2xl">
             <h1 className="text-3xl font-black tracking-tight text-foreground sm:text-4xl md:text-5xl">
-              {t(CEO_PROFILE.name)}
+              {t(activeProfile.name)}
             </h1>
             <p className="mt-2 text-base font-bold text-primary sm:text-lg">
-              {t(CEO_PROFILE.role)}
+              {t(activeProfile.role)}
             </p>
             <div className="mt-1 flex items-center gap-2 text-xs text-muted-foreground">
-              <span>{t(CEO_PROFILE.company)}</span>
+              <span>{t(activeProfile.company)}</span>
               <span aria-hidden="true">•</span>
               <span>{t("ceoMessage.leadershipTenure")}</span>
             </div>

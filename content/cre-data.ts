@@ -10,6 +10,7 @@ import {
   HseCharter,
   InvestmentPillar,
   CeoProfile,
+  HomepageSettings,
 } from "@/types/cre"
 import en from "@/locales/en.json"
 import ar from "@/locales/ar.json"
@@ -932,8 +933,7 @@ export const PROPERTIES: Property[] = [
       coordinates: { lat: 29.9868, lng: 30.9325 },
       googleMapsEmbedUrl:
         "https://maps.google.com/maps?q=%D8%A7%D9%83%D8%AA%D9%88%D8%A8%D8%B1%20%D9%81%D9%8A%D8%B3%D8%AA%D9%8A%D9%81%D8%A7%D9%84%20%D8%B3%D9%8A%D8%AA%D9%89%20%D9%85%D8%AD%D9%88%D8%B1%20%D8%AC%D9%85%D8%A7%D9%84%20%D8%B9%D8%A8%D8%AF%20%D8%A7%D9%84%D9%86%D8%A7%D8%B5%D8%B1%20%D8%A7%D9%84%D8%AA%D9%88%D8%B3%D8%B9%D8%A7%D8%AA%20%D8%A7%D9%84%D8%B4%D9%85%D8%A7%D9%84%D9%8A%D8%A9&t=&z=15&ie=UTF8&iwloc=&output=embed",
-      googleMapsDirectUrl:
-        "https://maps.app.goo.gl/PBDCaRMpznhAWYic8?g_st=iw",
+      googleMapsDirectUrl: "https://maps.app.goo.gl/PBDCaRMpznhAWYic8?g_st=iw",
     },
     contact: {
       phone: "+20 110 042 4829",
@@ -2224,4 +2224,86 @@ export const CEO_PROFILE: CeoProfile = {
     },
   ],
   directReach: OWNER_DETAILS,
+}
+
+export const DEFAULT_HOMEPAGE_SETTINGS: HomepageSettings = {
+  hero: {
+    headline: {
+      en: "Commercial Real Estate Developed for Generational Permanence",
+      ar: "أصول تجارية مطورة للبقاء والنمو عبر الأجيال",
+    },
+    subheadline: {
+      en: "Institutional CRE developer and turnkey engineering contractor. Delivering prime office developments, destination retail hubs, and critical infrastructure across Egypt with 25+ years of uncompromised execution.",
+      ar: "مطور رائد للمشروعات التجارية الكبرى ومقاولات تسليم المفتاح. نبتكر ونشيد مجمعات المكاتب الذكية، والمراكز التجارية المتكاملة، والبنية التحتية الحيوية في مصر بسجل حافل يمتد لأكثر من 25 عاماً من الريادة الهندسية.",
+    },
+    ctaText: {
+      en: "Explore Commercial Portfolio",
+      ar: "استكشف محفظة المشروعات",
+    },
+    credentials: [
+      {
+        label: {
+          en: "3 Flagship Commercial Assets",
+          ar: "3 أصول تجارية كبرى مملوكة",
+        },
+        iconName: "Building2",
+      },
+      {
+        label: {
+          en: "25+ Years Proven Track Record",
+          ar: "سجل إنجاز يمتد لـ 25+ عاماً",
+        },
+        iconName: "ShieldCheck",
+      },
+      {
+        label: {
+          en: "64,500+ m² Commercial GLA",
+          ar: "مساحات تأجير تفوق 64,500 م²",
+        },
+        iconName: "TrendingUp",
+      },
+    ],
+  },
+  showcase: {
+    sectionTitle: {
+      en: "Commercial Architecture at Institutional Scale",
+      ar: "مساحات تجارية بحجم طموحك المؤسسي",
+    },
+    sectionSubtitle: {
+      en: "Scroll down to expand the stage and explore Mall Chillout Alshrouk in New Cairo / Al Shrouk",
+      ar: "مرر لفتح المشهد المعماري بالكامل واكتشاف تفاصيل صرح مول تشيل أوت الشروق في الشروق / القاهرة الجديدة",
+    },
+    imageUrl: "/MallChilloutAlshrouk/IMG_5918.webp",
+    propertySlug: "mall-chillout-el-shorouk",
+    badge: {
+      en: "Suez Road, New Cairo / Al Shrouk",
+      ar: "طريق السويس، القاهرة الجديدة / الشروق",
+    },
+    title: {
+      en: "Mall Chillout Alshrouk",
+      ar: "مول تشيل أوت الشروق",
+    },
+    description: {
+      en: "Premier commercial and retail destination on the Suez Road artery. 24,000 m² GLA engineered for high footfall, tier-1 retail brands, and integrated business services.",
+      ar: "وجهة تجارية وترفيهية متكاملة على شريان طريق السويس الحيوي. مساحة تأجيرية تبلغ 24,000 م² مجهزة لاستقطاب كبرى العلامات العالمية والخدمات المؤسسية بأعلى كثافة إقبال.",
+    },
+    stats: {
+      gla: {
+        label: { en: "GLA", ar: "المساحة التأجيرية" },
+        value: "24,000 m²",
+      },
+      bua: {
+        label: { en: "BUA", ar: "المساحة الإجمالية" },
+        value: "38,500 m²",
+      },
+      parking: {
+        label: { en: "Parking Capacity", ar: "مواقف السيارات" },
+        value: "450+ Vehicles",
+      },
+    },
+    ctaText: {
+      en: "View Property Details",
+      ar: "استعراض تفاصيل الصرح",
+    },
+  },
 }

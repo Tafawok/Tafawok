@@ -6,9 +6,18 @@ import { CORPORATE_METRICS } from "@/content/cre-data"
 import { MotionFade } from "@/components/motion/MotionFade"
 import { CounterTicker } from "@/components/motion/CounterTicker"
 import { Separator } from "@/components/ui/separator"
+import type { CorporateMetric } from "@/types/cre"
 
-export function AboutHeroSection() {
+interface AboutHeroSectionProps {
+  metrics?: CorporateMetric[]
+}
+
+export function AboutHeroSection({
+  metrics = CORPORATE_METRICS,
+}: AboutHeroSectionProps) {
   const { t } = useLocaleStore()
+  const displayMetrics =
+    metrics && metrics.length > 0 ? metrics : CORPORATE_METRICS
 
   return (
     <section
@@ -42,7 +51,7 @@ export function AboutHeroSection() {
         <div className="mt-14 sm:mt-16 lg:mt-20">
           <MotionFade direction="up" delay={0.15}>
             <div className="flex flex-col divide-y divide-border/60 md:flex-row md:items-stretch md:divide-y-0">
-              {CORPORATE_METRICS.map((metric, idx) => (
+              {displayMetrics.map((metric, idx) => (
                 <React.Fragment key={idx}>
                   <div className="flex-1 py-6 text-start first:ps-0 last:pe-0 md:px-8 md:py-2">
                     <div className="text-3xl font-extrabold text-foreground tabular-nums sm:text-4xl lg:text-5xl">

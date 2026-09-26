@@ -5,10 +5,19 @@ import { CLIENT_PARTNERS, UI_DICTIONARY } from "@/content/cre-data"
 import { Marquee } from "@/components/motion/Marquee"
 import { MotionFade } from "@/components/motion/MotionFade"
 import { Building2, Flame, Wrench, Factory } from "lucide-react"
+import type { ClientPartner } from "@/types/cre"
 
-export function ClientMarquee() {
+interface ClientMarqueeProps {
+  partners?: ClientPartner[]
+}
+
+export function ClientMarquee({
+  partners = CLIENT_PARTNERS,
+}: ClientMarqueeProps) {
   const { t, locale } = useLocaleStore()
   const isRtl = locale === "ar"
+  const displayPartners =
+    partners && partners.length > 0 ? partners : CLIENT_PARTNERS
 
   const getCategoryLabel = (category: string) => {
     switch (category) {
@@ -62,7 +71,7 @@ export function ClientMarquee() {
         {/* Marquee Row 1 */}
         <div className="mt-12">
           <Marquee duration={38} pauseOnHover={true} className="py-2">
-            {CLIENT_PARTNERS.map((partner, index) => (
+            {displayPartners.map((partner, index) => (
               <div
                 key={index}
                 className="flex items-center gap-3.5 rounded-xl border border-border/80 bg-background/80 px-5 py-3.5 shadow-xs transition-colors hover:border-primary/50 hover:bg-background"

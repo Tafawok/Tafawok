@@ -9,8 +9,32 @@ import { InvestmentThesisSection } from "@/components/about/InvestmentThesisSect
 import { CorporateValuesSection } from "@/components/about/CorporateValuesSection"
 import { HseSection } from "@/components/about/HseSection"
 import { AboutCtaSection } from "@/components/about/AboutCtaSection"
+import type {
+  CorporateMetric,
+  TimelineMilestone,
+  InvestmentPillar,
+  CorporateValue,
+  HseCharter,
+  OwnerContact,
+} from "@/types/cre"
 
-export function AboutUsClient() {
+interface AboutUsClientProps {
+  metrics?: CorporateMetric[]
+  timeline?: TimelineMilestone[]
+  pillars?: InvestmentPillar[]
+  values?: CorporateValue[]
+  hseCharter?: HseCharter
+  ownerDetails?: OwnerContact
+}
+
+export function AboutUsClient({
+  metrics,
+  timeline,
+  pillars,
+  values,
+  hseCharter,
+  ownerDetails,
+}: AboutUsClientProps) {
   const { locale } = useLocaleStore()
   const isRtl = locale === "ar"
 
@@ -26,12 +50,12 @@ export function AboutUsClient() {
   return (
     <div className="relative flex flex-col">
       <PageLineSidebar items={aboutChapters} />
-      <AboutHeroSection />
-      <TimelineSection />
-      <InvestmentThesisSection />
-      <CorporateValuesSection />
-      <HseSection />
-      <AboutCtaSection />
+      <AboutHeroSection metrics={metrics} />
+      <TimelineSection timeline={timeline} />
+      <InvestmentThesisSection pillars={pillars} />
+      <CorporateValuesSection values={values} />
+      <HseSection hseCharter={hseCharter} />
+      <AboutCtaSection ownerDetails={ownerDetails} />
     </div>
   )
 }

@@ -19,22 +19,30 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
+import type { Property, OwnerContact } from "@/types/cre"
 
 interface ContactFormProps {
   initialProperty?: string
   className?: string
+  properties?: Property[]
+  ownerDetails?: OwnerContact
 }
 
 export function ContactForm({
   initialProperty = "",
   className = "",
+  properties = PROPERTIES,
+  ownerDetails = OWNER_DETAILS,
 }: ContactFormProps) {
   const { t, locale } = useLocaleStore()
 
   const [success, setSuccess] = useState(false)
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
 
-  const cleanOwnerPhone = OWNER_DETAILS.phone.replace(/[^+\d]/g, "")
+  const displayProperties =
+    properties && properties.length > 0 ? properties : PROPERTIES
+  const details = ownerDetails || OWNER_DETAILS
+  const cleanOwnerPhone = details.phone.replace(/[^+\d]/g, "")
 
   const inquiryTypes = [
     { id: "leasing", label: t("contactForm.inquiryTypes.leasing") },
@@ -323,8 +331,10 @@ export function ContactForm({
                 </SelectTrigger>
                 <SelectContent>
                   <SelectGroup>
-                    <SelectItem value="all">{t("contactForm.anyProperty")}</SelectItem>
-                    {PROPERTIES.map((prop) => (
+                    <SelectItem value="all">
+                      {t("contactForm.anyProperty")}
+                    </SelectItem>
+                    {displayProperties.map((prop) => (
                       <SelectItem key={prop.slug} value={prop.slug}>
                         {prop.name[locale]} ({prop.name.en})
                       </SelectItem>

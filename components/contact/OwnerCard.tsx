@@ -14,27 +14,33 @@ import {
   Award,
 } from "lucide-react"
 import { cn } from "@/lib/utils"
+import type { OwnerContact } from "@/types/cre"
 
 interface OwnerCardProps {
   className?: string
+  ownerDetails?: OwnerContact
 }
 
-export function OwnerCard({ className = "" }: OwnerCardProps) {
+export function OwnerCard({
+  className = "",
+  ownerDetails = OWNER_DETAILS,
+}: OwnerCardProps) {
   const { t, locale } = useLocaleStore()
   const isRtl = locale === "ar"
 
   const [copied, setCopied] = useState(false)
+  const details = ownerDetails || OWNER_DETAILS
 
-  const cleanPhone = OWNER_DETAILS.phone.replace(/[^+\d]/g, "")
-  const cleanAltPhone = OWNER_DETAILS.altPhone.replace(/[^+\d]/g, "")
-  const whatsappUrl = `https://wa.me/${OWNER_DETAILS.whatsapp}?text=${encodeURIComponent(
+  const cleanPhone = details.phone.replace(/[^+\d]/g, "")
+  const cleanAltPhone = details.altPhone.replace(/[^+\d]/g, "")
+  const whatsappUrl = `https://wa.me/${details.whatsapp}?text=${encodeURIComponent(
     isRtl
       ? "مرحباً، أود الاستفسار عن مشروعات شركة تفوق للاستثمار العقاري والمقاولات."
       : "Hello, I would like to inquire about TAFAWOK commercial properties and contracting services."
   )}`
 
   const handleCopyPhone = () => {
-    navigator.clipboard.writeText(OWNER_DETAILS.phone)
+    navigator.clipboard.writeText(details.phone)
     setCopied(true)
     setTimeout(() => setCopied(false), 2000)
   }
@@ -60,10 +66,10 @@ export function OwnerCard({ className = "" }: OwnerCardProps) {
       {/* Profile Header */}
       <div className="mt-5 space-y-2">
         <h3 className="text-2xl font-black tracking-tight text-foreground sm:text-3xl">
-          {OWNER_DETAILS.name[locale]}
+          {details.name[locale]}
         </h3>
         <p className="text-xs font-bold text-primary sm:text-sm">
-          {OWNER_DETAILS.role[locale]}
+          {details.role[locale]}
         </p>
         <p className="text-xs leading-relaxed text-muted-foreground sm:text-sm">
           {t("contactPage.ownerCardSubtitle")}
@@ -72,7 +78,7 @@ export function OwnerCard({ className = "" }: OwnerCardProps) {
 
       {/* Credentials Summary */}
       <div className="mt-6 rounded-xl border border-border/70 bg-background/50 p-3.5 text-xs text-muted-foreground">
-        <p className="leading-relaxed">{OWNER_DETAILS.experience[locale]}</p>
+        <p className="leading-relaxed">{details.experience[locale]}</p>
       </div>
 
       {/* Direct Contact Coordinates */}
@@ -91,7 +97,7 @@ export function OwnerCard({ className = "" }: OwnerCardProps) {
                 href={`tel:${cleanPhone}`}
                 className="text-sm font-bold text-foreground transition-colors hover:text-primary"
               >
-                <PhoneNumber phone={OWNER_DETAILS.phone} />
+                <PhoneNumber phone={details.phone} />
               </a>
             </div>
           </div>
@@ -131,7 +137,7 @@ export function OwnerCard({ className = "" }: OwnerCardProps) {
               href={`tel:${cleanAltPhone}`}
               className="text-sm font-bold text-foreground transition-colors hover:text-primary"
             >
-              <PhoneNumber phone={OWNER_DETAILS.altPhone} />
+              <PhoneNumber phone={details.altPhone} />
             </a>
           </div>
         </div>
@@ -146,10 +152,10 @@ export function OwnerCard({ className = "" }: OwnerCardProps) {
               {t("contactPage.emailDirect")}
             </span>
             <a
-              href={`mailto:${OWNER_DETAILS.email}`}
+              href={`mailto:${details.email}`}
               className="text-sm font-bold text-foreground transition-colors hover:text-primary"
             >
-              {OWNER_DETAILS.email}
+              {details.email}
             </a>
           </div>
         </div>
@@ -164,29 +170,21 @@ export function OwnerCard({ className = "" }: OwnerCardProps) {
               {t("contactPage.chapterHq")}
             </span>
             <span className="text-xs leading-relaxed font-semibold text-foreground">
-              {OWNER_DETAILS.headquarters[locale]}
+              {details.headquarters[locale]}
             </span>
           </div>
         </div>
       </div>
 
-      {/* Primary Action Buttons */}
-      <div className="mt-8 grid grid-cols-1 gap-3 sm:grid-cols-2">
-        <a
-          href={`tel:${cleanPhone}`}
-          className="cursor-target inline-flex items-center justify-center gap-2 rounded-xl bg-primary px-4 py-3 text-xs font-bold text-primary-foreground shadow-xs transition-all hover:bg-primary/90 active:scale-[0.98]"
-        >
-          <Phone className="size-3.5 rtl:-scale-x-100" />
-          <span>{t("contactPage.callDirect")}</span>
-        </a>
-
+      {/* WhatsApp Action CTA */}
+      <div className="mt-8 border-t border-border/70 pt-6">
         <a
           href={whatsappUrl}
           target="_blank"
           rel="noopener noreferrer"
-          className="cursor-target inline-flex items-center justify-center gap-2 rounded-xl border border-border/80 bg-background px-4 py-3 text-xs font-bold text-foreground transition-all hover:border-primary/50 hover:bg-secondary/40 active:scale-[0.98]"
+          className="cursor-target inline-flex w-full items-center justify-center gap-2 rounded-xl bg-emerald-600 px-5 py-3 text-xs font-bold text-white shadow-sm transition-all hover:bg-emerald-700 active:scale-[0.98] sm:text-sm"
         >
-          <MessageSquare className="size-3.5 text-primary" />
+          <MessageSquare className="size-4" />
           <span>{t("contactPage.whatsappDirect")}</span>
         </a>
       </div>

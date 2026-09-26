@@ -9,8 +9,19 @@ import { ContactForm } from "@/components/contact/ContactForm"
 import { OwnerCard } from "@/components/contact/OwnerCard"
 import { HqMap } from "@/components/contact/HqMap"
 import { OperatingHoursSection } from "@/components/contact/OperatingHoursSection"
+import type { Property, CompanyIdentity, OwnerContact } from "@/types/cre"
 
-function ContactContent() {
+interface ContactPageClientProps {
+  properties?: Property[]
+  identity?: CompanyIdentity
+  ownerDetails?: OwnerContact
+}
+
+function ContactContent({
+  properties,
+  identity,
+  ownerDetails,
+}: ContactPageClientProps) {
   const { t, locale } = useLocaleStore()
   const isRtl = locale === "ar"
   const searchParams = useSearchParams()
@@ -57,14 +68,18 @@ function ContactContent() {
             {/* Left/Main Column: Inquiry Form */}
             <section id="inquiry-portal" className="scroll-mt-20 lg:col-span-7">
               <MotionFade direction="up" delay={0.1}>
-                <ContactForm initialProperty={propertyParam} />
+                <ContactForm
+                  initialProperty={propertyParam}
+                  properties={properties}
+                  ownerDetails={ownerDetails}
+                />
               </MotionFade>
             </section>
 
             {/* Right/Secondary Column: Executive Owner Card */}
             <section id="owner-reach" className="scroll-mt-20 lg:col-span-5">
               <MotionFade direction="up" delay={0.15}>
-                <OwnerCard />
+                <OwnerCard ownerDetails={ownerDetails} />
               </MotionFade>
             </section>
           </div>
@@ -72,7 +87,7 @@ function ContactContent() {
           {/* Row 2: Cairo Executive Headquarters Map */}
           <section id="cairo-hq" className="scroll-mt-20">
             <MotionFade direction="up" delay={0.1}>
-              <HqMap />
+              <HqMap identity={identity} />
             </MotionFade>
           </section>
 
@@ -88,7 +103,7 @@ function ContactContent() {
   )
 }
 
-export function ContactPageClient() {
+export function ContactPageClient(props: ContactPageClientProps) {
   return (
     <Suspense
       fallback={
@@ -97,7 +112,7 @@ export function ContactPageClient() {
         </div>
       }
     >
-      <ContactContent />
+      <ContactContent {...props} />
     </Suspense>
   )
 }

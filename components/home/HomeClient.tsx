@@ -10,8 +10,29 @@ import { FeaturedProperties } from "@/components/home/FeaturedProperties"
 import { CeoQuoteSection } from "@/components/home/CeoQuoteSection"
 import { ParallaxScrollBands } from "@/components/motion/ParallaxScrollBands"
 import { ClientMarquee } from "@/components/home/ClientMarquee"
+import type {
+  HomepageSettings,
+  CorporateMetric,
+  Property,
+  OwnerContact,
+  ClientPartner,
+} from "@/types/cre"
 
-export function HomeClient() {
+interface HomeClientProps {
+  homepageSettings?: HomepageSettings
+  metrics?: CorporateMetric[]
+  properties?: Property[]
+  ownerDetails?: OwnerContact
+  partners?: ClientPartner[]
+}
+
+export function HomeClient({
+  homepageSettings,
+  metrics,
+  properties,
+  ownerDetails,
+  partners,
+}: HomeClientProps) {
   const { locale } = useLocaleStore()
   const isRtl = locale === "ar"
 
@@ -27,13 +48,16 @@ export function HomeClient() {
   return (
     <div className="relative flex w-full flex-col">
       <PageLineSidebar items={homeChapters} />
-      <HeroSection />
-      <MetricsSection />
-      <ScrollExpandShowcase />
-      <FeaturedProperties />
-      <CeoQuoteSection />
+      <HeroSection hero={homepageSettings?.hero} />
+      <MetricsSection metrics={metrics} />
+      <ScrollExpandShowcase
+        showcase={homepageSettings?.showcase}
+        properties={properties}
+      />
+      <FeaturedProperties properties={properties} />
+      <CeoQuoteSection ownerDetails={ownerDetails} />
       <ParallaxScrollBands />
-      <ClientMarquee />
+      <ClientMarquee partners={partners} />
     </div>
   )
 }

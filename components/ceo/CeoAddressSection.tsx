@@ -6,9 +6,17 @@ import { CEO_PROFILE } from "@/content/cre-data"
 import { MotionFade } from "@/components/motion/MotionFade"
 import { Separator } from "@/components/ui/separator"
 import { Quote } from "lucide-react"
+import type { CeoProfile } from "@/types/cre"
 
-export function CeoAddressSection() {
+interface CeoAddressSectionProps {
+  profile?: CeoProfile
+}
+
+export function CeoAddressSection({
+  profile = CEO_PROFILE,
+}: CeoAddressSectionProps) {
   const { t } = useLocaleStore()
+  const activeProfile = profile || CEO_PROFILE
 
   return (
     <section
@@ -25,19 +33,19 @@ export function CeoAddressSection() {
 
           {/* Salutation */}
           <div className="mt-8 text-base font-extrabold text-foreground sm:text-lg">
-            {t(CEO_PROFILE.formalAddress.salutation)}
+            {t(activeProfile.formalAddress.salutation)}
           </div>
 
           {/* Opening Thesis */}
           <div className="my-6 rounded-e-xl border-s-3 border-primary bg-muted/20 py-4 ps-6 pe-5">
             <blockquote className="text-base leading-relaxed font-bold text-foreground italic sm:text-lg">
-              &ldquo;{t(CEO_PROFILE.formalAddress.opening)}&rdquo;
+              &ldquo;{t(activeProfile.formalAddress.opening)}&rdquo;
             </blockquote>
           </div>
 
           {/* Paragraphs */}
           <div className="mt-6 space-y-5 text-xs leading-relaxed text-muted-foreground sm:text-sm md:text-base">
-            {CEO_PROFILE.formalAddress.paragraphs.map((para, idx) => (
+            {activeProfile.formalAddress.paragraphs.map((para, idx) => (
               <p key={idx} className="leading-relaxed">
                 {t(para)}
               </p>
@@ -47,7 +55,7 @@ export function CeoAddressSection() {
           {/* Closing Statement */}
           <div className="mt-8">
             <p className="text-sm font-semibold text-foreground sm:text-base">
-              {t(CEO_PROFILE.formalAddress.closing)}
+              {t(activeProfile.formalAddress.closing)}
             </p>
           </div>
 
@@ -57,14 +65,18 @@ export function CeoAddressSection() {
           <div className="mt-6 flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center">
             <div>
               <div className="text-base font-black text-foreground sm:text-lg">
-                {t(CEO_PROFILE.name)}
+                {t(activeProfile.name)}
               </div>
-              <div className="text-xs font-bold text-primary">
-                {t(CEO_PROFILE.role)}
+              <div className="text-xs font-semibold text-primary">
+                {t(activeProfile.role)}
               </div>
-              <div className="text-xs text-muted-foreground">
-                {t(CEO_PROFILE.company)}
+              <div className="text-[11px] text-muted-foreground">
+                {t(activeProfile.company)}
               </div>
+            </div>
+
+            <div className="rounded border border-border/80 px-3 py-1 font-mono text-xs font-medium text-muted-foreground">
+              {activeProfile.experienceYears}+ {t("ceoMessage.experienceYears")}
             </div>
           </div>
         </MotionFade>

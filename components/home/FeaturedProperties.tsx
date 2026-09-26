@@ -26,40 +26,32 @@ import {
   Layers,
   ArrowUpRight,
 } from "lucide-react"
+import type { Property } from "@/types/cre"
 
-export function FeaturedProperties() {
+interface FeaturedPropertiesProps {
+  properties?: Property[]
+}
+
+export function FeaturedProperties({
+  properties = PROPERTIES,
+}: FeaturedPropertiesProps) {
   const { t, locale } = useLocaleStore()
   const isRtl = locale === "ar"
   const ArrowIcon = isRtl ? ArrowLeft : ArrowRight
 
+  const displayProperties =
+    properties && properties.length > 0 ? properties : PROPERTIES
+
   const galleryItems: AccordionGalleryItem[] = useMemo(() => {
-    return [
-      {
-        image: PROPERTIES[0].mainImage,
-        label: isRtl
-          ? `${PROPERTIES[0].name.ar} — ${PROPERTIES[0].location.city.ar} (${PROPERTIES[0].keyStats.gla})`
-          : `${PROPERTIES[0].name.en} — ${PROPERTIES[0].location.city.en} (${PROPERTIES[0].keyStats.gla})`,
-        link: `/properties/${PROPERTIES[0].slug}`,
-        alt: t(PROPERTIES[0].name),
-      },
-      {
-        image: PROPERTIES[1].mainImage,
-        label: isRtl
-          ? `${PROPERTIES[1].name.ar} — ${PROPERTIES[1].location.city.ar} (${PROPERTIES[1].keyStats.gla})`
-          : `${PROPERTIES[1].name.en} — ${PROPERTIES[1].location.city.en} (${PROPERTIES[1].keyStats.gla})`,
-        link: `/properties/${PROPERTIES[1].slug}`,
-        alt: t(PROPERTIES[1].name),
-      },
-      {
-        image: PROPERTIES[2].mainImage,
-        label: isRtl
-          ? `${PROPERTIES[2].name.ar} — ${PROPERTIES[2].location.city.ar} (${PROPERTIES[2].keyStats.gla})`
-          : `${PROPERTIES[2].name.en} — ${PROPERTIES[2].location.city.en} (${PROPERTIES[2].keyStats.gla})`,
-        link: `/properties/${PROPERTIES[2].slug}`,
-        alt: t(PROPERTIES[2].name),
-      },
-    ]
-  }, [isRtl, t])
+    return displayProperties.slice(0, 5).map((prop) => ({
+      image: prop.mainImage,
+      label: isRtl
+        ? `${prop.name.ar} — ${prop.location.city.ar} (${prop.keyStats.gla})`
+        : `${prop.name.en} — ${prop.location.city.en} (${prop.keyStats.gla})`,
+      link: `/properties/${prop.slug}`,
+      alt: t(prop.name),
+    }))
+  }, [displayProperties, isRtl, t])
 
   return (
     <section
@@ -89,32 +81,34 @@ export function FeaturedProperties() {
             >
               <span>
                 {isRtl
-                  ? "استعراض كافة الأصول (3 مجمعات)"
-                  : "View Complete Directory (3 Hubs)"}
+                  ? `استعراض كافة الأصول (${displayProperties.length} مجمعات)`
+                  : `View Complete Directory (${displayProperties.length} Hubs)`}
               </span>
               <ArrowIcon className="size-4" />
             </Link>
           </MotionFade>
         </div>
 
-        {/* 1. Interactive 3D Accordion Gallery (from prompt.md) */}
-        <div className="mt-12">
-          <AccordionGallery
-            items={galleryItems}
-            defaultIndex={0}
-            expandRatio={0.52}
-            height={480}
-            gap={12}
-            radius={24}
-            trigger="hover"
-            accentColor="oklch(0.553 0.195 38.402)"
-            grayscale={true}
-          />
-        </div>
+        {/* 1. Interactive 3D Accordion Gallery */}
+        {galleryItems.length > 0 && (
+          <div className="mt-12">
+            <AccordionGallery
+              items={galleryItems}
+              defaultIndex={0}
+              expandRatio={0.52}
+              height={480}
+              gap={12}
+              radius={24}
+              trigger="hover"
+              accentColor="oklch(0.553 0.195 38.402)"
+              grayscale={true}
+            />
+          </div>
+        )}
 
-        {/* 2. Three Flagship Quick Cards with shadcn Card Composition */}
+        {/* 2. Flagship Quick Cards with shadcn Card Composition */}
         <div className="mt-12 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {PROPERTIES.map((property, idx) => {
+          {displayProperties.map((property, idx) => {
             return (
               <MotionFade
                 key={property.id}
@@ -128,43 +122,75 @@ export function FeaturedProperties() {
                       <span className="font-mono font-bold text-primary">
                         0{idx + 1} {"//"} {t(property.category)}
                       </span>
-                      <span className="font-mono font-medium text-muted-foreground">
-                        <BiDiIsolate>
-                          {property.keyStats.builtUpArea}
-                        </BiDiIsolate>
+                      <span className="font-mono text-[11px] text-muted-foreground">
+                        {property.keyStats.gla}
                       </span>
                     </div>
-
-                    <CardTitle className="mt-3 text-xl font-bold text-foreground transition-colors group-hover:text-primary">
+                    <CardTitle className="mt-2 text-xl font-black tracking-tight text-foreground transition-colors group-hover:text-primary sm:text-2xl">
                       {t(property.name)}
                     </CardTitle>
-
-                    <div className="mt-1.5 flex items-center gap-1.5 text-xs text-muted-foreground">
+                    <CardDescription className="flex items-center gap-1.5 text-xs font-medium text-muted-foreground">
                       <MapPin className="size-3.5 shrink-0 text-primary" />
-                      <span>{t(property.location.address)}</span>
-                    </div>
+                      <span>
+                        {t(property.location.address)},{" "}
+                        {t(property.location.city)}
+                      </span>
+                    </CardDescription>
                   </CardHeader>
 
-                  <CardContent className="pt-0">
-                    <CardDescription className="line-clamp-2 text-xs leading-relaxed text-muted-foreground">
+                  <CardContent className="space-y-4 py-2">
+                    <p className="line-clamp-2 text-xs leading-relaxed text-muted-foreground">
                       {t(property.description)}
-                    </CardDescription>
-                  </CardContent>
+                    </p>
 
-                  <CardFooter className="flex items-center justify-between border-t border-border/60 bg-muted/20 py-3">
-                    <div className="flex items-center gap-1.5 text-xs font-semibold text-foreground">
-                      <Layers className="size-3.5 text-primary" />
-                      <span>
-                        GLA: <BiDiIsolate>{property.keyStats.gla}</BiDiIsolate>
-                      </span>
+                    {/* Quick Specs 2-Col Grid */}
+                    <div className="grid grid-cols-2 gap-2 border-y border-border/60 py-3 text-xs">
+                      <div>
+                        <span className="block font-mono text-[10px] text-muted-foreground uppercase">
+                          {t("propertyCard.buaLabel")}
+                        </span>
+                        <span className="font-mono font-bold text-foreground">
+                          <BiDiIsolate>
+                            {property.keyStats.builtUpArea}
+                          </BiDiIsolate>
+                        </span>
+                      </div>
+                      <div>
+                        <span className="block font-mono text-[10px] text-muted-foreground uppercase">
+                          {t("propertyCard.parkingLabel")}
+                        </span>
+                        <span className="font-mono font-bold text-foreground">
+                          <BiDiIsolate>
+                            {typeof property.keyStats.parkingCapacity ===
+                            "string"
+                              ? property.keyStats.parkingCapacity
+                              : t(property.keyStats.parkingCapacity)}
+                          </BiDiIsolate>
+                        </span>
+                      </div>
                     </div>
 
+                    {/* Highlights Strip */}
+                    <div className="flex flex-wrap gap-1.5">
+                      {property.highlights.slice(0, 3).map((hl, hIdx) => (
+                        <span
+                          key={hIdx}
+                          className="inline-flex items-center gap-1 rounded-md bg-secondary/80 px-2 py-0.5 text-[10px] font-semibold text-secondary-foreground"
+                        >
+                          <Layers className="size-2.5 text-primary" />
+                          <span>{t(hl)}</span>
+                        </span>
+                      ))}
+                    </div>
+                  </CardContent>
+
+                  <CardFooter className="pt-3 pb-5">
                     <Link
                       href={`/properties/${property.slug}`}
-                      className="cursor-target inline-flex items-center gap-1 text-xs font-bold text-primary transition-transform group-hover:translate-x-1"
+                      className="group/btn inline-flex w-full items-center justify-between rounded-xl border border-border/70 bg-card px-4 py-2.5 text-xs font-bold text-foreground transition-all duration-200 hover:border-primary hover:bg-primary hover:text-primary-foreground active:scale-[0.99]"
                     >
-                      <span>{isRtl ? "استكشف الأصل" : "Explore"}</span>
-                      <ArrowUpRight className="size-4" />
+                      <span>{t("home.viewPropertyDetails")}</span>
+                      <ArrowUpRight className="size-3.5 transition-transform group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5 rtl:group-hover/btn:-translate-x-0.5" />
                     </Link>
                   </CardFooter>
                 </Card>

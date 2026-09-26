@@ -6,10 +6,16 @@ import { HSE_CHARTER } from "@/content/cre-data"
 import { MotionFade } from "@/components/motion/MotionFade"
 import { Separator } from "@/components/ui/separator"
 import { Award, FileText } from "lucide-react"
+import type { HseCharter } from "@/types/cre"
 
-export function HseSection() {
+interface HseSectionProps {
+  hseCharter?: HseCharter
+}
+
+export function HseSection({ hseCharter = HSE_CHARTER }: HseSectionProps) {
   const { t, locale } = useLocaleStore()
   const isRtl = locale === "ar"
+  const charter = hseCharter || HSE_CHARTER
 
   return (
     <section
@@ -38,15 +44,15 @@ export function HseSection() {
 
         {/* Corporate Safety Charter Monograph Card */}
         <div className="mt-12">
-          <MotionFade direction="up" delay={0.1}>
-            <div className="rounded-2xl border border-border/80 bg-background p-6 shadow-sm sm:p-8 md:p-10">
-              <div className="flex flex-col justify-between gap-4 pb-6 sm:flex-row sm:items-center">
-                <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                  <FileText className="size-4 text-primary" />
+          <MotionFade delay={0.1} direction="up">
+            <div className="rounded-2xl border border-border/80 bg-background/60 p-6 sm:p-8 lg:p-10">
+              <div className="flex flex-col items-start justify-between gap-3 pb-6 sm:flex-row sm:items-center">
+                <div className="flex items-center gap-2.5">
+                  <div className="flex size-9 items-center justify-center rounded-lg border border-primary/20 bg-primary/10 text-primary">
+                    <FileText className="size-4.5" />
+                  </div>
                   <span
-                    className={
-                      isRtl ? "" : "font-mono tracking-widest uppercase"
-                    }
+                    className={`font-mono text-xs font-bold text-foreground ${isRtl ? "" : "tracking-wider uppercase"}`}
                   >
                     {t("about.hsePolicyNote")}
                   </span>
@@ -67,13 +73,13 @@ export function HseSection() {
               {/* Policy Statement Quote */}
               <div className="my-6 rounded-e-xl border-s-3 border-emerald-500 bg-muted/20 py-4 ps-6 pe-5">
                 <blockquote className="text-base leading-relaxed font-bold text-foreground italic sm:text-lg lg:text-xl">
-                  &ldquo;{t(HSE_CHARTER.policyStatement)}&rdquo;
+                  &ldquo;{t(charter.policyStatement)}&rdquo;
                 </blockquote>
               </div>
 
               <Separator className="opacity-70" />
 
-              {/* Signatory Byline (Typographic, No Avatar) */}
+              {/* Signatory Byline */}
               <div className="flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center">
                 <div>
                   <span
@@ -82,16 +88,16 @@ export function HseSection() {
                     {t("about.hseSignedBy")}
                   </span>
                   <div className="text-base font-extrabold text-foreground">
-                    {t(HSE_CHARTER.signatory.name)}
+                    {t(charter.signatory.name)}
                   </div>
                   <div className="text-xs font-medium text-primary">
-                    {t(HSE_CHARTER.signatory.role)}
+                    {t(charter.signatory.role)}
                   </div>
                 </div>
 
                 {/* ISO Standards Cluster */}
                 <div className="flex flex-wrap items-center gap-1.5">
-                  {HSE_CHARTER.standards.map((std, idx) => (
+                  {charter.standards?.map((std, idx) => (
                     <span
                       key={idx}
                       className="rounded border border-border/80 px-2 py-0.5 font-mono text-[11px] font-bold text-muted-foreground"
@@ -119,7 +125,7 @@ export function HseSection() {
           </div>
 
           <div className="divide-y divide-border/60">
-            {HSE_CHARTER.principles.map((principle, idx) => (
+            {charter.principles?.map((principle, idx) => (
               <MotionFade
                 key={principle.id}
                 direction="up"
@@ -131,20 +137,17 @@ export function HseSection() {
                       0{idx + 1}
                     </span>
                     {principle.standardCode && (
-                      <span className="font-mono text-[11px] font-bold text-muted-foreground">
-                        [{principle.standardCode}]
+                      <span className="rounded border border-border/80 px-2 py-0.5 font-mono text-[10px] font-bold text-muted-foreground">
+                        {principle.standardCode}
                       </span>
                     )}
                   </div>
 
-                  <div className="md:col-span-4">
-                    <h4 className="text-sm font-bold text-foreground transition-colors group-hover:text-primary sm:text-base">
+                  <div className="md:col-span-9">
+                    <h4 className="text-base font-bold text-foreground">
                       {t(principle.title)}
                     </h4>
-                  </div>
-
-                  <div className="md:col-span-5">
-                    <p className="text-xs leading-relaxed text-muted-foreground sm:text-sm">
+                    <p className="mt-1.5 text-xs leading-relaxed text-muted-foreground sm:text-sm">
                       {t(principle.description)}
                     </p>
                   </div>

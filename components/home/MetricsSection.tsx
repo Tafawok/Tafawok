@@ -6,9 +6,18 @@ import { CORPORATE_METRICS } from "@/content/cre-data"
 import { CounterTicker } from "@/components/motion/CounterTicker"
 import { MotionFade } from "@/components/motion/MotionFade"
 import { Separator } from "@/components/ui/separator"
+import type { CorporateMetric } from "@/types/cre"
 
-export function MetricsSection() {
+interface MetricsSectionProps {
+  metrics?: CorporateMetric[]
+}
+
+export function MetricsSection({
+  metrics = CORPORATE_METRICS,
+}: MetricsSectionProps) {
   const { t } = useLocaleStore()
+  const displayMetrics =
+    metrics && metrics.length > 0 ? metrics : CORPORATE_METRICS
 
   return (
     <section
@@ -18,7 +27,7 @@ export function MetricsSection() {
       <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         {/* Plain Text Minimalist Metrics Strip with Vertical Separators */}
         <div className="flex flex-col divide-y divide-border/60 py-2 md:flex-row md:items-stretch md:divide-y-0">
-          {CORPORATE_METRICS.map((metric, index) => (
+          {displayMetrics.map((metric, index) => (
             <React.Fragment key={index}>
               <MotionFade
                 delay={0.06 + index * 0.04}
@@ -42,7 +51,7 @@ export function MetricsSection() {
                 </div>
               </MotionFade>
 
-              {index < CORPORATE_METRICS.length - 1 && (
+              {index < displayMetrics.length - 1 && (
                 <div
                   className="hidden items-stretch self-stretch py-2 md:flex"
                   aria-hidden="true"

@@ -234,3 +234,35 @@ export interface CeoProfile {
   careerMilestones: CeoMilestone[]
   directReach: OwnerContact
 }
+
+export interface ShowcaseStat {
+  label: LocalizedString
+  value: string
+}
+
+export interface HomepageSettings {
+  hero: {
+    headline: LocalizedString
+    subheadline: LocalizedString
+    ctaText: LocalizedString
+    credentials: {
+      label: LocalizedString
+      iconName?: string
+    }[]
+  }
+  showcase: {
+    sectionTitle: LocalizedString
+    sectionSubtitle: LocalizedString
+    imageUrl: string
+    propertySlug: string
+    badge: LocalizedString
+    title: LocalizedString
+    description: LocalizedString
+    stats: {
+      gla: ShowcaseStat
+      bua: ShowcaseStat
+      parking: ShowcaseStat
+    }
+    ctaText: LocalizedString
+  }
+}

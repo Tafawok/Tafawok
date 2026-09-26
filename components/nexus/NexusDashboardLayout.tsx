@@ -107,6 +107,15 @@ export function NexusDashboardLayout({
               "Centralized commercial performance summary and quick control cards.",
           },
           {
+            id: "homepage",
+            href: "/nexus-portal/homepage",
+            label: "Homepage & Showcase",
+            labelAr: "الرئيسية والاستعراض التفاعلي",
+            icon: Sparkles,
+            description:
+              "Edit public landing hero, credentials, and interactive scroll-expand showcase image and copy.",
+          },
+          {
             id: "properties",
             href: "/nexus-portal/properties",
             label: "Commercial Assets",

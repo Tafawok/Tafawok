@@ -12,6 +12,7 @@ import {
   CRE_INVESTMENT_THESIS,
   CEO_PROFILE,
   COMPANY_IDENTITY,
+  DEFAULT_HOMEPAGE_SETTINGS,
 } from "../content/cre-data"
 
 dotenv.config({ path: path.resolve(process.cwd(), ".env.local") })
@@ -290,14 +291,15 @@ async function seed() {
 
     // 8. Site Settings (Singletons)
     console.log(
-      "Seeding site settings (company_identity, ceo_profile, hse_charter)..."
+      "Seeding site settings (company_identity, ceo_profile, hse_charter, homepage_settings)..."
     )
     await client.query(
       `INSERT INTO public.site_settings (key, data)
       VALUES 
         ('company_identity', $1),
         ('ceo_profile', $2),
-        ('hse_charter', $3)
+        ('hse_charter', $3),
+        ('homepage_settings', $4)
       ON CONFLICT (key) DO UPDATE SET
         data = EXCLUDED.data,
         updated_at = now();`,
@@ -305,6 +307,7 @@ async function seed() {
         JSON.stringify(COMPANY_IDENTITY),
         JSON.stringify(CEO_PROFILE),
         JSON.stringify(HSE_CHARTER),
+        JSON.stringify(DEFAULT_HOMEPAGE_SETTINGS),
       ]
     )
 

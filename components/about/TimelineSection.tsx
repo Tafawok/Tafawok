@@ -6,12 +6,21 @@ import { CORPORATE_TIMELINE } from "@/content/cre-data"
 import { MotionFade } from "@/components/motion/MotionFade"
 import { CheckCircle2 } from "lucide-react"
 import { cn } from "@/lib/utils"
+import type { TimelineMilestone } from "@/types/cre"
 
-export function TimelineSection() {
+interface TimelineSectionProps {
+  timeline?: TimelineMilestone[]
+}
+
+export function TimelineSection({
+  timeline = CORPORATE_TIMELINE,
+}: TimelineSectionProps) {
   const { t, locale } = useLocaleStore()
   const isRtl = locale === "ar"
 
   const [activeCategory, setActiveCategory] = useState<string>("all")
+  const displayTimeline =
+    timeline && timeline.length > 0 ? timeline : CORPORATE_TIMELINE
 
   const categories = [
     { id: "all", label: isRtl ? "كافة المراحل" : "Full Timeline" },
@@ -24,7 +33,7 @@ export function TimelineSection() {
     { id: "expansion", label: isRtl ? "المستقبل" : "Future Horizon" },
   ]
 
-  const filteredTimeline = CORPORATE_TIMELINE.filter((item) => {
+  const filteredTimeline = displayTimeline.filter((item) => {
     if (activeCategory === "all") return true
     return item.scopeCategory === activeCategory
   })

@@ -12,8 +12,15 @@ import { MobileNav } from "@/components/layout/MobileNav"
 import { useLocaleStore } from "@/stores/useLocaleStore"
 import { useUiStore } from "@/stores/useUiStore"
 import { cn } from "@/lib/utils"
+import type { Property, OwnerContact, CompanyIdentity } from "@/types/cre"
 
-export function Navbar() {
+interface NavbarProps {
+  properties?: Property[]
+  ownerDetails?: OwnerContact
+  identity?: CompanyIdentity
+}
+
+export function Navbar({ properties, ownerDetails, identity }: NavbarProps) {
   const pathname = usePathname()
   const { locale, t } = useLocaleStore()
   const { setMobileNavOpen } = useUiStore()
@@ -79,7 +86,7 @@ export function Navbar() {
               </Link>
 
               {/* Commercial Assets with Interactive Dropdown */}
-              <PropertyDropdown />
+              <PropertyDropdown properties={properties} />
 
               <Link
                 href="/ceo-message"
@@ -136,7 +143,11 @@ export function Navbar() {
       </header>
 
       {/* Slide-out mobile navigation sheet */}
-      <MobileNav />
+      <MobileNav
+        properties={properties}
+        ownerDetails={ownerDetails}
+        identity={identity}
+      />
     </>
   )
 }

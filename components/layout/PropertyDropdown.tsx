@@ -22,9 +22,11 @@ import { PROPERTIES } from "@/content/cre-data"
 import { useLocaleStore } from "@/stores/useLocaleStore"
 import { PhoneNumber } from "@/components/shared/PhoneNumber"
 import { cn } from "@/lib/utils"
+import type { Property } from "@/types/cre"
 
 interface PropertyDropdownProps {
   className?: string
+  properties?: Property[]
   onItemClick?: () => void
 }
 
@@ -36,12 +38,15 @@ const PROPERTY_ICONS: Record<string, React.ElementType> = {
 
 export function PropertyDropdown({
   className,
+  properties = PROPERTIES,
   onItemClick,
 }: PropertyDropdownProps) {
   const [open, setOpen] = React.useState(false)
   const { locale, t } = useLocaleStore()
   const isArabic = locale === "ar"
 
+  const displayProperties =
+    properties && properties.length > 0 ? properties : PROPERTIES
   const ArrowIcon = isArabic ? ArrowLeft : ArrowRight
 
   const handleLinkClick = () => {
@@ -94,9 +99,9 @@ export function PropertyDropdown({
           </Link>
         </div>
 
-        {/* 3 Flagship Properties List */}
+        {/* Flagship Properties List */}
         <div className="space-y-1.5">
-          {PROPERTIES.map((prop) => {
+          {displayProperties.map((prop) => {
             const Icon = PROPERTY_ICONS[prop.slug] || Building2
             return (
               <Link

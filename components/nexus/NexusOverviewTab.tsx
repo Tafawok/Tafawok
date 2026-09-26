@@ -52,6 +52,14 @@ export function NexusOverviewTab({
 
   const stats = [
     {
+      label: "Homepage & Showcase",
+      value: "Live",
+      sub: "Expand canvas & hero copy",
+      icon: Sparkles,
+      tab: "homepage",
+      accent: "text-rose-500 bg-rose-500/10 border-rose-500/20",
+    },
+    {
       label: "Commercial Assets",
       value: properties.length,
       sub: "Active Flagships & Plazas",
@@ -134,19 +142,23 @@ export function NexusOverviewTab({
           </div>
 
           <div className="flex flex-wrap items-center gap-3">
-            <Link href="/nexus-portal/properties">
+            <Link href="/nexus-portal/homepage">
               <Button
-                className="bg-primary text-xs font-semibold text-primary-foreground hover:bg-primary/90"
+                variant="outline"
+                className="gap-1.5 text-xs font-semibold"
               >
+                <Sparkles className="size-4 text-primary" />
+                Homepage & Showcase
+              </Button>
+            </Link>
+            <Link href="/nexus-portal/properties">
+              <Button className="bg-primary text-xs font-semibold text-primary-foreground hover:bg-primary/90">
                 <Building2 className="me-1.5 size-4" />
                 Manage Assets
               </Button>
             </Link>
             <Link href="/nexus-portal/inquiries">
-              <Button
-                variant="outline"
-                className="text-xs"
-              >
+              <Button variant="outline" className="text-xs">
                 <MessageSquare className="me-1.5 size-4" />
                 View Inquiries ({inquiries.length})
               </Button>
@@ -177,9 +189,7 @@ export function NexusOverviewTab({
             const Icon = s.icon
             return (
               <Link key={s.label} href={`/nexus-portal/${s.tab}`}>
-                <Card
-                  className="group cursor-pointer border-border/80 bg-card/60 transition-all hover:border-primary/40 hover:bg-card hover:shadow-lg"
-                >
+                <Card className="group cursor-pointer border-border/80 bg-card/60 transition-all hover:border-primary/40 hover:bg-card hover:shadow-lg">
                   <CardHeader className="flex flex-row items-center justify-between pb-2">
                     <CardTitle className="text-xs font-medium text-muted-foreground">
                       {s.label}

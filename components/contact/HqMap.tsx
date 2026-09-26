@@ -13,22 +13,30 @@ import {
 } from "lucide-react"
 import { cn } from "@/lib/utils"
 
+import type { CompanyIdentity } from "@/types/cre"
+
 interface HqMapProps {
   className?: string
+  identity?: CompanyIdentity
 }
 
-export function HqMap({ className = "" }: HqMapProps) {
+export function HqMap({
+  className = "",
+  identity = COMPANY_IDENTITY,
+}: HqMapProps) {
   const { t, locale } = useLocaleStore()
   const isRtl = locale === "ar"
 
+  const activeIdentity = identity || COMPANY_IDENTITY
+
   // Headquarters is located at Company HQ (New Cairo)
   const location = {
-    address: COMPANY_IDENTITY.headquarters.address,
+    address: activeIdentity.headquarters.address,
     city: { en: "New Cairo", ar: "القاهرة الجديدة" },
     country: { en: "Egypt", ar: "مصر" },
     coordinates: { lat: 30.0135, lng: 31.4287 },
-    googleMapsEmbedUrl: COMPANY_IDENTITY.headquarters.googleMapsEmbed,
-    googleMapsDirectUrl: COMPANY_IDENTITY.headquarters.googleMapsLink,
+    googleMapsEmbedUrl: activeIdentity.headquarters.googleMapsEmbed,
+    googleMapsDirectUrl: activeIdentity.headquarters.googleMapsLink,
   }
 
   const arterialPillars = [

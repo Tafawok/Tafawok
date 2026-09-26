@@ -4,9 +4,18 @@ import React from "react"
 import { useLocaleStore } from "@/stores/useLocaleStore"
 import { CRE_INVESTMENT_THESIS } from "@/content/cre-data"
 import { MotionFade } from "@/components/motion/MotionFade"
+import type { InvestmentPillar } from "@/types/cre"
 
-export function InvestmentThesisSection() {
+interface InvestmentThesisSectionProps {
+  pillars?: InvestmentPillar[]
+}
+
+export function InvestmentThesisSection({
+  pillars = CRE_INVESTMENT_THESIS,
+}: InvestmentThesisSectionProps) {
   const { t } = useLocaleStore()
+  const displayPillars =
+    pillars && pillars.length > 0 ? pillars : CRE_INVESTMENT_THESIS
 
   return (
     <section
@@ -29,7 +38,7 @@ export function InvestmentThesisSection() {
 
         {/* 4 Pillars of Excellence - Swiss Numbered Rows */}
         <div className="mt-12 divide-y divide-border/60">
-          {CRE_INVESTMENT_THESIS.map((pillar, idx) => (
+          {displayPillars.map((pillar, idx) => (
             <MotionFade
               key={pillar.id}
               direction="up"

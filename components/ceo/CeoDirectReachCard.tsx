@@ -6,13 +6,21 @@ import { useLocaleStore } from "@/stores/useLocaleStore"
 import { OWNER_DETAILS } from "@/content/cre-data"
 import { MotionFade } from "@/components/motion/MotionFade"
 import { Phone, ArrowRight, ArrowLeft } from "lucide-react"
+import type { OwnerContact } from "@/types/cre"
 
-export function CeoDirectReachCard() {
+interface CeoDirectReachCardProps {
+  ownerDetails?: OwnerContact
+}
+
+export function CeoDirectReachCard({
+  ownerDetails = OWNER_DETAILS,
+}: CeoDirectReachCardProps) {
   const { locale } = useLocaleStore()
   const isRtl = locale === "ar"
   const ArrowIcon = isRtl ? ArrowLeft : ArrowRight
 
-  const cleanPhone = OWNER_DETAILS.phone.replace(/[^+\d]/g, "")
+  const details = ownerDetails || OWNER_DETAILS
+  const cleanPhone = details.phone.replace(/[^+\d]/g, "")
 
   return (
     <section

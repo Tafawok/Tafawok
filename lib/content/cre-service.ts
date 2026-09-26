@@ -11,6 +11,8 @@ import {
   CRE_INVESTMENT_THESIS as STATIC_PILLARS,
   CEO_PROFILE as STATIC_CEO,
   COMPANY_IDENTITY as STATIC_IDENTITY,
+  DEFAULT_HOMEPAGE_SETTINGS as STATIC_HOMEPAGE,
+  OWNER_DETAILS as STATIC_OWNER,
 } from "@/content/cre-data"
 import type {
   Property,
@@ -25,6 +27,8 @@ import type {
   StoreItem,
   LocalizedString,
   CompanyIdentity,
+  HomepageSettings,
+  OwnerContact,
 } from "@/types/cre"
 
 /**
@@ -238,6 +242,8 @@ export async function getTimelineMilestones(): Promise<TimelineMilestone[]> {
   }
 }
 
+export const getCorporateTimeline = getTimelineMilestones
+
 /**
  * Fetches corporate values.
  */
@@ -345,4 +351,16 @@ export async function getCeoProfile(): Promise<CeoProfile> {
 
 export async function getHseCharter(): Promise<HseCharter> {
   return await getSiteSetting<HseCharter>("hse_charter", STATIC_HSE)
+}
+
+export async function getHomepageSettings(): Promise<HomepageSettings> {
+  return await getSiteSetting<HomepageSettings>(
+    "homepage_settings",
+    STATIC_HOMEPAGE
+  )
+}
+
+export async function getOwnerDetails(): Promise<OwnerContact> {
+  const profile = await getCeoProfile()
+  return profile.directReach || STATIC_OWNER
 }

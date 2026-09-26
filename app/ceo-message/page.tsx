@@ -50,7 +50,10 @@ export const metadata: Metadata = {
   },
 }
 
-export default function CeoMessagePage() {
+import { getCeoProfile } from "@/lib/content/cre-service"
+
+export default async function CeoMessagePage() {
+  const ceoProfile = await getCeoProfile()
   const breadcrumbSchema = getBreadcrumbSchema([
     { name: "Home", url: "/" },
     { name: "Executive Leadership Statement", url: "/ceo-message" },
@@ -59,7 +62,7 @@ export default function CeoMessagePage() {
   return (
     <>
       <JsonLd data={breadcrumbSchema} />
-      <CeoMessageClient />
+      <CeoMessageClient profile={ceoProfile} />
     </>
   )
 }

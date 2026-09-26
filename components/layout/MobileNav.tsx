@@ -36,6 +36,7 @@ import { ThemeToggle } from "@/components/layout/ThemeToggle"
 import { PhoneNumber } from "@/components/shared/PhoneNumber"
 import { PROPERTIES, OWNER_DETAILS, COMPANY_IDENTITY } from "@/content/cre-data"
 import { cn } from "@/lib/utils"
+import type { Property, OwnerContact, CompanyIdentity } from "@/types/cre"
 
 const PROPERTY_ICONS: Record<string, React.ElementType> = {
   "fagala-plaza": ShoppingBag,
@@ -43,12 +44,27 @@ const PROPERTY_ICONS: Record<string, React.ElementType> = {
   "october-festival-mall": Store,
 }
 
-export function MobileNav() {
+interface MobileNavProps {
+  properties?: Property[]
+  ownerDetails?: OwnerContact
+  identity?: CompanyIdentity
+}
+
+export function MobileNav({
+  properties = PROPERTIES,
+  ownerDetails = OWNER_DETAILS,
+  identity = COMPANY_IDENTITY,
+}: MobileNavProps) {
   const pathname = usePathname()
   const { mobileNavOpen, setMobileNavOpen } = useUiStore()
   const { locale, t } = useLocaleStore()
   const [propertiesExpanded, setPropertiesExpanded] = React.useState(true)
   const isArabic = locale === "ar"
+
+  const displayProperties =
+    properties && properties.length > 0 ? properties : PROPERTIES
+  const details = ownerDetails || OWNER_DETAILS
+  const activeIdentity = identity || COMPANY_IDENTITY
 
   const ArrowIcon = isArabic ? ArrowLeft : ArrowRight
   const close = () => setMobileNavOpen(false)
@@ -122,7 +138,7 @@ export function MobileNav() {
               </CollapsibleTrigger>
 
               <CollapsibleContent className="ms-3.5 mt-1 space-y-1 border-s-2 border-border/60 ps-3">
-                {PROPERTIES.map((prop) => {
+                {displayProperties.map((prop) => {
                   const Icon = PROPERTY_ICONS[prop.slug] || Building2
                   const isActive = pathname === `/properties/${prop.slug}`
                   return (
@@ -200,17 +216,17 @@ export function MobileNav() {
             <div className="space-y-2 text-xs">
               <div className="flex items-baseline justify-between">
                 <span className="font-semibold text-foreground">
-                  {t(OWNER_DETAILS.name)}
+                  {t(details.name)}
                 </span>
                 <span className="text-[11px] text-muted-foreground">
-                  {t(OWNER_DETAILS.role)}
+                  {t(details.role)}
                 </span>
               </div>
 
               <div className="flex items-center gap-2 text-muted-foreground">
                 <Phone className="h-3.5 w-3.5 shrink-0 text-primary" />
                 <PhoneNumber
-                  phone={OWNER_DETAILS.phone}
+                  phone={details.phone}
                   showIcon={false}
                   className="font-medium text-foreground transition-colors hover:text-primary"
                 />
@@ -219,17 +235,17 @@ export function MobileNav() {
               <div className="flex items-center gap-2 text-muted-foreground">
                 <Mail className="h-3.5 w-3.5 shrink-0 text-primary" />
                 <a
-                  href={`mailto:${OWNER_DETAILS.email}`}
+                  href={`mailto:${details.email}`}
                   className="truncate text-foreground transition-colors hover:text-primary"
                 >
-                  {OWNER_DETAILS.email}
+                  {details.email}
                 </a>
               </div>
 
               <div className="flex items-start gap-2 pt-0.5 text-muted-foreground">
                 <MapPin className="mt-0.5 h-3.5 w-3.5 shrink-0 text-primary" />
                 <span className="text-[11px] leading-relaxed">
-                  {t(COMPANY_IDENTITY.headquarters.address)}
+                  {t(activeIdentity.headquarters.address)}
                 </span>
               </div>
             </div>
@@ -237,7 +253,7 @@ export function MobileNav() {
             {/* Direct WhatsApp Reach */}
             <div className="pt-1">
               <a
-                href={`https://wa.me/${OWNER_DETAILS.whatsapp.replace(/[^0-9]/g, "")}?text=${encodeURIComponent(
+                href={`https://wa.me/${details.whatsapp.replace(/[^0-9]/g, "")}?text=${encodeURIComponent(
                   isArabic
                     ? "مرحباً، أود الاستفسار بخصوص الأصول التجارية لشركة تفوق."
                     : "Hello, I would like to inquire regarding TAFAWOK commercial properties."

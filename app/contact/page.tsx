@@ -52,7 +52,19 @@ export const metadata: Metadata = {
   },
 }
 
-export default function ContactPage() {
+import {
+  getProperties,
+  getCompanyIdentity,
+  getOwnerDetails,
+} from "@/lib/content/cre-service"
+
+export default async function ContactPage() {
+  const [properties, identity, ownerDetails] = await Promise.all([
+    getProperties(),
+    getCompanyIdentity(),
+    getOwnerDetails(),
+  ])
+
   const breadcrumbSchema = getBreadcrumbSchema([
     { name: "Home", url: "/" },
     { name: "Contact & Official RFQ", url: "/contact" },
@@ -61,7 +73,11 @@ export default function ContactPage() {
   return (
     <>
       <JsonLd data={breadcrumbSchema} />
-      <ContactPageClient />
+      <ContactPageClient
+        properties={properties}
+        identity={identity}
+        ownerDetails={ownerDetails}
+      />
     </>
   )
 }

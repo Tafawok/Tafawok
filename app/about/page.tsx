@@ -52,7 +52,26 @@ export const metadata: Metadata = {
   },
 }
 
-export default function AboutPage() {
+import {
+  getCorporateMetrics,
+  getCorporateTimeline,
+  getInvestmentPillars,
+  getCorporateValues,
+  getHseCharter,
+  getOwnerDetails,
+} from "@/lib/content/cre-service"
+
+export default async function AboutPage() {
+  const [metrics, timeline, pillars, values, hseCharter, ownerDetails] =
+    await Promise.all([
+      getCorporateMetrics(),
+      getCorporateTimeline(),
+      getInvestmentPillars(),
+      getCorporateValues(),
+      getHseCharter(),
+      getOwnerDetails(),
+    ])
+
   const breadcrumbSchema = getBreadcrumbSchema([
     { name: "Home", url: "/" },
     { name: "About Us", url: "/about" },
@@ -61,7 +80,14 @@ export default function AboutPage() {
   return (
     <>
       <JsonLd data={breadcrumbSchema} />
-      <AboutUsClient />
+      <AboutUsClient
+        metrics={metrics}
+        timeline={timeline}
+        pillars={pillars}
+        values={values}
+        hseCharter={hseCharter}
+        ownerDetails={ownerDetails}
+      />
     </>
   )
 }

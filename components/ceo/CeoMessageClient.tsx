@@ -7,6 +7,7 @@ import { CeoAddressSection } from "@/components/ceo/CeoAddressSection"
 import { CeoDoctrineSection } from "@/components/ceo/CeoDoctrineSection"
 import { CeoDirectReachCard } from "@/components/ceo/CeoDirectReachCard"
 import { PageLineSidebar } from "@/components/motion/PageLineSidebar"
+import type { CeoProfile } from "@/types/cre"
 
 const CHAPTERS = [
   { id: "executive-profile", labelKey: "ceoMessage.chapterProfile" },
@@ -15,7 +16,11 @@ const CHAPTERS = [
   { id: "direct-reach", labelKey: "ceoMessage.chapterReach" },
 ]
 
-export function CeoMessageClient() {
+interface CeoMessageClientProps {
+  profile?: CeoProfile
+}
+
+export function CeoMessageClient({ profile }: CeoMessageClientProps) {
   const { t } = useLocaleStore()
 
   const items = CHAPTERS.map((ch) => ({
@@ -26,10 +31,10 @@ export function CeoMessageClient() {
   return (
     <div className="relative flex flex-col">
       <PageLineSidebar items={items} />
-      <CeoHeroSection />
-      <CeoAddressSection />
-      <CeoDoctrineSection />
-      <CeoDirectReachCard />
+      <CeoHeroSection profile={profile} />
+      <CeoAddressSection profile={profile} />
+      <CeoDoctrineSection profile={profile} />
+      <CeoDirectReachCard ownerDetails={profile?.directReach} />
     </div>
   )
 }

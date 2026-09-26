@@ -14,6 +14,8 @@ import {
   HardHat,
 } from "lucide-react"
 
+import type { CorporateValue } from "@/types/cre"
+
 const valueIconMap: Record<string, React.ElementType> = {
   users: Users,
   "shield-check": ShieldCheck,
@@ -24,8 +26,15 @@ const valueIconMap: Record<string, React.ElementType> = {
   "hard-hat": HardHat,
 }
 
-export function CorporateValuesSection() {
+interface CorporateValuesSectionProps {
+  values?: CorporateValue[]
+}
+
+export function CorporateValuesSection({
+  values = CORPORATE_VALUES,
+}: CorporateValuesSectionProps) {
   const { t } = useLocaleStore()
+  const displayValues = values && values.length > 0 ? values : CORPORATE_VALUES
 
   return (
     <section
@@ -48,7 +57,7 @@ export function CorporateValuesSection() {
 
         {/* Swiss Editorial Numbered Rows */}
         <div className="mt-12 divide-y divide-border/60 sm:mt-16">
-          {CORPORATE_VALUES.map((val, idx) => {
+          {displayValues.map((val, idx) => {
             const Icon = valueIconMap[val.iconName] || Award
 
             return (
