@@ -16,6 +16,9 @@ import type {
   CorporateValue,
   InvestmentPillar,
   ClientPartner,
+  Activity,
+  NotificationBanner,
+  MaintenanceSettings,
 } from "@/types/cre"
 
 /**
@@ -52,6 +55,7 @@ function revalidatePublicContent() {
   revalidatePath("/", "layout")
   revalidatePath("/")
   revalidatePath("/properties")
+  revalidatePath("/activities")
   revalidatePath("/about")
   revalidatePath("/ceo-message")
   revalidatePath("/contact")
@@ -486,3 +490,171 @@ export async function deleteInquiryAction(id: string) {
   if (error) throw new Error(`Failed to delete inquiry: ${error.message}`)
   return { success: true }
 }
+
+// ------------------------------------------------------------------------------
+// ACTIVITIES CRUD
+// ------------------------------------------------------------------------------
+
+export async function saveActivityAction(activity: Activity) {
+  const { supabase } = await requireSuperAdmin()
+
+  const { error } = await supabase.from("activities").upsert({
+    id: activity.id,
+    slug: activity.slug,
+    title: activity.title as unknown as DbJson,
+    summary: activity.summary as unknown as DbJson,
+    content: activity.content as unknown as DbJson,
+    category: activity.category,
+    status: activity.status,
+    start_date: activity.startDate,
+    end_date: activity.endDate || null,
+    location_name: activity.locationName as unknown as DbJson,
+    location_url: activity.locationUrl || null,
+    main_image: activity.mainImage,
+    gallery: activity.gallery as unknown as DbJson,
+    featured: activity.featured,
+    is_published: activity.isPublished,
+    action_url: activity.actionUrl || null,
+    action_label: activity.actionLabel
+      ? (activity.actionLabel as unknown as DbJson)
+      : null,
+    sort_order: activity.sortOrder,
+    updated_at: new Date().toISOString(),
+  })
+
+  if (error) throw new Error(`Failed to save activity: ${error.message}`)
+
+  revalidatePublicContent()
+  revalidatePath(`/activities/${activity.slug}`)
+  return { success: true }
+}
+
+export async function deleteActivityAction(activityId: string) {
+  const { supabase } = await requireSuperAdmin()
+
+  const { error } = await supabase
+    .from("activities")
+    .delete()
+    .eq("id", activityId)
+
+  if (error) throw new Error(`Failed to delete activity: ${error.message}`)
+
+  revalidatePublicContent()
+  return { success: true }
+}
+
+export async function toggleActivityPublishedAction(
+  activityId: string,
+  isPublished: boolean
+) {
+  const { supabase } = await requireSuperAdmin()
+
+  const { error } = await supabase
+    .from("activities")
+    .update({
+      is_published: isPublished,
+      updated_at: new Date().toISOString(),
+    })
+    .eq("id", activityId)
+
+  if (error)
+    throw new Error(`Failed to update publication status: ${error.message}`)
+
+  revalidatePublicContent()
+  return { success: true }
+}
+
+// ------------------------------------------------------------------------------
+// NOTIFICATION BANNERS CRUD
+// ------------------------------------------------------------------------------
+
+export async function saveNotificationBannerAction(banner: NotificationBanner) {
+  const { supabase } = await requireSuperAdmin()
+
+  const { error } = await supabase.from("notification_banners").upsert({
+    id: banner.id,
+    title: banner.title as unknown as DbJson,
+    message: banner.message as unknown as DbJson,
+    badge: banner.badge ? (banner.badge as unknown as DbJson) : null,
+    location: banner.location
+      ? (banner.location as unknown as DbJson)
+      : null,
+    start_date: banner.startDate,
+    end_date: banner.endDate,
+    is_active: banner.isActive,
+    type: banner.type,
+    link_url: banner.linkUrl || null,
+    link_label: banner.linkLabel
+      ? (banner.linkLabel as unknown as DbJson)
+      : null,
+    dismissible: banner.dismissible,
+    priority: banner.priority,
+    updated_at: new Date().toISOString(),
+  })
+
+  if (error)
+    throw new Error(`Failed to save notification banner: ${error.message}`)
+
+  revalidatePublicContent()
+  return { success: true }
+}
+
+export async function deleteNotificationBannerAction(bannerId: string) {
+  const { supabase } = await requireSuperAdmin()
+
+  const { error } = await supabase
+    .from("notification_banners")
+    .delete()
+    .eq("id", bannerId)
+
+  if (error)
+    throw new Error(`Failed to delete notification banner: ${error.message}`)
+
+  revalidatePublicContent()
+  return { success: true }
+}
+
+export async function toggleBannerActiveAction(
+  bannerId: string,
+  isActive: boolean
+) {
+  const { supabase } = await requireSuperAdmin()
+
+  const { error } = await supabase
+    .from("notification_banners")
+    .update({
+      is_active: isActive,
+      updated_at: new Date().toISOString(),
+    })
+    .eq("id", bannerId)
+
+  if (error)
+    throw new Error(`Failed to toggle banner status: ${error.message}`)
+
+  revalidatePublicContent()
+  return { success: true }
+}
+
+// ------------------------------------------------------------------------------
+// MAINTENANCE SETTINGS CRUD
+// ------------------------------------------------------------------------------
+
+export async function saveMaintenanceSettingsAction(
+  settings: MaintenanceSettings
+) {
+  const { supabase } = await requireSuperAdmin()
+
+  const { error } = await supabase.from("site_settings").upsert({
+    key: "maintenance_mode",
+    data: settings as unknown as DbJson,
+    updated_at: new Date().toISOString(),
+  })
+
+  if (error)
+    throw new Error(`Failed to save maintenance settings: ${error.message}`)
+
+  revalidatePublicContent()
+  revalidatePath("/maintenance")
+  return { success: true }
+}
+

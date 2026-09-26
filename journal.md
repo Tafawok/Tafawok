@@ -1249,3 +1249,36 @@ Chronological decision log tracking major architectural milestones and engineeri
     - `npx tsc --noEmit`: **0 errors**.
     - `npm run lint`: **0 warnings, 0 errors**.
     - `npm run build`: **Compiled 100% successfully** across all 21 App Router routes in 639ms.
+
+- **Milestone 15: Full-Stack Activities Feed, Notification Banner System & Maintenance Mode System (2026-09-27):**
+  - **Full-Stack Activities & Corporate Events System:**
+    - Created PostgreSQL schema `public.activities` with RLS policies, indexing, and bidirectional JSONB schemas.
+    - Built public directory [`app/activities/page.tsx`](file:///Users/omartemsah/WebProjects/Tafawok/app/activities/page.tsx) and detail route [`app/activities/[slug]/page.tsx`](file:///Users/omartemsah/WebProjects/Tafawok/app/activities/[slug]/page.tsx) with JSON-LD breadcrumb structured data and full SEO metadata.
+    - Designed [`components/activities/ActivityCard.tsx`](file:///Users/omartemsah/WebProjects/Tafawok/components/activities/ActivityCard.tsx) mirroring [`PropertyCard.tsx`](file:///Users/omartemsah/WebProjects/Tafawok/components/properties/PropertyCard.tsx) with architectural 16:10 media aspect ratio, floating category/status badges, bottom location chip, clean typography, and localized date schedules.
+    - Built [`components/activities/ActivityCtaSection.tsx`](file:///Users/omartemsah/WebProjects/Tafawok/components/activities/ActivityCtaSection.tsx) matching platform CTA standards.
+    - Refactored [`components/activities/ActivitiesPageClient.tsx`](file:///Users/omartemsah/WebProjects/Tafawok/components/activities/ActivitiesPageClient.tsx) and [`components/activities/ActivityDetailClient.tsx`](file:///Users/omartemsah/WebProjects/Tafawok/components/activities/ActivityDetailClient.tsx) to follow the authoritative public page design pattern:
+      - Free-floating [`PageLineSidebar`](file:///Users/omartemsah/WebProjects/Tafawok/components/motion/PageLineSidebar.tsx) with responsive chapter tracking.
+      - Monograph hero header with `MotionFade`.
+      - Typographic overview metrics strip with vertical `<Separator orientation="vertical" />` and `<BiDiIsolate>`.
+      - Category pill container (`rounded-xl border border-border/70 bg-secondary/30 p-1.5`) and status sub-filters.
+      - Architectural search input with logical padding.
+      - Featured spotlight card for flagship launches/bazaars.
+  - **Cover Image & Activity Media Gallery Management ([`components/nexus/NexusActivityModal.tsx`](file:///Users/omartemsah/WebProjects/Tafawok/components/nexus/NexusActivityModal.tsx)):**
+    - Integrated [`MediaUploader`](file:///Users/omartemsah/WebProjects/Tafawok/components/nexus/MediaUploader.tsx) for the main activity cover photo, supporting both direct file uploads to Supabase Storage (`activities/covers`) and direct URL links.
+    - Implemented a dedicated Activity Media Gallery Manager supporting:
+      - Direct multi-file upload from device via `/api/nexus/upload`.
+      - Single and bulk paste URL input for adding existing asset links.
+      - Interactive thumbnail grid with reordering (`<` / `>`), image deletion, and one-click "Set as Main Cover" action.
+      - Automatic synchronization with the public detail page ([`/activities/[slug]`](file:///Users/omartemsah/WebProjects/Tafawok/app/activities/%5Bslug%5D/page.tsx)) photographic record.
+  - **Top Notification Banner Ribbon & Badge Removal:**
+    - Built time-delimited announcement ribbon [`components/layout/NotificationBanner.tsx`](file:///Users/omartemsah/WebProjects/Tafawok/components/layout/NotificationBanner.tsx) with hydration-safe `useSyncExternalStore` for dismissal tracking.
+    - Removed badge pill upon user instruction, replacing it with a sleek, minimalist animated live pulse indicator dot directly beside the headline.
+    - Removed badge input fields from [`components/nexus/NexusBannerModal.tsx`](file:///Users/omartemsah/WebProjects/Tafawok/components/nexus/NexusBannerModal.tsx), made database column `badge` nullable, and made `badge?: LocalizedString` optional in [`types/cre.ts`](file:///Users/omartemsah/WebProjects/Tafawok/types/cre.ts).
+  - **Configurable System-Wide Maintenance Mode:**
+    - Built public maintenance interface [`app/maintenance/page.tsx`](file:///Users/omartemsah/WebProjects/Tafawok/app/maintenance/page.tsx) with live countdown timers, architectural status display, emergency contact channels, and authenticated admin bypass input.
+    - Integrated gatekeeper logic in [`lib/supabase/middleware.ts`](file:///Users/omartemsah/WebProjects/Tafawok/lib/supabase/middleware.ts): checks PostgreSQL setting `site_settings.maintenance_mode` and environment variable fallback, protects all public routes while keeping `/nexus-portal/*`, `/api/*`, and `/maintenance` fully operational, and handles `?bypass=...` secret key with HTTP cookie persistence (`tafawok_maintenance_bypass`).
+    - Built Nexus Portal management tabs [`app/nexus-portal/(dashboard)/activities/page.tsx`](<file:///Users/omartemsah/WebProjects/Tafawok/app/nexus-portal/(dashboard)/activities/page.tsx>) and [`app/nexus-portal/(dashboard)/maintenance/page.tsx`](<file:///Users/omartemsah/WebProjects/Tafawok/app/nexus-portal/(dashboard)/maintenance/page.tsx>) with real-time toggle switches, emergency contact configuration, countdown picker, and audit guide cards.
+  - **Quality Gates Verification:**
+    - `npx tsc --noEmit`: **0 errors**.
+    - `npm run lint`: **0 warnings, 0 errors**.
+    - `npm run build`: **100% successful compilation** across all 20 routes.

@@ -525,6 +525,71 @@ export const PAGE_IMPACTS: Record<string, PageImpactData> = {
       "أي استفسار يرسله زوار الموقع يظهر هنا مباشرة مع بيانات التواصل والمشروع المستهدف وتوقيت الإرسال.",
   },
 
+  activities: {
+    titleEn: "Activities, Bazaars & Announcement Banners",
+    titleAr: "الأنشطة والفعاليات وشريط الإعلانات العلوي",
+    scopeEn:
+      "Controls public corporate activities, retail expos, bazaars, and project launches displayed on /activities and /activities/[slug]. Also configures scheduled top announcement ribbons across the platform.",
+    scopeAr:
+      "يتحكم في الفعاليات المؤسسية، المعارض، البازارات السنوية، وتدشين المشروعات المعروضة في صفحة الأنشطة وصفحاتها المستقلة، بالإضافة لإدارة شريط الإعلانات العلوي المجدول زمنياً.",
+    locations: [
+      {
+        pageEn: "Activities Directory Page",
+        pageAr: "دليل الأنشطة والفعاليات",
+        sectionEn: "Public Activities Feed, Filters & Spotlight",
+        sectionAr: "سجل الفعاليات، التصنيفات، واستعراض الصروح",
+        href: "/activities",
+      },
+      {
+        pageEn: "Entire Public Platform",
+        pageAr: "كافة صفحات المنصة العامة",
+        sectionEn: "Top Notification Announcement Ribbon",
+        sectionAr: "شريط الإعلانات الترويجي العلوي المؤقت",
+        href: "/",
+      },
+      {
+        pageEn: "Global Navigation Bars",
+        pageAr: "أشرطة التنقل العامة",
+        sectionEn: "Navbar & Mobile Drawer Activities Nav Links",
+        sectionAr: "روابط الأنشطة في الهيدر والقائمة الجانبية للموبايل",
+        href: "/activities",
+      },
+    ],
+    tipEn:
+      "Banners with active dates automatically appear at the very top of all public pages, providing direct CTA links to launches or bazaars.",
+    tipAr:
+      "الإعلانات ذات التواريخ المجدولة تظهر تلقائياً أعلى كافة صفحات الموقع لربط الزوار بصفحات المشروعات أو البازارات مباشرة.",
+  },
+
+  maintenance: {
+    titleEn: "Platform Maintenance & Traffic Routing",
+    titleAr: "وضع صيانة المنصة والتحكم بحركة الزوار",
+    scopeEn:
+      "Controls the site-wide maintenance screen, live countdown timer, and emergency hotline. When active, all non-bypassed public traffic is routed to the maintenance page.",
+    scopeAr:
+      "يتحكم في تفعيل وضع الصيانة الشامل، عداد الاستئناف التنازلي المباشر، وأرقام الطوارئ. عند التفعيل، يتم توجيه كافة زوار الموقع لصفحة الصيانة.",
+    locations: [
+      {
+        pageEn: "Public Maintenance Screen",
+        pageAr: "شاشة الصيانة العامة",
+        sectionEn: "Live Countdown Timer & Emergency Channels",
+        sectionAr: "العداد التنازلي وقنوات التواصل التنفيذي المباشر",
+        href: "/maintenance",
+      },
+      {
+        pageEn: "Entire Public Website",
+        pageAr: "كامل الموقع العام",
+        sectionEn: "Automatic Traffic Reroute & Bypass Token Check",
+        sectionAr: "إعادة التوجيه التلقائي والتحقق من رمز التخطي المصرح",
+        href: "/",
+      },
+    ],
+    tipEn:
+      "Use the bypass secret token to browse or test the live site during maintenance mode without blocking public protection.",
+    tipAr:
+      "استخدم رمز التخطي السري لاستعراض واختبار الموقع أثناء الصيانة دون إلغاء حجب الموقع عن العامة.",
+  },
+
   overview: {
     titleEn: "Nexus Executive Dashboard Cockpit",
     titleAr: "لوحة التحكم التنفيذية الشاملة",

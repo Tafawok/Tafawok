@@ -89,6 +89,18 @@ export function Navbar({ properties, ownerDetails, identity }: NavbarProps) {
               <PropertyDropdown properties={properties} />
 
               <Link
+                href="/activities"
+                className={cn(
+                  "inline-flex h-9 shrink-0 items-center justify-center rounded-lg px-2.5 text-xs font-medium whitespace-nowrap transition-colors duration-150 select-none xl:px-3.5 xl:text-sm",
+                  pathname?.startsWith("/activities")
+                    ? "bg-secondary/80 font-semibold text-foreground"
+                    : "text-foreground/75 hover:bg-secondary/50 hover:text-foreground"
+                )}
+              >
+                {t("nav.activities")}
+              </Link>
+
+              <Link
                 href="/ceo-message"
                 className={cn(
                   "inline-flex h-9 shrink-0 items-center justify-center rounded-lg px-2.5 text-xs font-medium whitespace-nowrap transition-colors duration-150 select-none xl:px-3.5 xl:text-sm",

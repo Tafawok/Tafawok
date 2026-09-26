@@ -21,6 +21,8 @@ import {
   Loader2,
   Sparkles,
   FolderArchive,
+  Calendar,
+  Wrench,
 } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { toast } from "sonner"
@@ -140,6 +142,15 @@ export function NexusDashboardLayout({
               "Configure commercial mall tenants, floor locations, and leasing statuses.",
           },
           {
+            id: "activities",
+            href: "/nexus-portal/activities",
+            label: "Activities & Banners",
+            labelAr: "الأنشطة والإعلانات",
+            icon: Calendar,
+            description:
+              "Publish company bazaars, project launches, and configure scheduled top announcement banners.",
+          },
+          {
             id: "disciplines",
             href: "/nexus-portal/disciplines",
             label: "Sectors & Capabilities",
@@ -233,6 +244,15 @@ export function NexusDashboardLayout({
             icon: ShieldCheck,
             description:
               "Zero-Harm safety policy, quality charters, and international ISO certification frameworks.",
+          },
+          {
+            id: "maintenance",
+            href: "/nexus-portal/maintenance",
+            label: "Maintenance Mode",
+            labelAr: "وضع الصيانة",
+            icon: Wrench,
+            description:
+              "Toggle site-wide maintenance mode, set countdown timers, and manage admin bypass access.",
           },
         ],
       },

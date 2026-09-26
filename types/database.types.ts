@@ -34,6 +34,129 @@ export type Database = {
   }
   public: {
     Tables: {
+      activities: {
+        Row: {
+          action_label: Json | null
+          action_url: string | null
+          category: string
+          content: Json
+          created_at: string
+          end_date: string | null
+          featured: boolean
+          gallery: Json
+          id: string
+          is_published: boolean
+          location_name: Json
+          location_url: string | null
+          main_image: string
+          slug: string
+          sort_order: number
+          start_date: string
+          status: string
+          summary: Json
+          title: Json
+          updated_at: string
+        }
+        Insert: {
+          action_label?: Json | null
+          action_url?: string | null
+          category?: string
+          content: Json
+          created_at?: string
+          end_date?: string | null
+          featured?: boolean
+          gallery?: Json
+          id: string
+          is_published?: boolean
+          location_name: Json
+          location_url?: string | null
+          main_image: string
+          slug: string
+          sort_order?: number
+          start_date: string
+          status?: string
+          summary: Json
+          title: Json
+          updated_at?: string
+        }
+        Update: {
+          action_label?: Json | null
+          action_url?: string | null
+          category?: string
+          content?: Json
+          created_at?: string
+          end_date?: string | null
+          featured?: boolean
+          gallery?: Json
+          id?: string
+          is_published?: boolean
+          location_name?: Json
+          location_url?: string | null
+          main_image?: string
+          slug?: string
+          sort_order?: number
+          start_date?: string
+          status?: string
+          summary?: Json
+          title?: Json
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      notification_banners: {
+        Row: {
+          badge: Json
+          created_at: string
+          dismissible: boolean
+          end_date: string
+          id: string
+          is_active: boolean
+          link_label: Json | null
+          link_url: string | null
+          location: Json | null
+          message: Json
+          priority: number
+          start_date: string
+          title: Json
+          type: string
+          updated_at: string
+        }
+        Insert: {
+          badge: Json
+          created_at?: string
+          dismissible?: boolean
+          end_date: string
+          id: string
+          is_active?: boolean
+          link_label?: Json | null
+          link_url?: string | null
+          location?: Json | null
+          message: Json
+          priority?: number
+          start_date: string
+          title: Json
+          type?: string
+          updated_at?: string
+        }
+        Update: {
+          badge?: Json
+          created_at?: string
+          dismissible?: boolean
+          end_date?: string
+          id?: string
+          is_active?: boolean
+          link_label?: Json | null
+          link_url?: string | null
+          location?: Json | null
+          message?: Json
+          priority?: number
+          start_date?: string
+          title?: Json
+          type?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       admin_users: {
         Row: {
           created_at: string

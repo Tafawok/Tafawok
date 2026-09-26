@@ -179,6 +179,19 @@ export function MobileNav({
             </Collapsible>
 
             <Link
+              href="/activities"
+              onClick={close}
+              className={cn(
+                "block rounded-lg px-3.5 py-2.5 text-base font-medium transition-colors",
+                pathname?.startsWith("/activities")
+                  ? "bg-secondary font-bold text-foreground"
+                  : "text-foreground/80 hover:bg-secondary/60 hover:text-foreground"
+              )}
+            >
+              {t("nav.activities")}
+            </Link>
+
+            <Link
               href="/ceo-message"
               onClick={close}
               className={cn(

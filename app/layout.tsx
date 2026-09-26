@@ -9,6 +9,7 @@ import { ScrollProgressBar } from "@/components/motion/ScrollProgressBar"
 import { TargetCursor } from "@/components/motion/TargetCursor"
 import { Navbar } from "@/components/layout/Navbar"
 import { Footer } from "@/components/layout/Footer"
+import { NotificationBanner } from "@/components/layout/NotificationBanner"
 import { cn } from "@/lib/utils"
 import type { Locale } from "@/types/cre"
 import { JsonLd } from "@/components/seo/JsonLd"
@@ -20,6 +21,7 @@ import {
   getProperties,
   getCompanyIdentity,
   getOwnerDetails,
+  getActiveNotificationBanner,
 } from "@/lib/content/cre-service"
 
 const inter = Inter({
@@ -161,10 +163,11 @@ export default async function RootLayout({
 
   const isRtl = locale === "ar"
 
-  const [properties, identity, ownerDetails] = await Promise.all([
+  const [properties, identity, ownerDetails, activeBanner] = await Promise.all([
     getProperties(),
     getCompanyIdentity(),
     getOwnerDetails(),
+    getActiveNotificationBanner(),
   ])
 
   return (
@@ -190,6 +193,7 @@ export default async function RootLayout({
           <LanguageProvider initialLocale={locale}>
             <TooltipProvider delay={100}>
               <div className="flex min-h-screen flex-col">
+                <NotificationBanner banner={activeBanner} />
                 <Navbar
                   properties={properties}
                   ownerDetails={ownerDetails}

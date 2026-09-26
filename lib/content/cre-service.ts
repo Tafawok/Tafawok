@@ -13,6 +13,9 @@ import {
   COMPANY_IDENTITY as STATIC_IDENTITY,
   DEFAULT_HOMEPAGE_SETTINGS as STATIC_HOMEPAGE,
   OWNER_DETAILS as STATIC_OWNER,
+  ACTIVITIES as STATIC_ACTIVITIES,
+  NOTIFICATION_BANNERS as STATIC_BANNERS,
+  DEFAULT_MAINTENANCE_SETTINGS as STATIC_MAINTENANCE,
 } from "@/content/cre-data"
 import type {
   Property,
@@ -29,6 +32,9 @@ import type {
   CompanyIdentity,
   HomepageSettings,
   OwnerContact,
+  Activity,
+  NotificationBanner,
+  MaintenanceSettings,
 } from "@/types/cre"
 
 /**
@@ -371,3 +377,191 @@ export async function getOwnerDetails(): Promise<OwnerContact> {
     headquarters: identity?.headquarters?.address || directReach.headquarters,
   }
 }
+
+function mapActivityRow(row: Tables<"activities">): Activity {
+  return {
+    id: row.id,
+    slug: row.slug,
+    title: row.title as unknown as LocalizedString,
+    summary: row.summary as unknown as LocalizedString,
+    content: row.content as unknown as LocalizedString,
+    category: row.category as Activity["category"],
+    status: row.status as Activity["status"],
+    startDate: row.start_date,
+    endDate: row.end_date || undefined,
+    locationName: row.location_name as unknown as LocalizedString,
+    locationUrl: row.location_url || undefined,
+    mainImage: row.main_image,
+    gallery: Array.isArray(row.gallery)
+      ? (row.gallery as unknown as string[])
+      : [],
+    featured: row.featured,
+    isPublished: row.is_published,
+    actionUrl: row.action_url || undefined,
+    actionLabel: row.action_label
+      ? (row.action_label as unknown as LocalizedString)
+      : undefined,
+    sortOrder: row.sort_order,
+    createdAt: row.created_at,
+  }
+}
+
+function mapBannerRow(row: Tables<"notification_banners">): NotificationBanner {
+  return {
+    id: row.id,
+    title: row.title as unknown as LocalizedString,
+    message: row.message as unknown as LocalizedString,
+    badge: row.badge ? (row.badge as unknown as LocalizedString) : undefined,
+    location: row.location
+      ? (row.location as unknown as LocalizedString)
+      : undefined,
+    startDate: row.start_date,
+    endDate: row.end_date,
+    isActive: row.is_active,
+    type: row.type as NotificationBanner["type"],
+    linkUrl: row.link_url || undefined,
+    linkLabel: row.link_label
+      ? (row.link_label as unknown as LocalizedString)
+      : undefined,
+    dismissible: row.dismissible,
+    priority: row.priority,
+  }
+}
+
+/**
+ * Fetches published activities for public exhibition and blog views.
+ */
+export async function getActivities(): Promise<Activity[]> {
+  try {
+    const supabase = await createClient()
+    const { data, error } = await supabase
+      .from("activities")
+      .select("*")
+      .eq("is_published", true)
+      .order("sort_order", { ascending: true })
+      .order("start_date", { ascending: false })
+
+    if (error || !data || data.length === 0) return STATIC_ACTIVITIES
+    return data.map(mapActivityRow)
+  } catch {
+    return STATIC_ACTIVITIES
+  }
+}
+
+/**
+ * Fetches all activities (including drafts/unpublished) for the Nexus Portal admin.
+ */
+export async function getAllActivitiesForAdmin(): Promise<Activity[]> {
+  try {
+    const supabase = await createClient()
+    const { data, error } = await supabase
+      .from("activities")
+      .select("*")
+      .order("sort_order", { ascending: true })
+      .order("created_at", { ascending: false })
+
+    if (error || !data || data.length === 0) return STATIC_ACTIVITIES
+    return data.map(mapActivityRow)
+  } catch {
+    return STATIC_ACTIVITIES
+  }
+}
+
+/**
+ * Fetches an individual activity by its URL slug.
+ */
+export async function getActivityBySlug(
+  slug: string
+): Promise<Activity | null> {
+  try {
+    const supabase = await createClient()
+    const { data, error } = await supabase
+      .from("activities")
+      .select("*")
+      .eq("slug", slug)
+      .single()
+
+    if (error || !data) {
+      const fallback = STATIC_ACTIVITIES.find((a) => a.slug === slug)
+      return fallback || null
+    }
+
+    return mapActivityRow(data)
+  } catch {
+    const fallback = STATIC_ACTIVITIES.find((a) => a.slug === slug)
+    return fallback || null
+  }
+}
+
+/**
+ * Fetches all notification banners for admin management.
+ */
+export async function getNotificationBanners(): Promise<NotificationBanner[]> {
+  try {
+    const supabase = await createClient()
+    const { data, error } = await supabase
+      .from("notification_banners")
+      .select("*")
+      .order("priority", { ascending: false })
+      .order("created_at", { ascending: false })
+
+    if (error || !data || data.length === 0) return STATIC_BANNERS
+    return data.map(mapBannerRow)
+  } catch {
+    return STATIC_BANNERS
+  }
+}
+
+/**
+ * Fetches the currently active notification banner based on status and time window.
+ */
+export async function getActiveNotificationBanner(): Promise<NotificationBanner | null> {
+  try {
+    const supabase = await createClient()
+    const nowIso = new Date().toISOString()
+    const { data, error } = await supabase
+      .from("notification_banners")
+      .select("*")
+      .eq("is_active", true)
+      .lte("start_date", nowIso)
+      .gte("end_date", nowIso)
+      .order("priority", { ascending: false })
+      .limit(1)
+
+    if (error || !data || data.length === 0) {
+      const now = new Date().getTime()
+      const fallback = STATIC_BANNERS.find((b) => {
+        if (!b.isActive) return false
+        const start = new Date(b.startDate).getTime()
+        const end = new Date(b.endDate).getTime()
+        return now >= start && now <= end
+      })
+      return fallback || null
+    }
+
+    return mapBannerRow(data[0])
+  } catch {
+    return STATIC_BANNERS[0] || null
+  }
+}
+
+/**
+ * Fetches site-wide maintenance mode settings.
+ */
+export async function getMaintenanceSettings(): Promise<MaintenanceSettings> {
+  const envEnabled =
+    process.env.MAINTENANCE_MODE === "true" ||
+    process.env.NEXT_PUBLIC_MAINTENANCE_MODE === "true"
+
+  const dbSetting = await getSiteSetting<MaintenanceSettings>(
+    "maintenance_mode",
+    STATIC_MAINTENANCE
+  )
+
+  if (envEnabled) {
+    return { ...dbSetting, enabled: true }
+  }
+
+  return dbSetting
+}
+

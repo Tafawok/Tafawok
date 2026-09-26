@@ -161,6 +161,14 @@ export function Footer({
               </li>
               <li>
                 <Link
+                  href="/activities"
+                  className="text-muted-foreground transition-colors hover:text-foreground"
+                >
+                  {t("nav.activities")}
+                </Link>
+              </li>
+              <li>
+                <Link
                   href="/ceo-message"
                   className="text-muted-foreground transition-colors hover:text-foreground"
                 >

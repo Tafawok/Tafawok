@@ -11,6 +11,9 @@ import {
   InvestmentPillar,
   CeoProfile,
   HomepageSettings,
+  Activity,
+  NotificationBanner,
+  MaintenanceSettings,
 } from "@/types/cre"
 import en from "@/locales/en.json"
 import ar from "@/locales/ar.json"
@@ -2312,3 +2315,252 @@ export const DEFAULT_HOMEPAGE_SETTINGS: HomepageSettings = {
     },
   },
 }
+
+export const ACTIVITIES: Activity[] = [
+  {
+    id: "fagala-stationery-wholesale-bazaar-2026",
+    slug: "fagala-stationery-wholesale-bazaar-2026",
+    title: {
+      en: "Grand Stationery & Paper Wholesale Bazaar at Fagala Plaza",
+      ar: "المهرجان والبازار السنوي لتجارة الأدوات المكتبية والورق بفجالة بلازا",
+    },
+    summary: {
+      en: "The premier B2B wholesale trade bazaar bringing together over 60 commercial suppliers, publishers, and office supply leaders under one unified institutional retail hub in Nasr City.",
+      ar: "أضخم بازار ومعرض لتجارة الجملة والتوريدات المكتبية بمشاركة أكثر من 60 دار نشر ومورد تجاري تحت سقف المركز التجاري الأحدث في مدينة نصر.",
+    },
+    content: {
+      en: `TAFAWOK Real Estate Investment & Contracting is proud to host the Grand Stationery & Paper Wholesale Bazaar at Fagala Plaza Commercial Center in Nasr City.
+
+As Cairo's dedicated modern commercial destination for stationery, paper wholesale, and printing equipment, Fagala Plaza offers an integrated, climate-controlled trade floor spanning multiple expansive commercial levels. Over 60 premier wholesale showrooms, publishers, and industrial importers will showcase educational supplies, paper products, corporate stationery, and precision packaging solutions at direct wholesale rates.
+
+Visitors and business partners will experience state-of-the-art logistics infrastructure, including high-capacity freight elevators, multi-story basement parking accommodating hundreds of merchant vehicles, and 24/7 security and facilities management. Exclusive leasing incentive packages and immediate tenancy contracts will also be available for business owners looking to establish flagship branches within the plaza.`,
+      ar: `تفخر شركة تفوق للاستثمار العقاري والمقاولات باستضافة فعاليات البازار السنوي الكبرى لتجارة الأدوات المكتبية والورق وتجهيزات المدارس والشركات، وذلك داخل صرح فجالة بلازا التجاري المتخصص في قلب مدينة نصر.
+
+باعتباره المركز التجاري الحديث والمتخصص الأول في القاهرة لتجارة الجملة والتوريدات المكتبية، يوفر فجالة بلازا بيئة تسوق واستثمار متطورة ومكيفة تمتد عبر طوابق تجارية متسعة. يشارك في البازار أكثر من 60 صالة عرض ودار نشر ومورد تجاري ومستورد، مقدمين تشكيلات شاملة من المستلزمات التعليمية والمنتجات الورقية ومعدات التعبئة والتغليف بأسعار الجملة المباشرة لكبرى المؤسسات وتجار التجزئة.
+
+يحظى زوار البازار والتجار المشاركون ببنية لوجستية متكاملة تشمل مصاعد بضائع صناعية عملاقة، وجراجات طوابق تحت الأرض تستوعب مئات السيارات، فضلاً عن الحراسة الذكية وإدارة المرافق المتواصلة. كما يقدم فريق إدارة الأصول عروضاً تأجيرية حصرية وتسهيلات فورية للمستثمرين الراغبين في حجز وحدات تجارية ومقرات توزيع دائمة داخل الصرح.`,
+    },
+    category: "bazaar",
+    status: "ongoing",
+    startDate: "2026-09-20T09:00:00Z",
+    endDate: "2026-10-15T22:00:00Z",
+    locationName: {
+      en: "Fagala Plaza, Nasr City, Cairo",
+      ar: "فجالة بلازا، مدينة نصر، القاهرة",
+    },
+    locationUrl: "https://maps.google.com/?q=30.0444,31.3357",
+    mainImage: "/FagalaPlazaNasrCity/IMG_5893.webp",
+    gallery: [
+      "/FagalaPlazaNasrCity/IMG_5893.webp",
+      "/FagalaPlazaNasrCity/IMG_5894.webp",
+      "/FagalaPlazaNasrCity/IMG_5897.webp",
+    ],
+    featured: true,
+    isPublished: true,
+    actionUrl: "/properties/fagala-plaza",
+    actionLabel: {
+      en: "Explore Fagala Plaza",
+      ar: "استكشف فجالة بلازا",
+    },
+    sortOrder: 1,
+    createdAt: "2026-09-20T10:00:00Z",
+  },
+  {
+    id: "chillout-phase-2-launch",
+    slug: "chillout-phase-2-launch",
+    title: {
+      en: "Official Launch of Mall ChillOut Phase II — Prime Promenade & Dining Terraces",
+      ar: "تدشين المرحلة الثانية بمول تشيل أوت الشروق — الممشى التجاري وتراسات المطاعم",
+    },
+    summary: {
+      en: "TAFAWOK announces the formal leasing and operational handover phase for 14,000 m² of prime retail, international dining terraces, and drive-thru units along the high-traffic Suez Road artery.",
+      ar: "تعلن شركة تفوق عن انطلاق مرحلة التأجير والتشغيل لمساحة 14,000 م² من المساحات التجارية وتراسات المطاعم العالمية ومنافذ خدمة السيارات على شريان طريق السويس الحيوي.",
+    },
+    content: {
+      en: `TAFAWOK Real Estate Investment & Contracting is delighted to unveil the official launch and commercial tenancy phase of Mall ChillOut Phase II, located directly on the primary Suez Road arterial corridor serving El Shorouk City, New Cairo, and Madinaty.
+
+Following the unprecedented commercial occupancy and footfall of Phase I, Phase II introduces over 14,000 m² of meticulously engineered Gross Leasable Area (GLA). The expansion features dual-frontage outdoor retail promenades, open-air dining terraces overlooking manicured water elements, dedicated drive-thru zones, and high-speed EV charging infrastructure.
+
+Anchored by a Tier-1 hypermarket and flagship service outlets, Mall ChillOut Phase II stands as the benchmark for contemporary mixed-use retail on eastern Cairo's fastest-growing highway corridor. Commercial leasing agreements and turnkey interior fit-out packages are now open for multinational culinary brands, banks, and boutique commercial tenants.`,
+      ar: `يسر شركة تفوق للاستثمار العقاري والمقاولات الإعلان عن التدشين الرسمي وبدء مرحلة التأجير التجاري للمرحلة الثانية من صرح مول تشيل أوت، الواقع مباشرة على محور طريق السويس الحيوي الذي يربط بين مدينة الشروق والتجمع الخامس ومدينتي.
+
+عقب النجاح الاستثنائي والإشغال الكامل للمرحلة الأولى، تفتتح المرحلة الثانية أكثر من 14,000 م² من المساحات التأجيرية المصممة بأعلى المواصفات الإنشائية والمعمارية. تتضمن التوسعات الجديدة ممشى تجارياً خارجياً بواجهات زجاجية مزدوجة، وتراسات مفتوحة للمطاعم والمقاهي تطل على مسطحات مائية ونوافير تفاعلية، إلى جانب مسارات خدمة السيارات السريعة (Drive-thru) ومحطات شحن المركبات الكهربائية.
+
+يعد مول تشيل أوت الشروق الوجهة التجارية الأولى على شريان شرق القاهرة المتنامي، مدعوماً ببنية مواقف تتسع لأكثر من 450 مركبة ومواصفات كهروميكانيكية ذكية. نرحب بكبرى العلامات التجارية العالمية، والقطاع المصرفي، والمستثمرين للتعاقد واستلام الوحدات بموجب حزم تشغيل وتسليم متكاملة.`,
+    },
+    category: "launch",
+    status: "upcoming",
+    startDate: "2026-10-10T11:00:00Z",
+    endDate: "2026-10-12T20:00:00Z",
+    locationName: {
+      en: "Mall ChillOut, Suez Road, El Shorouk",
+      ar: "مول تشيل أوت، طريق السويس، الشروق",
+    },
+    locationUrl: "https://maps.google.com/?q=30.1287,31.6241",
+    mainImage: "/MallChilloutAlshrouk/IMG_5918.webp",
+    gallery: [
+      "/MallChilloutAlshrouk/IMG_5918.webp",
+      "/MallChilloutAlshrouk/IMG_5919.webp",
+      "/MallChilloutAlshrouk/IMG_5920.webp",
+    ],
+    featured: true,
+    isPublished: true,
+    actionUrl: "/properties/mall-chillout-el-shorouk",
+    actionLabel: {
+      en: "Discover Mall ChillOut",
+      ar: "استكشف مول تشيل أوت",
+    },
+    sortOrder: 2,
+    createdAt: "2026-09-22T08:00:00Z",
+  },
+  {
+    id: "october-festival-retail-summit",
+    slug: "october-festival-retail-summit",
+    title: {
+      en: "October Festival Mall: Retail Anchor Partners & Investors Summit 2026",
+      ar: "ملتقى كبار المستثمرين والعلامات التجارية الرائدة بمول أكتوبر فيستيفال",
+    },
+    summary: {
+      en: "An exclusive institutional gathering for franchise directors, hypermarket operators, and commercial tenants on the high-density Gamal Abdel Nasser Axis in 6th of October City.",
+      ar: "ملتقى استثماري استراتيجي يجمع قيادات كبرى العلامات التجارية وسلاسل التجزئة لمناقشة فرص التوسع والتشغيل بمحور جمال عبد الناصر في 6 أكتوبر.",
+    },
+    content: {
+      en: `TAFAWOK Real Estate Investment & Contracting convenes the Retail Anchor Partners & Commercial Investors Summit at October Festival Mall.
+
+Strategically positioned along the vibrant Gamal Abdel Nasser Axis, October Festival Mall represents 21,500 m² of prime commercial density. This closed-door executive forum brings together executive leadership from regional retail conglomerates, healthcare clinic networks, children's amusement operators, and specialty food & beverage chains.
+
+Attendees will review master technical floorplans, anchor space configurations, dedicated rooftop leisure facilities, and tailored leasing incentives designed to maximize commercial tenant ROI and sustained footfall in western Cairo's premier commercial hub.`,
+      ar: `تنظم شركة تفوق للاستثمار العقاري والمقاولات ملتقى كبار المستثمرين والشركاء التجاريين لعام 2026 بمول أكتوبر فيستيفال في قلب مدينة السادس من أكتوبر.
+
+بموقعه الاستراتيجي الفريد على محور جمال عبد الناصر النابض بالحركة، يمتد مول أكتوبر فيستيفال على مساحة 21,500 م² من الأصول التجارية المتكاملة. يجمع هذا الملتقى نخبة من قيادات مجموعات التجزئة الإقليمية، وسلاسل السوبرماركت الكبرى، وممثلي المراكز الطبية والعيادات المتخصصة، ومشغلي مناطق الترفيه العائلي ومطاعم الفرانشايز.
+
+يتيح الملتقى للمشاركين استعراض المخططات الهندسية التنفيذية، وتوزيع المساحات الرئيسية، ومرافق الترفيه المفتوحة بالرووف، مع تقديم عروض تأجيرية مرنة تضمن أعلى عائد استثماري وتدفقاً متواصلاً للرواد في أهم محاور غرب القاهرة.`,
+    },
+    category: "corporate",
+    status: "upcoming",
+    startDate: "2026-11-05T10:00:00Z",
+    endDate: "2026-11-05T18:00:00Z",
+    locationName: {
+      en: "October Festival Mall, 6th of October City",
+      ar: "مول أكتوبر فيستيفال، مدينة 6 أكتوبر",
+    },
+    locationUrl: "https://maps.google.com/?q=29.9870,30.9328",
+    mainImage: "/OctoberFestivalMall/IMG_5908.webp",
+    gallery: [
+      "/OctoberFestivalMall/IMG_5908.webp",
+      "/OctoberFestivalMall/IMG_5909.webp",
+      "/OctoberFestivalMall/IMG_5911.webp",
+    ],
+    featured: false,
+    isPublished: true,
+    actionUrl: "/properties/october-festival-mall",
+    actionLabel: {
+      en: "View Asset Overview",
+      ar: "استعراض تفاصيل المشروع",
+    },
+    sortOrder: 3,
+    createdAt: "2026-09-24T12:00:00Z",
+  },
+  {
+    id: "tafawok-sustainable-cre-forum",
+    slug: "tafawok-sustainable-cre-forum",
+    title: {
+      en: "Sustainable Commercial Architecture & Precision MEP Contracting Forum",
+      ar: "ندوة العمارة التجارية المستدامة وهندسة الكهروميكانيك الذكية",
+    },
+    summary: {
+      en: "A retrospective technical symposium highlighting energy-efficient building envelopes, smart BMS automation, and ISO-certified EPC practices across TAFAWOK developments.",
+      ar: "ندوة هندسية متخصصة استعرضت تقنيات العمارة الخضراء وأنظمة التحكم الذكي ومعايير الجودة العالمية المطبقة في مشاريع شركة تفوق التجارية.",
+    },
+    content: {
+      en: `TAFAWOK convened a specialized engineering and contracting symposium at its corporate headquarters in Building 360, South 90th Street, New Cairo, attended by consulting engineers, LEED specialists, and industrial supply partners.
+
+The forum examined key case studies from TAFAWOK's turnkey projects, focusing on double-glazed low-E architectural glass envelopes, thermal acoustic insulation systems, variable refrigerant flow (VRF) HVAC efficiency, and solar integration across commercial roofs.
+
+Key findings underscored TAFAWOK's uncompromising commitment to international HSE safety, structural longevity, and delivering lower lifecycle operating costs for commercial asset owners and corporate tenants.`,
+      ar: `عقدت شركة تفوق للاستثمار العقاري والمقاولات ندوة علمية وهندسية موسعة بمقرها الإقليمي في مبنى 360 بالتسعين الجنوبي بالقاهرة الجديدة، بحضور نخبة من كبار الاستشاريين الهندسيين وخبراء العمارة الخضراء وشركاء التوريد الصناعي.
+
+تناولت الندوة دراسات تطبيقية من واقع مشاريع تفوق التجارية والمقاولات المتكاملة، مسلطة الضوء على الواجهات الزجاجية المزدوجة العازلة للحرارة، وأنظمة التكييف المركزي الموفرة للطاقة (VRF)، وتقنيات الإدارة الذكية للمباني (BMS)، واستغلال أسطح المراكز التجارية في الطاقة المتجددة.
+
+أكدت التوصيات التزام تفوق الصارم بمعايير السلامة المهنية الشاملة، والجودة الإنشائية المستدامة، وخفض التكاليف التشغيلية على المدى الطويل لملاك الوحدات والمستأجرين المؤسسيين.`,
+    },
+    category: "community",
+    status: "past",
+    startDate: "2026-08-18T10:00:00Z",
+    endDate: "2026-08-18T16:00:00Z",
+    locationName: {
+      en: "Building 360, South 90th St, New Cairo",
+      ar: "مبنى 360، التسعين الجنوبي، القاهرة الجديدة",
+    },
+    locationUrl: "https://maps.google.com/?q=30.0189,31.4285",
+    mainImage: "/Building360_NewCairo/IMG_5901.webp",
+    gallery: [
+      "/Building360_NewCairo/IMG_5901.webp",
+      "/Building360_NewCairo/IMG_5903.webp",
+    ],
+    featured: false,
+    isPublished: true,
+    actionUrl: "/about",
+    actionLabel: {
+      en: "About TAFAWOK Heritage",
+      ar: "عن عراقة تفوق",
+    },
+    sortOrder: 4,
+    createdAt: "2026-08-19T09:00:00Z",
+  },
+]
+
+export const NOTIFICATION_BANNERS: NotificationBanner[] = [
+  {
+    id: "banner-fagala-bazaar-2026",
+    title: {
+      en: "Grand Wholesale Stationery & Paper Bazaar at Fagala Plaza — Nasr City",
+      ar: "انطلاق فعاليات البازار السنوي للأدوات المكتبية والورق بفجالة بلازا — مدينة نصر",
+    },
+    message: {
+      en: "Ongoing through Oct 15! Explore 60+ wholesale showrooms and direct publisher rates.",
+      ar: "مستمر حتى 15 أكتوبر! اكتشف أكثر من 60 صالة عرض وتوريدات جملة مباشرة.",
+    },
+    badge: {
+      en: "Active Bazaar",
+      ar: "بازار مباشر",
+    },
+    location: {
+      en: "Fagala Plaza, Nasr City",
+      ar: "فجالة بلازا، مدينة نصر",
+    },
+    startDate: "2026-09-01T00:00:00Z",
+    endDate: "2026-10-25T23:59:59Z",
+    isActive: true,
+    type: "bazaar",
+    linkUrl: "/activities/fagala-stationery-wholesale-bazaar-2026",
+    linkLabel: {
+      en: "Bazaar Details",
+      ar: "تفاصيل البازار",
+    },
+    dismissible: true,
+    priority: 10,
+  },
+]
+
+export const DEFAULT_MAINTENANCE_SETTINGS: MaintenanceSettings = {
+  enabled: false,
+  title: {
+    en: "Scheduled System Maintenance",
+    ar: "صيانة مجدولة للمنصة",
+  },
+  headline: {
+    en: "Commercial Asset Infrastructure & Digital Portal Upgrade",
+    ar: "تطوير وترقية المنصة الرقمية وبنية إدارة الأصول التجارية",
+  },
+  message: {
+    en: "TAFAWOK Real Estate Investment & Contracting platforms are currently undergoing a scheduled system enhancement to provide superior commercial portfolio management and leasing services. We will be back online shortly.",
+    ar: "تخضع منصة شركة تفوق للاستثمار العقاري والمقاولات حالياً لأعمال تطوير وتحديث مجدولة لترقية أنظمة إدارة المحفظة التجارية وخدمات التأجير والمقاولات. سنعاود العمل قريباً بكامل طاقتنا.",
+  },
+  expectedBack: "2026-09-27T08:00:00.000Z",
+  bypassSecret: "tafawok_admin_bypass",
+  allowAdminBypass: true,
+  emergencyPhone: "+201001740007",
+  emergencyEmail: "info@tafawok.co",
+}
+

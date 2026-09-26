@@ -267,3 +267,69 @@ export interface HomepageSettings {
     ctaText: LocalizedString
   }
 }
+
+export type ActivityCategory =
+  | "launch"
+  | "bazaar"
+  | "exhibition"
+  | "corporate"
+  | "community"
+
+export type ActivityStatus = "upcoming" | "ongoing" | "past"
+
+export interface Activity {
+  id: string
+  slug: string
+  title: LocalizedString
+  summary: LocalizedString
+  content: LocalizedString
+  category: ActivityCategory
+  status: ActivityStatus
+  startDate: string
+  endDate?: string
+  locationName: LocalizedString
+  locationUrl?: string
+  mainImage: string
+  gallery: string[]
+  featured: boolean
+  isPublished: boolean
+  actionUrl?: string
+  actionLabel?: LocalizedString
+  sortOrder: number
+  createdAt?: string
+}
+
+export type NotificationBannerType =
+  | "launch"
+  | "bazaar"
+  | "announcement"
+  | "urgent"
+
+export interface NotificationBanner {
+  id: string
+  title: LocalizedString
+  message: LocalizedString
+  badge?: LocalizedString
+  location?: LocalizedString
+  startDate: string
+  endDate: string
+  isActive: boolean
+  type: NotificationBannerType
+  linkUrl?: string
+  linkLabel?: LocalizedString
+  dismissible: boolean
+  priority: number
+}
+
+export interface MaintenanceSettings {
+  enabled: boolean
+  title: LocalizedString
+  headline: LocalizedString
+  message: LocalizedString
+  expectedBack?: string | null
+  bypassSecret?: string
+  allowAdminBypass?: boolean
+  emergencyPhone?: string
+  emergencyEmail?: string
+}
+
