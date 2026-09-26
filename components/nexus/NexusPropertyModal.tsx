@@ -361,7 +361,9 @@ function PropertyFormContent({
                         </SelectTrigger>
                         <SelectContent>
                           <SelectGroup>
-                            <SelectItem value="commercial">Commercial Hub</SelectItem>
+                            <SelectItem value="commercial">
+                              Commercial Hub
+                            </SelectItem>
                             <SelectItem value="office">Prime Office</SelectItem>
                             <SelectItem value="retail">Retail Hub</SelectItem>
                             <SelectItem value="mixed-use">Mixed-Use</SelectItem>
@@ -384,14 +386,23 @@ function PropertyFormContent({
                         value={field.value}
                         onValueChange={field.onChange}
                       >
-                        <SelectTrigger id="status" className="h-8 w-full text-xs">
+                        <SelectTrigger
+                          id="status"
+                          className="h-8 w-full text-xs"
+                        >
                           <SelectValue placeholder="Select status..." />
                         </SelectTrigger>
                         <SelectContent>
                           <SelectGroup>
-                            <SelectItem value="operational">Operational</SelectItem>
-                            <SelectItem value="under-development">Under Development</SelectItem>
-                            <SelectItem value="pipeline">Strategic Pipeline</SelectItem>
+                            <SelectItem value="operational">
+                              Operational
+                            </SelectItem>
+                            <SelectItem value="under-development">
+                              Under Development
+                            </SelectItem>
+                            <SelectItem value="pipeline">
+                              Strategic Pipeline
+                            </SelectItem>
                           </SelectGroup>
                         </SelectContent>
                       </Select>
@@ -489,6 +500,7 @@ function PropertyFormContent({
                       value={field.value || ""}
                       onChange={(url) => field.onChange(url)}
                       folder="properties"
+                      acceptType="image"
                       aspectRatio="video"
                     />
                   )}
@@ -502,23 +514,31 @@ function PropertyFormContent({
 
               <div className="space-y-3 rounded-lg border border-border/60 bg-muted/20 p-4">
                 <div className="flex items-center justify-between">
-                  <Label htmlFor="gallery" className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                  <Label
+                    htmlFor="gallery"
+                    className="text-xs font-semibold tracking-wider text-muted-foreground uppercase"
+                  >
                     Property Visual & Video Gallery
                   </Label>
                   <span className="text-[11px] text-muted-foreground">
-                    Upload images & videos directly to Supabase CDN or enter URLs
+                    Upload images & videos directly to Supabase CDN or enter
+                    URLs
                   </span>
                 </div>
 
                 <MediaUploader
                   label="Upload Gallery Image or Video Walkthrough"
-                  acceptType="all"
+                  acceptType="media"
                   value=""
                   onChange={(url) => {
                     const current = getValues("galleryText") || ""
-                    const updated = current.trim() ? `${current.trim()}\n${url}` : url
+                    const updated = current.trim()
+                      ? `${current.trim()}\n${url}`
+                      : url
                     setValue("galleryText", updated, { shouldDirty: true })
-                    toast.success("Media asset uploaded & appended to gallery list!")
+                    toast.success(
+                      "Media asset uploaded & appended to gallery list!"
+                    )
                   }}
                   folder="properties/gallery"
                   aspectRatio="video"

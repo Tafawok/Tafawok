@@ -285,10 +285,17 @@ export const PAGE_IMPACTS: Record<string, PageImpactData> = {
     titleEn: "Headquarters & Identity Coordinates",
     titleAr: "المقر الرئيسي والهوية المؤسسية",
     scopeEn:
-      "Maintains legal entity naming, registration numbers, Cairo HQ geographic coordinates, official phone lines, emails, working hours, and Google Maps embed.",
+      "Maintains legal entity naming, registration numbers, Cairo HQ geographic coordinates, official phone lines, emails, and the official corporate profile PDF portfolio downloaded site-wide.",
     scopeAr:
-      "إدارة الاسم القانوني، السجل التجاري، إحداثيات المقر الرئيسي بالقاهرة، الهواتف الرسمية، البريد، وساعات العمل.",
+      "إدارة الاسم القانوني، السجل التجاري، إحداثيات المقر الرئيسي بالقاهرة، الهواتف الرسمية، والملف التعريفي المؤسسي (PDF) المتاح للتحميل عبر المنصة.",
     locations: [
+      {
+        pageEn: "Homepage, About, Contact & Footer",
+        pageAr: "الرئيسية، من نحن، اتصل بنا، والتذييل",
+        sectionEn: "Corporate Profile Download Button & Metadata",
+        sectionAr: "زر تحميل الملف التعريفي المؤسسي والبيانات",
+        href: "/",
+      },
       {
         pageEn: "Contact Us Page",
         pageAr: "صفحة التواصل",
@@ -305,9 +312,31 @@ export const PAGE_IMPACTS: Record<string, PageImpactData> = {
       },
     ],
     tipEn:
-      "HQ coordinates and direct dial lines sync automatically across the Contact page, Footer, and Schema.org metadata.",
+      "HQ coordinates and the official company profile PDF sync automatically across the Homepage, About, Contact, Footer, and SEO schema.",
     tipAr:
-      "بيانات المقر والهواتف تتزامن تلقائياً في صفحة التواصل والتذييل وبيانات محركات البحث.",
+      "بيانات المقر والملف التعريفي تتزامن تلقائياً في الصفحة الرئيسية، من نحن، اتصل بنا، التذييل، ومحركات البحث.",
+  },
+
+  media: {
+    titleEn: "Media Library & CDN Assets",
+    titleAr: "مكتبة الوسائط وأصول CDN",
+    scopeEn:
+      "Centralized repository for uploading, previewing, and permanently deleting images, video tours, and official PDF documents from the Supabase Storage CDN bucket.",
+    scopeAr:
+      "مستودع مركزي لرفع واستعراض وحذف الصور، الجولات المرئية، وملفات الـ PDF المؤسسية بشكل نهائي من سحابة التخزين.",
+    locations: [
+      {
+        pageEn: "Entire Public Platform",
+        pageAr: "كافة صفحات المنصة التجارية",
+        sectionEn: "Towers, Showcase Hero, Directory, and Downloads",
+        sectionAr: "الأبراج التجارية، الاستعراض الرئيسي، الدليل، والتحميلات",
+        href: "/",
+      },
+    ],
+    tipEn:
+      "Deleting an image or document from the bucket is permanent and will immediately affect any public pages referencing its CDN URL.",
+    tipAr:
+      "حذف أي صورة أو ملف من السحابة هو إجراء نهائي وسيؤثر فوراً على أي صفحة ترتبط برابط الملف.",
   },
 
   hse: {

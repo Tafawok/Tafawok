@@ -47,7 +47,12 @@ export const COMPANY_IDENTITY = {
     email: "info@tafawok.co",
     primaryDomain: "https://tafawok.co/",
   },
+  companyProfileUrl:
+    "https://qdeegiucxasdiyzasepa.supabase.co/storage/v1/object/public/tafawok-media/documents/tafawok-company-profile.pdf",
 }
+
+export const COMPANY_PROFILE_URL =
+  COMPANY_IDENTITY.companyProfileUrl
 
 export const OWNER_DETAILS: OwnerContact = {
   name: {

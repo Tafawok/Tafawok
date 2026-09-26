@@ -20,6 +20,7 @@ import {
   LogOut,
   Loader2,
   Sparkles,
+  FolderArchive,
 } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { toast } from "sonner"
@@ -146,6 +147,15 @@ export function NexusDashboardLayout({
             icon: Briefcase,
             description:
               "Define corporate CRE disciplines, turnkey EPC scopes, and capacity indicators.",
+          },
+          {
+            id: "media",
+            href: "/nexus-portal/media",
+            label: "Media Library & CDN",
+            labelAr: "مكتبة الوسائط والملفات",
+            icon: FolderArchive,
+            description:
+              "Upload, preview, copy URLs, and permanently delete images, videos, and PDF documents from the CDN bucket.",
           },
         ],
       },

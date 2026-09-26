@@ -62,31 +62,48 @@ export default function ContactLoading() {
               <Skeleton className="h-12 w-full rounded-xl bg-primary/20" />
             </div>
 
-            {/* Right Column: Executive Owner Reach Card (5 cols) */}
-            <div className="lg:col-span-5 rounded-2xl border border-border/80 bg-card/50 p-6 sm:p-8 space-y-6">
-              <div className="space-y-2">
-                <Skeleton className="h-6 w-48" />
-                <Skeleton className="h-4 w-64" />
-              </div>
+            {/* Right Column: Executive Owner Reach Card & Profile Download (5 cols) */}
+            <div className="lg:col-span-5 space-y-6">
+              <div className="rounded-2xl border border-border/80 bg-card/50 p-6 sm:p-8 space-y-6">
+                <div className="space-y-2">
+                  <Skeleton className="h-6 w-48" />
+                  <Skeleton className="h-4 w-64" />
+                </div>
 
-              <div className="space-y-4 pt-2">
-                {[1, 2, 3].map((i) => (
-                  <div
-                    key={i}
-                    className="flex items-center gap-4 rounded-xl border border-border/60 bg-muted/20 p-4"
-                  >
-                    <Skeleton className="size-10 rounded-lg bg-primary/10" />
-                    <div className="space-y-2 flex-1">
-                      <Skeleton className="h-3 w-20" />
-                      <Skeleton className="h-4 w-36" />
+                <div className="space-y-4 pt-2">
+                  {[1, 2, 3].map((i) => (
+                    <div
+                      key={i}
+                      className="flex items-center gap-4 rounded-xl border border-border/60 bg-muted/20 p-4"
+                    >
+                      <Skeleton className="size-10 rounded-lg bg-primary/10" />
+                      <div className="space-y-2 flex-1">
+                        <Skeleton className="h-3 w-20" />
+                        <Skeleton className="h-4 w-36" />
+                      </div>
                     </div>
-                  </div>
-                ))}
+                  ))}
+                </div>
+
+                <div className="rounded-xl border border-border/60 bg-primary/5 p-4 space-y-2">
+                  <Skeleton className="h-4 w-32" />
+                  <Skeleton className="h-3 w-full" />
+                </div>
               </div>
 
-              <div className="rounded-xl border border-border/60 bg-primary/5 p-4 space-y-2">
-                <Skeleton className="h-4 w-32" />
-                <Skeleton className="h-3 w-full" />
+              {/* Profile Download Card Skeleton */}
+              <div className="rounded-2xl border border-border/80 bg-card/40 p-5 sm:p-6 space-y-4">
+                <div className="flex items-start gap-3.5">
+                  <Skeleton className="size-10 rounded-xl bg-primary/10" />
+                  <div className="space-y-1.5 flex-1">
+                    <Skeleton className="h-5 w-48" />
+                    <Skeleton className="h-3.5 w-full" />
+                  </div>
+                </div>
+                <div className="flex items-center justify-between border-t border-border/60 pt-4">
+                  <Skeleton className="h-3.5 w-32" />
+                  <Skeleton className="h-8 w-28 rounded-lg bg-primary/20" />
+                </div>
               </div>
             </div>
           </div>

@@ -19,6 +19,7 @@ import {
   ExternalLink,
   LogOut,
   Loader2,
+  FolderArchive,
 } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { toast } from "sonner"
@@ -66,6 +67,7 @@ import { NexusCeoTab } from "@/components/nexus/NexusCeoTab"
 import { NexusCompanyIdentityTab } from "@/components/nexus/NexusCompanyIdentityTab"
 import { NexusHseTab } from "@/components/nexus/NexusHseTab"
 import { NexusInquiriesTab } from "@/components/nexus/NexusInquiriesTab"
+import { NexusMediaTab } from "@/components/nexus/NexusMediaTab"
 
 import type { Tables } from "@/types/database.types"
 import type {
@@ -186,6 +188,16 @@ export function NexusDashboard({
             badgeVariant: undefined,
             description:
               "Core commercial disciplines, EPC capabilities, and sector scope.",
+          },
+          {
+            id: "media",
+            label: "Media Library & CDN",
+            labelAr: "مكتبة الوسائط والملفات",
+            icon: FolderArchive,
+            badge: undefined,
+            badgeVariant: undefined,
+            description:
+              "Upload, preview, copy URLs, and permanently delete images, videos, and PDF documents from the CDN.",
           },
         ],
       },
@@ -621,6 +633,7 @@ export function NexusDashboard({
                     onRefresh={handleRefresh}
                   />
                 )}
+                {activeTab === "media" && <NexusMediaTab />}
               </div>
             </div>
           </main>

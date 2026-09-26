@@ -72,7 +72,7 @@ export default function HomeLoading() {
           </div>
 
           {/* Full-bleed Canvas Frame */}
-          <div className="relative aspect-16/9 w-full overflow-hidden rounded-2xl border border-border/80 bg-muted/30 p-6 sm:p-10 flex flex-col justify-end">
+          <div className="relative aspect-video w-full overflow-hidden rounded-2xl border border-border/80 bg-muted/30 p-6 sm:p-10 flex flex-col justify-end">
             <div className="max-w-xl space-y-4 rounded-xl border border-border/60 bg-background/80 p-6 backdrop-blur-md">
               <Skeleton className="h-5 w-40 rounded-full" />
               <Skeleton className="h-8 w-64" />

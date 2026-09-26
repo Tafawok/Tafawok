@@ -6,6 +6,7 @@ import { CORPORATE_METRICS } from "@/content/cre-data"
 import { MotionFade } from "@/components/motion/MotionFade"
 import { CounterTicker } from "@/components/motion/CounterTicker"
 import { Separator } from "@/components/ui/separator"
+import { DownloadProfileButton } from "@/components/shared/DownloadProfileButton"
 import type { CorporateMetric } from "@/types/cre"
 
 interface AboutHeroSectionProps {
@@ -44,6 +45,10 @@ export function AboutHeroSection({
             <p className="mx-auto mt-6 max-w-3xl text-base leading-relaxed text-muted-foreground sm:text-lg lg:text-xl">
               {t("about.subtitle")}
             </p>
+
+            <div className="mt-8 flex justify-center">
+              <DownloadProfileButton variant="about" />
+            </div>
           </MotionFade>
         </div>
 

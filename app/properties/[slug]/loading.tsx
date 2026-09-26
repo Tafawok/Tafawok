@@ -17,7 +17,7 @@ export default function PropertyDetailLoading() {
 
           {/* Unified Cinematic Hero Gallery Skeleton */}
           <div className="space-y-4">
-            <Skeleton className="aspect-16/9 w-full rounded-2xl" />
+            <Skeleton className="aspect-video w-full rounded-2xl" />
             <div className="grid grid-cols-4 gap-3 sm:grid-cols-6">
               {[1, 2, 3, 4, 5, 6].map((i) => (
                 <Skeleton key={i} className="aspect-video w-full rounded-lg" />

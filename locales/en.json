@@ -18,6 +18,13 @@
     "mainNav": "Main Navigation",
     "navDesc": "Explore commercial assets and corporate directory of TAFAWOK CRE"
   },
+  "companyProfile": {
+    "downloadBtn": "Download Corporate Profile",
+    "downloadShort": "Corporate Profile",
+    "tooltip": "Download TAFAWOK CRE Official Corporate Profile (PDF • 14 MB)",
+    "fileInfo": "Official Institutional PDF • 14 MB",
+    "description": "Comprehensive corporate credentials, multi-decade Gulf heritage, landmark commercial asset case studies, and engineering technical capabilities."
+  },
   "home": {
     "heroBadge": "Premier Commercial Real Estate Developer & EPC Authority",
     "heroTitle": "Engineering Enduring Commercial Value.",

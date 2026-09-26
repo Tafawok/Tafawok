@@ -5,13 +5,14 @@ import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { z } from "zod"
 import { toast } from "sonner"
-import { Save, Loader2, Building, MapPin } from "lucide-react"
+import { Save, Loader2, Building, MapPin, FileText } from "lucide-react"
 import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { useRouter } from "next/navigation"
 import { saveSiteSettingAction } from "@/lib/content/actions"
+import { MediaUploader } from "@/components/nexus/MediaUploader"
 import type { CompanyIdentity } from "@/types/cre"
 
 const companyIdentityTabSchema = z.object({
@@ -32,6 +33,7 @@ const companyIdentityTabSchema = z.object({
   fax: z.string(),
   email: z.string().email("Valid email is required"),
   primaryDomain: z.string().min(3, "Primary domain is required"),
+  companyProfileUrl: z.string().optional(),
 })
 
 type CompanyIdentityTabFormData = z.infer<typeof companyIdentityTabSchema>
@@ -46,6 +48,10 @@ export function NexusCompanyIdentityTab({
   onRefresh,
 }: NexusCompanyIdentityTabProps) {
   const router = useRouter()
+  const [profileUrl, setProfileUrl] = React.useState<string>(
+    identity?.companyProfileUrl || ""
+  )
+
   const defaultValues: CompanyIdentityTabFormData = {
     nameEn: identity?.name?.en || "",
     nameAr: identity?.name?.ar || "",
@@ -64,11 +70,13 @@ export function NexusCompanyIdentityTab({
     fax: identity?.contact?.fax || "",
     email: identity?.contact?.email || "",
     primaryDomain: identity?.contact?.primaryDomain || "",
+    companyProfileUrl: identity?.companyProfileUrl || "",
   }
 
   const {
     register,
     handleSubmit,
+    setValue,
     formState: { errors, isSubmitting },
   } = useForm<CompanyIdentityTabFormData>({
     resolver: zodResolver(companyIdentityTabSchema),
@@ -97,11 +105,12 @@ export function NexusCompanyIdentityTab({
         email: data.email.trim(),
         primaryDomain: data.primaryDomain.trim(),
       },
+      companyProfileUrl: profileUrl.trim() || undefined,
     }
 
     try {
       await saveSiteSettingAction("company_identity", updated)
-      toast.success("Company identity & coordinates updated successfully!")
+      toast.success("Company identity, coordinates & profile document updated successfully!")
       if (onRefresh) {
         onRefresh()
       } else {
@@ -339,6 +348,74 @@ export function NexusCompanyIdentityTab({
                 Google Maps Direct Link
               </Label>
               <Input {...register("mapsLink")} />
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* CARD 3: OFFICIAL COMPANY PROFILE & MEDIA ASSET */}
+        <Card className="border-border/80 bg-card/80 lg:col-span-2">
+          <CardContent className="space-y-4 p-6">
+            <div className="flex flex-col justify-between gap-2 border-b border-border/60 pb-3 sm:flex-row sm:items-center">
+              <div className="flex items-center gap-2">
+                <FileText className="size-4 text-primary" />
+                <div>
+                  <h3 className="text-sm font-bold text-foreground">
+                    Corporate Profile & Marketing Portfolio (PDF / Media)
+                  </h3>
+                  <p className="text-[11px] text-muted-foreground">
+                    This official PDF document is downloaded by commercial tenants and institutional investors across the Homepage, About Us, Contact Us, and Global Footer.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+              <div className="space-y-3">
+                <Label className="text-xs font-semibold text-foreground">
+                  Upload or Replace Official Profile Document
+                </Label>
+                <MediaUploader
+                  value={profileUrl}
+                  onChange={(newUrl) => {
+                    setProfileUrl(newUrl)
+                    setValue("companyProfileUrl", newUrl, { shouldDirty: true })
+                  }}
+                  acceptType="document"
+                  folder="documents"
+                  aspectRatio="auto"
+                />
+              </div>
+
+              <div className="space-y-4 rounded-xl border border-border/70 bg-muted/20 p-5">
+                <h4 className="text-xs font-bold text-foreground uppercase tracking-wider">
+                  Site-Wide CDN Sync Status
+                </h4>
+                <div className="space-y-3 text-xs">
+                  <div className="flex items-center justify-between border-b border-border/50 pb-2">
+                    <span className="text-muted-foreground">Status:</span>
+                    <span className="inline-flex items-center gap-1.5 font-semibold text-emerald-600 dark:text-emerald-400">
+                      <span className="size-2 rounded-full bg-emerald-500 animate-pulse" />
+                      {profileUrl ? "Live on Tafawok CDN" : "No Document Linked"}
+                    </span>
+                  </div>
+                  <div className="flex items-center justify-between border-b border-border/50 pb-2">
+                    <span className="text-muted-foreground">Storage Bucket:</span>
+                    <span className="font-mono text-[11px] text-foreground">
+                      tafawok-media/documents/
+                    </span>
+                  </div>
+                  <div className="flex items-center justify-between border-b border-border/50 pb-2">
+                    <span className="text-muted-foreground">Linked Pages:</span>
+                    <span className="font-medium text-foreground">
+                      Hero, About, Contact & Global Footer
+                    </span>
+                  </div>
+                </div>
+
+                <div className="rounded-lg border border-primary/20 bg-primary/5 p-3 text-[11px] leading-relaxed text-muted-foreground">
+                  <strong className="text-foreground font-semibold">Pro-Tip:</strong> Uploading a new PDF document immediately updates the public download link site-wide. You can also use the red trash button on the preview above to permanently delete old assets from the Supabase bucket.
+                </div>
+              </div>
             </div>
           </CardContent>
         </Card>

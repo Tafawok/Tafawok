@@ -6,6 +6,7 @@ import { useLocaleStore } from "@/stores/useLocaleStore"
 import { UI_DICTIONARY, DEFAULT_HOMEPAGE_SETTINGS } from "@/content/cre-data"
 import { buttonVariants } from "@/components/ui/button"
 import { MotionFade } from "@/components/motion/MotionFade"
+import { DownloadProfileButton } from "@/components/shared/DownloadProfileButton"
 import {
   ArrowRight,
   ArrowLeft,
@@ -72,9 +73,9 @@ export function HeroSection({
             </p>
           </MotionFade>
 
-          {/* Single Focused Action CTA */}
+          {/* Focused Action CTAs */}
           <MotionFade delay={0.3} direction="up">
-            <div className="mt-8 flex justify-center">
+            <div className="mt-8 flex flex-wrap items-center justify-center gap-4">
               <Link
                 href="/properties"
                 className={buttonVariants({
@@ -86,6 +87,8 @@ export function HeroSection({
                 <span>{ctaText}</span>
                 <ArrowIcon className="size-4 shrink-0 transition-transform group-hover:translate-x-1 rtl:group-hover:-translate-x-1" />
               </Link>
+
+              <DownloadProfileButton variant="hero" />
             </div>
           </MotionFade>
 

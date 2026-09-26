@@ -1137,20 +1137,20 @@ Chronological decision log tracking major architectural milestones and engineeri
     - **Executive Statement ([`app/ceo-message/loading.tsx`](file:///Users/omartemsah/WebProjects/Tafawok/app/ceo-message/loading.tsx)):** Mirrors hero, dual-column address (portrait profile card on left + formal statement letter on right), and 3-column strategic doctrine.
     - **Contact & RFQ Portal ([`app/contact/loading.tsx`](file:///Users/omartemsah/WebProjects/Tafawok/app/contact/loading.tsx)):** Mirrors dual-column layout (7-column inquiry form card + 5-column executive owner reach card with emergency hours) and Cairo HQ map container. Also updated `components/contact/ContactPageClient.tsx` to use `<ContactLoading />` in client-side `Suspense` fallback.
     - **Nexus Dashboard Canvas & All Management Subpages:**
-      - **Dashboard Overview ([`app/nexus-portal/(dashboard)/loading.tsx`](file:///Users/omartemsah/WebProjects/Tafawok/app/nexus-portal/(dashboard)/loading.tsx)):** Mirrors 4 performance metric cards, table/form container, and management action bar.
+      - **Dashboard Overview ([`app/nexus-portal/(dashboard)/loading.tsx`](<file:///Users/omartemsah/WebProjects/Tafawok/app/nexus-portal/(dashboard)/loading.tsx>)):** Mirrors 4 performance metric cards, table/form container, and management action bar.
       - **Super Admin Login ([`app/nexus-portal/login/loading.tsx`](file:///Users/omartemsah/WebProjects/Tafawok/app/nexus-portal/login/loading.tsx)):** Mirrors centered obsidian glass card, logo, badge, and input fields.
-      - **Commercial Assets ([`app/nexus-portal/(dashboard)/properties/loading.tsx`](file:///Users/omartemsah/WebProjects/Tafawok/app/nexus-portal/(dashboard)/properties/loading.tsx)):** Mirrors header, "Add Commercial Asset" CTA, and 3-column asset cards grid with aspect-video thumbnails and stats.
-      - **Retail Store Tenants ([`app/nexus-portal/(dashboard)/stores/loading.tsx`](file:///Users/omartemsah/WebProjects/Tafawok/app/nexus-portal/(dashboard)/stores/loading.tsx)):** Mirrors header, "Add Store Tenant" CTA, property filter pill bar, and 3-column store tenant cards grid.
-      - **Core Disciplines ([`app/nexus-portal/(dashboard)/disciplines/loading.tsx`](file:///Users/omartemsah/WebProjects/Tafawok/app/nexus-portal/(dashboard)/disciplines/loading.tsx)):** Mirrors 2-column discipline cards grid with metric boxes and specs checklist.
-      - **Homepage & Showcase Settings ([`app/nexus-portal/(dashboard)/homepage/loading.tsx`](file:///Users/omartemsah/WebProjects/Tafawok/app/nexus-portal/(dashboard)/homepage/loading.tsx)):** Mirrors action toolbar, tabs bar, and media uploader card.
-      - **Inquiries & RFQs ([`app/nexus-portal/(dashboard)/inquiries/loading.tsx`](file:///Users/omartemsah/WebProjects/Tafawok/app/nexus-portal/(dashboard)/inquiries/loading.tsx)):** Mirrors status filter pill bar and inquiry cards list.
-      - **Corporate Hero Metrics ([`app/nexus-portal/(dashboard)/metrics/loading.tsx`](file:///Users/omartemsah/WebProjects/Tafawok/app/nexus-portal/(dashboard)/metrics/loading.tsx)):** Mirrors 4-column metric cards grid with value numbers and bilingual labels.
-      - **Tier-1 Partners ([`app/nexus-portal/(dashboard)/partners/loading.tsx`](file:///Users/omartemsah/WebProjects/Tafawok/app/nexus-portal/(dashboard)/partners/loading.tsx)):** Mirrors 3-column partner credential cards grid.
-      - **Heritage Timeline ([`app/nexus-portal/(dashboard)/timeline/loading.tsx`](file:///Users/omartemsah/WebProjects/Tafawok/app/nexus-portal/(dashboard)/timeline/loading.tsx)):** Mirrors 2-column milestone cards grid with year badges.
-      - **Values & Investment Pillars ([`app/nexus-portal/(dashboard)/values/loading.tsx`](file:///Users/omartemsah/WebProjects/Tafawok/app/nexus-portal/(dashboard)/values/loading.tsx)):** Mirrors dual 3-column grids for corporate values and investment pillars.
-      - **Executive Statement ([`app/nexus-portal/(dashboard)/ceo/loading.tsx`](file:///Users/omartemsah/WebProjects/Tafawok/app/nexus-portal/(dashboard)/ceo/loading.tsx)):** Mirrors header, 3-tab layout, and executive profile form card.
-      - **Zero-Harm HSE Charter ([`app/nexus-portal/(dashboard)/hse/loading.tsx`](file:///Users/omartemsah/WebProjects/Tafawok/app/nexus-portal/(dashboard)/hse/loading.tsx)):** Mirrors 3-column split (policy statement card + authority card + certifications).
-      - **Company Coordinates ([`app/nexus-portal/(dashboard)/company/loading.tsx`](file:///Users/omartemsah/WebProjects/Tafawok/app/nexus-portal/(dashboard)/company/loading.tsx)):** Mirrors 2-column cards grid for entity credentials, HQ map, and channels.
+      - **Commercial Assets ([`app/nexus-portal/(dashboard)/properties/loading.tsx`](<file:///Users/omartemsah/WebProjects/Tafawok/app/nexus-portal/(dashboard)/properties/loading.tsx>)):** Mirrors header, "Add Commercial Asset" CTA, and 3-column asset cards grid with aspect-video thumbnails and stats.
+      - **Retail Store Tenants ([`app/nexus-portal/(dashboard)/stores/loading.tsx`](<file:///Users/omartemsah/WebProjects/Tafawok/app/nexus-portal/(dashboard)/stores/loading.tsx>)):** Mirrors header, "Add Store Tenant" CTA, property filter pill bar, and 3-column store tenant cards grid.
+      - **Core Disciplines ([`app/nexus-portal/(dashboard)/disciplines/loading.tsx`](<file:///Users/omartemsah/WebProjects/Tafawok/app/nexus-portal/(dashboard)/disciplines/loading.tsx>)):** Mirrors 2-column discipline cards grid with metric boxes and specs checklist.
+      - **Homepage & Showcase Settings ([`app/nexus-portal/(dashboard)/homepage/loading.tsx`](<file:///Users/omartemsah/WebProjects/Tafawok/app/nexus-portal/(dashboard)/homepage/loading.tsx>)):** Mirrors action toolbar, tabs bar, and media uploader card.
+      - **Inquiries & RFQs ([`app/nexus-portal/(dashboard)/inquiries/loading.tsx`](<file:///Users/omartemsah/WebProjects/Tafawok/app/nexus-portal/(dashboard)/inquiries/loading.tsx>)):** Mirrors status filter pill bar and inquiry cards list.
+      - **Corporate Hero Metrics ([`app/nexus-portal/(dashboard)/metrics/loading.tsx`](<file:///Users/omartemsah/WebProjects/Tafawok/app/nexus-portal/(dashboard)/metrics/loading.tsx>)):** Mirrors 4-column metric cards grid with value numbers and bilingual labels.
+      - **Tier-1 Partners ([`app/nexus-portal/(dashboard)/partners/loading.tsx`](<file:///Users/omartemsah/WebProjects/Tafawok/app/nexus-portal/(dashboard)/partners/loading.tsx>)):** Mirrors 3-column partner credential cards grid.
+      - **Heritage Timeline ([`app/nexus-portal/(dashboard)/timeline/loading.tsx`](<file:///Users/omartemsah/WebProjects/Tafawok/app/nexus-portal/(dashboard)/timeline/loading.tsx>)):** Mirrors 2-column milestone cards grid with year badges.
+      - **Values & Investment Pillars ([`app/nexus-portal/(dashboard)/values/loading.tsx`](<file:///Users/omartemsah/WebProjects/Tafawok/app/nexus-portal/(dashboard)/values/loading.tsx>)):** Mirrors dual 3-column grids for corporate values and investment pillars.
+      - **Executive Statement ([`app/nexus-portal/(dashboard)/ceo/loading.tsx`](<file:///Users/omartemsah/WebProjects/Tafawok/app/nexus-portal/(dashboard)/ceo/loading.tsx>)):** Mirrors header, 3-tab layout, and executive profile form card.
+      - **Zero-Harm HSE Charter ([`app/nexus-portal/(dashboard)/hse/loading.tsx`](<file:///Users/omartemsah/WebProjects/Tafawok/app/nexus-portal/(dashboard)/hse/loading.tsx>)):** Mirrors 3-column split (policy statement card + authority card + certifications).
+      - **Company Coordinates ([`app/nexus-portal/(dashboard)/company/loading.tsx`](<file:///Users/omartemsah/WebProjects/Tafawok/app/nexus-portal/(dashboard)/company/loading.tsx>)):** Mirrors 2-column cards grid for entity credentials, HQ map, and channels.
   - **Universal shadcn `<Tooltip>` Integration:**
     - Corrected Base UI helper import in [`components/ui/tooltip.tsx`](file:///Users/omartemsah/WebProjects/Tafawok/components/ui/tooltip.tsx) to resolve `cn` from `@/lib/utils`.
     - Wrapped the root application tree in [`app/layout.tsx`](file:///Users/omartemsah/WebProjects/Tafawok/app/layout.tsx) with `<TooltipProvider delay={100}>` for global micro-interaction consistency.
@@ -1160,3 +1160,52 @@ Chronological decision log tracking major architectural milestones and engineeri
   - **Quality Gates Verification:**
     - `npx tsc --noEmit`: **0 errors**.
     - `npm run build`: **Compiled 100% successfully** across all 20 App Router routes.
+
+- **Milestone 11: Official Corporate Profile Storage & Multi-Page Download Integration (2026-09-26):**
+  - **Storage Bucket Infrastructure:**
+    - Configured Supabase Storage bucket `tafawok-media` to support institutional documents and increased file limits (`file_size_limit = 209715200`).
+    - Successfully uploaded the official corporate profile document ([`TRCC company profile (2021).pdf`](<file:///Users/omartemsah/Downloads/TRCC%20company%20profile%20(2021).pdf>)) to `tafawok-media/documents/tafawok-company-profile.pdf` (13.9 MB).
+    - Verified Cloudflare CDN public endpoint returning `HTTP/2 200` with direct download stream.
+    - Updated PostgreSQL `site_settings.company_identity` and `content/cre-data.ts` to export `COMPANY_PROFILE_URL`.
+  - **Reusable `<DownloadProfileButton>` Component:**
+    - Created [`components/shared/DownloadProfileButton.tsx`](file:///Users/omartemsah/WebProjects/Tafawok/components/shared/DownloadProfileButton.tsx) with tailored institutional variants (`hero`, `about`, `contact`, `compact`).
+    - Enforced shadcn `<Tooltip>` integration displaying bilingual file metadata (`PDF • 14 MB`).
+  - **Public Pages Integration:**
+    - **Homepage ([`components/home/HeroSection.tsx`](file:///Users/omartemsah/WebProjects/Tafawok/components/home/HeroSection.tsx)):** Added secondary institutional CTA alongside the primary portfolio exploration button, with exact alignment with [`app/loading.tsx`](file:///Users/omartemsah/WebProjects/Tafawok/app/loading.tsx).
+    - **About Us ([`components/about/AboutHeroSection.tsx`](file:///Users/omartemsah/WebProjects/Tafawok/components/about/AboutHeroSection.tsx)):** Added prestigious download button below the corporate heritage narrative and synced with [`app/about/loading.tsx`](file:///Users/omartemsah/WebProjects/Tafawok/app/about/loading.tsx).
+    - **Contact Us ([`components/contact/ContactPageClient.tsx`](file:///Users/omartemsah/WebProjects/Tafawok/components/contact/ContactPageClient.tsx)):** Added executive corporate profile card in the right column alongside owner contact info, and synced with [`app/contact/loading.tsx`](file:///Users/omartemsah/WebProjects/Tafawok/app/contact/loading.tsx).
+  - **Quality Gates Verification:**
+    - `npx tsc --noEmit`: **0 errors**.
+    - `npm run build`: **Compiled 100% successfully** in 918ms across all routes.
+
+- **Milestone 12: Nexus Media Library, Permanent Bucket Asset Deletion & Footer Profile Download (2026-09-26):**
+  - **Nexus Media Library & Asset Manager (`/nexus-portal/media`):**
+    - Built [`components/nexus/NexusMediaTab.tsx`](file:///Users/omartemsah/WebProjects/Tafawok/components/nexus/NexusMediaTab.tsx) and [`app/nexus-portal/(dashboard)/media/page.tsx`](<file:///Users/omartemsah/WebProjects/Tafawok/app/nexus-portal/(dashboard)/media/page.tsx>) registered in dashboard navigation (`NexusDashboardLayout.tsx` & `NexusDashboard.tsx`).
+    - Added aggregate storage metrics (Total assets, Images, PDFs, Video tours, Total storage used).
+    - Quick drag-and-drop uploader supporting destination folders (`general`, `documents`, `properties`, `stores`).
+    - Instant filename search, media type filter tabs (Images, PDFs, Videos), and folder filter.
+    - Card action toolbar: One-click CDN URL copying, direct file download in new tab, and permanent file deletion from the Supabase bucket with confirmation dialogs.
+  - **Storage Upload & Deletion API Improvements:**
+    - Updated [`app/api/nexus/upload/route.ts`](file:///Users/omartemsah/WebProjects/Tafawok/app/api/nexus/upload/route.ts) to support PDF documents (up to 50MB limit), recursive bucket asset listings, and URL/path-based permanent deletion via `auth.supabase.storage.from('tafawok-media').remove([path])`.
+  - **Company Profile Uploader in Company Identity:**
+    - Updated [`components/nexus/NexusCompanyIdentityTab.tsx`](file:///Users/omartemsah/WebProjects/Tafawok/components/nexus/NexusCompanyIdentityTab.tsx) with Card 3: "Corporate Profile & Marketing Portfolio (PDF / Media)", enabling admins to upload a different PDF profile or delete the existing one directly from the identity tab with automatic database synchronization.
+  - **Enhanced Media Uploader with Bucket Deletion:**
+    - Updated [`components/nexus/MediaUploader.tsx`](file:///Users/omartemsah/WebProjects/Tafawok/components/nexus/MediaUploader.tsx) to support `acceptType="document"`, PDF preview with direct document view link, two-stage unlink vs. permanent bucket deletion, and loading spinners.
+  - **Simplified Footer Profile Download Button:**
+    - Added `"footer"` variant to [`components/shared/DownloadProfileButton.tsx`](file:///Users/omartemsah/WebProjects/Tafawok/components/shared/DownloadProfileButton.tsx) with shadcn `<Tooltip>` integration and localized PDF badge.
+    - Integrated simplified button into Column 1 of [`components/layout/Footer.tsx`](file:///Users/omartemsah/WebProjects/Tafawok/components/layout/Footer.tsx) directly below the corporate accreditation credentials.
+  - **Strict Bidirectional File Type Validation:**
+    - Enforced rigorous bidirectional validation across client-side uploaders (`MediaUploader.tsx`, `NexusMediaTab.tsx`) and the backend API (`/api/nexus/upload`):
+      - **Image-only slots** (Property hero visuals, showcase canvas, video posters) strictly reject videos and PDF documents with immediate feedback.
+      - **Video-only slots** (Video tours) strictly reject images and PDF documents.
+      - **Document-only slots** (Corporate Profile in Company Identity) strictly reject images and videos.
+      - **Media Gallery slots** strictly reject documents (PDFs), allowing only images and video walkthroughs.
+      - Server-side validation reads `acceptType` and target `folder`, returning HTTP 400 with specific error messages if mismatched.
+  - **IDE Diagnostics & Linter Remediation:**
+    - Resolved React Compiler effect cascading render error in [`NexusMediaTab.tsx`](file:///Users/omartemsah/WebProjects/Tafawok/components/nexus/NexusMediaTab.tsx) via asynchronous state initialization.
+    - Eliminated all `any` usages and unused variables in [`route.ts`](file:///Users/omartemsah/WebProjects/Tafawok/app/api/nexus/upload/route.ts) with strict `FileObject` typings from `@supabase/storage-js`.
+    - Modernized CSS classes in [`tooltip.tsx`](file:///Users/omartemsah/WebProjects/Tafawok/components/ui/tooltip.tsx), [`loading.tsx`](file:///Users/omartemsah/WebProjects/Tafawok/app/loading.tsx), and [`properties/[slug]/loading.tsx`](file:///Users/omartemsah/WebProjects/Tafawok/app/properties/[slug]/loading.tsx) to canonical Tailwind v4 logical utilities (`aspect-video`, `rounded-xs`, `inset-s-*`, `inset-e-*`, `max-w-70`).
+  - **Quality Gates Verification:**
+    - `npx tsc --noEmit`: **0 errors**.
+    - `npm run lint`: **0 warnings, 0 errors**.
+    - `npm run build`: **Compiled 100% successfully** across all 21 App Router routes.

@@ -9,6 +9,7 @@ import { ContactForm } from "@/components/contact/ContactForm"
 import { OwnerCard } from "@/components/contact/OwnerCard"
 import { HqMap } from "@/components/contact/HqMap"
 import { OperatingHoursSection } from "@/components/contact/OperatingHoursSection"
+import { DownloadProfileButton } from "@/components/shared/DownloadProfileButton"
 import ContactLoading from "@/app/contact/loading"
 import type { Property, CompanyIdentity, OwnerContact } from "@/types/cre"
 
@@ -77,10 +78,13 @@ function ContactContent({
               </MotionFade>
             </section>
 
-            {/* Right/Secondary Column: Executive Owner Card */}
-            <section id="owner-reach" className="scroll-mt-20 lg:col-span-5">
+            {/* Right/Secondary Column: Executive Owner Card & Download Corporate Profile */}
+            <section id="owner-reach" className="scroll-mt-20 lg:col-span-5 space-y-6">
               <MotionFade direction="up" delay={0.15}>
                 <OwnerCard ownerDetails={ownerDetails} />
+              </MotionFade>
+              <MotionFade direction="up" delay={0.2}>
+                <DownloadProfileButton variant="contact" />
               </MotionFade>
             </section>
           </div>

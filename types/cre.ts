@@ -99,6 +99,7 @@ export interface CompanyIdentity {
     email: string
     primaryDomain: string
   }
+  companyProfileUrl?: string
 }
 
 export interface OwnerContact {

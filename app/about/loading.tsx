@@ -11,6 +11,7 @@ export default function AboutLoading() {
             <Skeleton className="h-10 w-4/5 max-w-xl sm:h-14" />
             <Skeleton className="h-4 w-full" />
             <Skeleton className="h-4 w-5/6" />
+            <Skeleton className="h-12 w-60 rounded-xl mx-auto mt-4" />
           </div>
 
           {/* 4 Scale Metrics */}

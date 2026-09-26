@@ -14,6 +14,7 @@ import {
 } from "lucide-react"
 import { Logo } from "@/components/layout/Logo"
 import { PhoneNumber } from "@/components/shared/PhoneNumber"
+import { DownloadProfileButton } from "@/components/shared/DownloadProfileButton"
 import { useLocaleStore } from "@/stores/useLocaleStore"
 import {
   COMPANY_IDENTITY,
@@ -76,6 +77,14 @@ export function Footer({
                   ? "أكثر من 25 عاماً من الإنجاز وخمسة عقود من الخبرة الإقليمية."
                   : "25+ years track record backed by 5 decades of regional leadership."}
               </p>
+            </div>
+
+            {/* Profile Download in Footer */}
+            <div className="pt-1">
+              <DownloadProfileButton
+                variant="footer"
+                profileUrl={activeIdentity.companyProfileUrl}
+              />
             </div>
           </div>
 

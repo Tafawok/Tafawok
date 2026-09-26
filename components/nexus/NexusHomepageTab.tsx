@@ -393,7 +393,7 @@ export function NexusHomepageTab({
                         onChange={(url) => field.onChange(url)}
                         folder="showcase"
                         label="Upload / Select Showcase Image"
-                        acceptType="all"
+                        acceptType="image"
                         aspectRatio="video"
                       />
                     )}
