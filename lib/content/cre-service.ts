@@ -361,6 +361,13 @@ export async function getHomepageSettings(): Promise<HomepageSettings> {
 }
 
 export async function getOwnerDetails(): Promise<OwnerContact> {
-  const profile = await getCeoProfile()
-  return profile.directReach || STATIC_OWNER
+  const [profile, identity] = await Promise.all([
+    getCeoProfile(),
+    getCompanyIdentity(),
+  ])
+  const directReach = profile.directReach || STATIC_OWNER
+  return {
+    ...directReach,
+    headquarters: identity?.headquarters?.address || directReach.headquarters,
+  }
 }

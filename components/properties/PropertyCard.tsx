@@ -8,6 +8,11 @@ import { Property, PropertyType } from "@/types/cre"
 import { useLocaleStore } from "@/stores/useLocaleStore"
 import { BiDiIsolate } from "@/components/shared/FormattedUnit"
 import { cn } from "@/lib/utils"
+import {
+  Tooltip,
+  TooltipTrigger,
+  TooltipContent,
+} from "@/components/ui/tooltip"
 
 interface PropertyCardProps {
   property: Property
@@ -103,12 +108,18 @@ export function PropertyCard({
               <span className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
                 {t("propertyCard.floorsLabel")}
               </span>
-              <span
-                className="mt-0.5 max-w-full truncate text-xs font-semibold text-foreground"
-                title={t(property.keyStats.floors)}
-              >
-                {t(property.keyStats.floors)}
-              </span>
+              <Tooltip>
+                <TooltipTrigger
+                  render={
+                    <span className="mt-0.5 max-w-full truncate text-xs font-semibold text-foreground cursor-default">
+                      {t(property.keyStats.floors)}
+                    </span>
+                  }
+                />
+                <TooltipContent side="top">
+                  {t(property.keyStats.floors)}
+                </TooltipContent>
+              </Tooltip>
             </div>
 
             <div className="flex min-w-0 flex-col items-center">

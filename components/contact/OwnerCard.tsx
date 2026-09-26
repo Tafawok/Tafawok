@@ -14,16 +14,23 @@ import {
   Award,
 } from "lucide-react"
 import { cn } from "@/lib/utils"
-import type { OwnerContact } from "@/types/cre"
+import {
+  Tooltip,
+  TooltipTrigger,
+  TooltipContent,
+} from "@/components/ui/tooltip"
+import type { OwnerContact, CompanyIdentity } from "@/types/cre"
 
 interface OwnerCardProps {
   className?: string
   ownerDetails?: OwnerContact
+  identity?: CompanyIdentity
 }
 
 export function OwnerCard({
   className = "",
   ownerDetails = OWNER_DETAILS,
+  identity,
 }: OwnerCardProps) {
   const { t, locale } = useLocaleStore()
   const isRtl = locale === "ar"
@@ -102,26 +109,37 @@ export function OwnerCard({
             </div>
           </div>
 
-          <button
-            type="button"
-            onClick={handleCopyPhone}
-            title={t("contactPage.copyPhone")}
-            className="cursor-target inline-flex items-center gap-1 rounded-lg border border-border/70 bg-secondary/40 px-2.5 py-1 text-[11px] font-medium text-muted-foreground transition-all hover:bg-secondary hover:text-foreground active:scale-95"
-          >
-            {copied ? (
-              <>
-                <Check className="size-3 text-primary" />
-                <span className="font-semibold text-primary">
-                  {t("contactPage.phoneCopied")}
-                </span>
-              </>
-            ) : (
-              <>
-                <Copy className="size-3" />
-                <span>{t("contactPage.copyPhone")}</span>
-              </>
-            )}
-          </button>
+          <Tooltip>
+            <TooltipTrigger
+              render={
+                <button
+                  type="button"
+                  onClick={handleCopyPhone}
+                  aria-label={t("contactPage.copyPhone")}
+                  className="cursor-target inline-flex items-center gap-1 rounded-lg border border-border/70 bg-secondary/40 px-2.5 py-1 text-[11px] font-medium text-muted-foreground transition-all hover:bg-secondary hover:text-foreground active:scale-95"
+                >
+                  {copied ? (
+                    <>
+                      <Check className="size-3 text-primary" />
+                      <span className="font-semibold text-primary">
+                        {t("contactPage.phoneCopied")}
+                      </span>
+                    </>
+                  ) : (
+                    <>
+                      <Copy className="size-3" />
+                      <span>{t("contactPage.copyPhone")}</span>
+                    </>
+                  )}
+                </button>
+              }
+            />
+            <TooltipContent side="top">
+              {copied
+                ? t("contactPage.phoneCopied")
+                : t("contactPage.copyPhone")}
+            </TooltipContent>
+          </Tooltip>
         </div>
 
         {/* Alternate Executive Line */}
@@ -169,9 +187,22 @@ export function OwnerCard({
             <span className="block text-[10px] font-semibold text-muted-foreground uppercase">
               {t("contactPage.chapterHq")}
             </span>
-            <span className="text-xs leading-relaxed font-semibold text-foreground">
-              {details.headquarters[locale]}
-            </span>
+            {identity?.headquarters?.googleMapsLink ? (
+              <a
+                href={identity.headquarters.googleMapsLink}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-xs leading-relaxed font-semibold text-foreground transition-colors hover:text-primary"
+              >
+                {identity.headquarters.address[locale] ||
+                  details.headquarters[locale]}
+              </a>
+            ) : (
+              <span className="text-xs leading-relaxed font-semibold text-foreground">
+                {identity?.headquarters?.address?.[locale] ||
+                  details.headquarters[locale]}
+              </span>
+            )}
           </div>
         </div>
       </div>

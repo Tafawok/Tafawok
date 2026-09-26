@@ -21,6 +21,11 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb"
+import {
+  Tooltip,
+  TooltipTrigger,
+  TooltipContent,
+} from "@/components/ui/tooltip"
 
 interface PropertyDetailClientProps {
   property: Property
@@ -146,12 +151,18 @@ export function PropertyDetailClient({ property }: PropertyDetailClientProps) {
                     <span className="text-[11px] font-medium text-muted-foreground uppercase">
                       {t("propertyDetail.elevationLabel")}
                     </span>
-                    <p
-                      className="mt-1 truncate text-xs font-bold text-foreground sm:text-sm"
-                      title={t(property.keyStats.floors)}
-                    >
-                      {t(property.keyStats.floors)}
-                    </p>
+                    <Tooltip>
+                      <TooltipTrigger
+                        render={
+                          <p className="mt-1 truncate text-xs font-bold text-foreground sm:text-sm cursor-default">
+                            {t(property.keyStats.floors)}
+                          </p>
+                        }
+                      />
+                      <TooltipContent side="top">
+                        {t(property.keyStats.floors)}
+                      </TooltipContent>
+                    </Tooltip>
                   </div>
 
                   <div className="p-4 text-start">

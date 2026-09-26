@@ -56,7 +56,7 @@ export function HomeClient({
       />
       <FeaturedProperties properties={properties} />
       <CeoQuoteSection ownerDetails={ownerDetails} />
-      <ParallaxScrollBands />
+      <ParallaxScrollBands properties={properties} />
       <ClientMarquee partners={partners} />
     </div>
   )

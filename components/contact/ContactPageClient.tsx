@@ -81,7 +81,10 @@ function ContactContent({
             {/* Right/Secondary Column: Executive Owner Card & Download Corporate Profile */}
             <section id="owner-reach" className="scroll-mt-20 lg:col-span-5 space-y-6">
               <MotionFade direction="up" delay={0.15}>
-                <OwnerCard ownerDetails={ownerDetails} />
+                <OwnerCard
+                  ownerDetails={ownerDetails}
+                  identity={identity}
+                />
               </MotionFade>
               <MotionFade direction="up" delay={0.2}>
                 <DownloadProfileButton variant="contact" />

@@ -29,10 +29,22 @@ export function HqMap({
 
   const activeIdentity = identity || COMPANY_IDENTITY
 
-  // Headquarters is located at Company HQ (New Cairo)
+  const isNasrCity =
+    activeIdentity.headquarters.address?.en?.toLowerCase().includes("nasr") ||
+    activeIdentity.headquarters.address?.ar?.includes("مدينة نصر")
+  const isNewCairo =
+    activeIdentity.headquarters.address?.en?.toLowerCase().includes("new cairo") ||
+    activeIdentity.headquarters.address?.ar?.includes("القاهرة الجديدة")
+
+  const city = isNasrCity
+    ? { en: "Nasr City, Cairo", ar: "مدينة نصر، القاهرة" }
+    : isNewCairo
+      ? { en: "New Cairo", ar: "القاهرة الجديدة" }
+      : { en: "Cairo", ar: "القاهرة" }
+
   const location = {
     address: activeIdentity.headquarters.address,
-    city: { en: "New Cairo", ar: "القاهرة الجديدة" },
+    city,
     country: { en: "Egypt", ar: "مصر" },
     coordinates: { lat: 30.0135, lng: 31.4287 },
     googleMapsEmbedUrl: activeIdentity.headquarters.googleMapsEmbed,
@@ -44,8 +56,12 @@ export function HqMap({
       icon: Car,
       label: t("contactPage.arterial1"),
       sub: isRtl
-        ? "شريان القاهرة الجديدة الرئيسي"
-        : "New Cairo Central Corridor",
+        ? isNasrCity
+          ? "شريان مدينة نصر ومحور المشير"
+          : "شريان القاهرة الرئيسي"
+        : isNasrCity
+          ? "Nasr City & Al-Moshir Axis"
+          : "Central Capital Corridor",
     },
     {
       icon: Plane,

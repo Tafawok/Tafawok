@@ -2,32 +2,61 @@
 
 import React from "react"
 import { useLocaleStore } from "@/stores/useLocaleStore"
+import type { Property } from "@/types/cre"
 
-export function ParallaxScrollBands() {
+interface ParallaxScrollBandsProps {
+  properties?: Property[]
+}
+
+export function ParallaxScrollBands({ properties }: ParallaxScrollBandsProps = {}) {
   const { locale } = useLocaleStore()
   const isArabic = locale === "ar"
 
-  const track1ItemsEn = [
-    "BUILDING 360 NEW CAIRO",
-    "GRADE-A CORPORATE HEADQUARTERS",
-    "TAFAWOK RETAIL CENTER",
-    "DESTINATION SHOPPING MALL",
-    "TAFAWOK LOGISTICS COMPLEX",
-    "HEAVY SUPPLY INFRASTRUCTURE",
+  // Dynamically build track items from live properties or use accurate portfolio defaults
+  const dynamicPropsEn = properties?.map((p) => p.name.en.toUpperCase()) || []
+  const dynamicPropsAr = properties?.map((p) => p.name.ar) || []
+
+  const defaultTrack1En = [
+    "FAGALA PLAZA NASR CITY",
+    "GRADE-A COMMERCIAL HUBS",
+    "MALL CHILLOUT EL SHOROUK",
+    "DESTINATION SHOPPING MALLS",
+    "OCTOBER FESTIVAL MALL",
+    "TURNKEY EPC CONTRACTING",
   ]
 
-  const track1ItemsAr = [
-    "مجمع 360 الإداري بالتجمع الخامس",
-    "مقرات إدارية للشركات فئة (A)",
-    "مركز تفوق التجاري والمول",
-    "وجهة التسوق والترفيه العائلي",
-    "مجمع تفوق اللوجستي والتجاري",
-    "بنية تحتية صناعية متطورة",
+  const defaultTrack1Ar = [
+    "فجالة بلازا مدينة نصر",
+    "مراكز تجارية واستثمارية فئة (A)",
+    "مول تشيل أوت الشروق",
+    "وجهات التسوق والترفيه المتكاملة",
+    "مول أكتوبر فيستيفال",
+    "مشروعات المقاولات المتكاملة EPC",
   ]
+
+  const track1ItemsEn =
+    dynamicPropsEn.length > 0
+      ? [
+          ...dynamicPropsEn,
+          "GRADE-A COMMERCIAL HUBS",
+          "TURNKEY EPC CONTRACTING",
+          "INSTITUTIONAL CRE ASSETS",
+        ]
+      : defaultTrack1En
+
+  const track1ItemsAr =
+    dynamicPropsAr.length > 0
+      ? [
+          ...dynamicPropsAr,
+          "مراكز تجارية فئة (A)",
+          "مشروعات المقاولات المتكاملة",
+          "أصول عقارية تجارية كبرى",
+        ]
+      : defaultTrack1Ar
 
   const track2ItemsEn = [
     "25+ YEARS TRACK RECORD",
-    "77,500 M² COMMERCIAL PORTFOLIO",
+    "64,500+ M² COMMERCIAL GLA",
     "ISO 9001 QUALITY CERTIFIED",
     "1,320+ SECURE PARKING SLOTS",
     "ZERO-HARM SAFETY POLICY",
@@ -36,7 +65,7 @@ export function ParallaxScrollBands() {
 
   const track2ItemsAr = [
     "25+ عاماً من الريادة الهندسية",
-    "77,500 م² مساحات تأجيرية تجارية",
+    "أكثر من 64,500 م² مساحات تأجيرية",
     "معايير الجودة العالمية ISO 9001",
     "أكثر من 1,320 موقف سيارات مؤمن",
     "ميثاق السلامة المهنية صفر حوادث",

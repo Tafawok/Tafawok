@@ -4,6 +4,11 @@ import React, { useState, useEffect, useCallback, useRef } from "react"
 import { useLocaleStore } from "@/stores/useLocaleStore"
 import { LineSidebar } from "@/components/motion/LineSidebar"
 import { PanelLeftOpen, PanelLeftClose } from "lucide-react"
+import {
+  Tooltip,
+  TooltipTrigger,
+  TooltipContent,
+} from "@/components/ui/tooltip"
 
 export interface PageLineSidebarItem {
   id: string
@@ -188,31 +193,46 @@ export function PageLineSidebar({
           </div>
         )}
         {/* Expand / Collapse toggle for viewports < 1800px */}
-        <button
-          type="button"
-          onClick={() => setIsExpanded((prev) => !prev)}
-          title={
-            isExpanded
+        <Tooltip>
+          <TooltipTrigger
+            render={
+              <button
+                type="button"
+                onClick={() => setIsExpanded((prev) => !prev)}
+                className="flex size-5 cursor-pointer items-center justify-center rounded text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground focus-visible:ring-1 focus-visible:ring-primary focus-visible:outline-none min-[1800px]:hidden"
+                aria-expanded={isExpanded}
+                aria-label={
+                  isExpanded
+                    ? isRtl
+                      ? "تصغير الفهرس"
+                      : "Collapse directory"
+                    : isRtl
+                      ? "توسيع الفهرس"
+                      : "Expand directory"
+                }
+              />
+            }
+          >
+            {isExpanded ? (
+              <PanelLeftClose
+                className={`size-3.5 ${isRtl ? "rotate-180" : ""}`}
+              />
+            ) : (
+              <PanelLeftOpen
+                className={`size-3.5 ${isRtl ? "rotate-180" : ""}`}
+              />
+            )}
+          </TooltipTrigger>
+          <TooltipContent side={isRtl ? "left" : "right"}>
+            {isExpanded
               ? isRtl
                 ? "تصغير الفهرس"
                 : "Collapse directory"
               : isRtl
                 ? "توسيع الفهرس"
-                : "Expand directory"
-          }
-          className="flex size-5 cursor-pointer items-center justify-center rounded text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground focus-visible:ring-1 focus-visible:ring-primary focus-visible:outline-none min-[1800px]:hidden"
-          aria-expanded={isExpanded}
-        >
-          {isExpanded ? (
-            <PanelLeftClose
-              className={`size-3.5 ${isRtl ? "rotate-180" : ""}`}
-            />
-          ) : (
-            <PanelLeftOpen
-              className={`size-3.5 ${isRtl ? "rotate-180" : ""}`}
-            />
-          )}
-        </button>
+                : "Expand directory"}
+          </TooltipContent>
+        </Tooltip>
       </div>
 
       <LineSidebar

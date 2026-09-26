@@ -1209,3 +1209,43 @@ Chronological decision log tracking major architectural milestones and engineeri
     - `npx tsc --noEmit`: **0 errors**.
     - `npm run lint`: **0 warnings, 0 errors**.
     - `npm run build`: **Compiled 100% successfully** across all 21 App Router routes.
+
+- **Milestone 13: Contact Page Location Synchronization & Parallax Marquee Bands Alignment (2026-09-26):**
+  - **Single Source of Truth for Headquarters Location:**
+    - Identified why updating headquarters in Nexus Company Identity (`/nexus-portal/company`) reflected in the Footer but not in the Contact Us page's Executive Reach card:
+      - [`components/contact/OwnerCard.tsx`](file:///Users/omartemsah/WebProjects/Tafawok/components/contact/OwnerCard.tsx) was reading `details.headquarters` from `ownerDetails` instead of the authoritative `identity.headquarters.address`.
+    - Enhanced [`components/contact/ContactPageClient.tsx`](file:///Users/omartemsah/WebProjects/Tafawok/components/contact/ContactPageClient.tsx) to pass `identity={identity}` to `OwnerCard`.
+    - Updated [`OwnerCard.tsx`](file:///Users/omartemsah/WebProjects/Tafawok/components/contact/OwnerCard.tsx) to prioritize `identity?.headquarters?.address` and wrap it in a clickable Google Maps link matching the Footer.
+    - Updated [`lib/content/cre-service.ts`](file:///Users/omartemsah/WebProjects/Tafawok/lib/content/cre-service.ts) `getOwnerDetails()` to automatically merge `identity.headquarters.address` as the fallback headquarters.
+    - Updated `site_settings.ceo_profile` in PostgreSQL so `directReach.headquarters` is synchronized with `company_identity`.
+    - Updated [`components/contact/HqMap.tsx`](file:///Users/omartemsah/WebProjects/Tafawok/components/contact/HqMap.tsx) to dynamically derive the city label (e.g. Nasr City vs. New Cairo) and arterial corridor from the active headquarters address.
+  - **Homepage Parallax Marquee Bands Refinement:**
+    - Updated [`components/motion/ParallaxScrollBands.tsx`](file:///Users/omartemsah/WebProjects/Tafawok/components/motion/ParallaxScrollBands.tsx) to accept dynamic `properties?: Property[]`.
+    - Replaced outdated placeholder phrases (Building 360, Tafawok Logistics, 77,500 m²) with real portfolio assets (`Fagala Plaza`, `Mall ChillOut`, `October Festival Mall`, `64,500+ m² GLA`).
+    - Connected `properties={properties}` in [`components/home/HomeClient.tsx`](file:///Users/omartemsah/WebProjects/Tafawok/components/home/HomeClient.tsx).
+  - **Quality Gates Verification:**
+    - `npx tsc --noEmit`: **0 errors**.
+    - `npm run lint`: **0 warnings, 0 errors**.
+    - `npm run build`: **Compiled 100% successfully** across all 21 App Router routes.
+
+- **Milestone 14: Comprehensive Guide Cards Mapping & Universal shadcn Tooltip Enforcement (2026-09-26):**
+  - **Comprehensive Page Impact Guide Cards ([`components/nexus/PageImpactGuide.tsx`](file:///Users/omartemsah/WebProjects/Tafawok/components/nexus/PageImpactGuide.tsx)):**
+    - Completely audited and upgraded all 14 guide cards across the Nexus Portal (`homepage`, `properties`, `stores`, `disciplines`, `metrics`, `timeline`, `values`, `partners`, `ceo`, `company`, `media`, `hse`, `inquiries`, `overview`).
+    - Explicitly mapped the actual data change effects and exact page/component locations:
+      - **Company Coordinates:** Documents the simultaneous multi-page synchronization across Global Footer (Columns 1 & 4), Contact Us Executive Card, Contact Us Interactive Map frame, and Company Profile PDF download buttons.
+      - **CEO Statement:** Documents live synchronization across CEO Message monograph, Homepage quote card, Contact Us Executive Card, and Footer Column 4.
+      - **Homepage:** Documents Hero statement, trust credentials strip, interactive scroll-expand canvas, and continuous parallax marquee ticker integration.
+      - **Commercial Properties:** Documents property monographs, galleries, video tour streams, inquiry modal selectors, mega-menu dropdowns, and marquee ticker gliding.
+      - **Retail Stores:** Documents tenant directory tables, floor levels, unit numbers, operational leasing badges, and live dashboard counter metrics.
+      - **Media Library:** Documents Supabase CDN storage, folder segregation, permanent bucket asset deletion impacts, and bidirectional file validation.
+  - **Universal shadcn `<Tooltip>` Component Enforcement:**
+    - Systematically replaced all native HTML `title="..."` attributes with official shadcn `<Tooltip>` primitives:
+      - [`components/nexus/PageImpactGuide.tsx`](file:///Users/omartemsah/WebProjects/Tafawok/components/nexus/PageImpactGuide.tsx): Wrapped external page preview links in `<Tooltip>` and removed conflicting native titles on `HoverCardTrigger`.
+      - [`components/contact/OwnerCard.tsx`](file:///Users/omartemsah/WebProjects/Tafawok/components/contact/OwnerCard.tsx): Wrapped the executive phone number copy button in localized `<Tooltip>` showing real-time copied state.
+      - [`components/properties/PropertyCard.tsx`](file:///Users/omartemsah/WebProjects/Tafawok/components/properties/PropertyCard.tsx): Wrapped floor elevation stats in `<Tooltip>`.
+      - [`components/properties/PropertyDetailClient.tsx`](file:///Users/omartemsah/WebProjects/Tafawok/components/properties/PropertyDetailClient.tsx): Wrapped elevation specifications in `<Tooltip>`.
+      - [`components/motion/PageLineSidebar.tsx`](file:///Users/omartemsah/WebProjects/Tafawok/components/motion/PageLineSidebar.tsx): Wrapped directory expand/collapse toggle button in responsive `<Tooltip>`.
+  - **Quality Gates Verification:**
+    - `npx tsc --noEmit`: **0 errors**.
+    - `npm run lint`: **0 warnings, 0 errors**.
+    - `npm run build`: **Compiled 100% successfully** across all 21 App Router routes in 639ms.
