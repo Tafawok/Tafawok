@@ -98,7 +98,8 @@ export function NexusPropertiesTab({
           return (
             <Card
               key={p.id}
-              className="group overflow-hidden border-border/80 bg-card/80 transition-all hover:border-primary/40 hover:shadow-xl"
+              className="group overflow-hidden border-border/80 bg-card/80 pt-0 pb-0 gap-0 transition-all hover:border-primary/40 hover:shadow-xl"
+              style={{ paddingTop: 0, paddingBottom: 0, gap: 0 }}
             >
               {/* Asset Hero Thumbnail */}
               <div className="relative aspect-video w-full overflow-hidden bg-muted">

@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { useForm } from "react-hook-form"
+import { useForm, Controller } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { z } from "zod"
 import { toast } from "sonner"
@@ -33,6 +33,14 @@ import {
 import { useRouter } from "next/navigation"
 import { savePartnerAction, deletePartnerAction } from "@/lib/content/actions"
 import type { ClientPartner } from "@/types/cre"
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
 
 const partnerModalSchema = z.object({
   name: z.string().min(2, "Partner name is required"),
@@ -70,6 +78,7 @@ function PartnerFormModal({
 
   const {
     register,
+    control,
     handleSubmit,
     formState: { errors, isSubmitting },
   } = useForm<PartnerModalFormData>({
@@ -132,15 +141,28 @@ function PartnerFormModal({
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-1.5">
               <Label className="text-xs font-medium">Industry Category</Label>
-              <select
-                {...register("category")}
-                className="flex h-8 w-full rounded-lg border border-input bg-transparent px-2.5 py-1 text-xs"
-              >
-                <option value="commercial">Commercial / Retail</option>
-                <option value="energy">Energy & Infrastructure</option>
-                <option value="epc">EPC & Turnkey Contractor</option>
-                <option value="manufacturer">Industrial Manufacturer</option>
-              </select>
+              <Controller
+                control={control}
+                name="category"
+                render={({ field }) => (
+                  <Select
+                    value={field.value}
+                    onValueChange={field.onChange}
+                  >
+                    <SelectTrigger className="h-8 w-full text-xs">
+                      <SelectValue placeholder="Select industry category..." />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectGroup>
+                        <SelectItem value="commercial">Commercial / Retail</SelectItem>
+                        <SelectItem value="energy">Energy & Infrastructure</SelectItem>
+                        <SelectItem value="epc">EPC & Turnkey Contractor</SelectItem>
+                        <SelectItem value="manufacturer">Industrial Manufacturer</SelectItem>
+                      </SelectGroup>
+                    </SelectContent>
+                  </Select>
+                )}
+              />
             </div>
 
             <div className="space-y-1.5">

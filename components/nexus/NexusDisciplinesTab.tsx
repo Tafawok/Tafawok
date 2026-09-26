@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { useForm } from "react-hook-form"
+import { useForm, Controller } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { z } from "zod"
 import { toast } from "sonner"
@@ -23,6 +23,14 @@ import {
 import { useRouter } from "next/navigation"
 import { saveDisciplineAction } from "@/lib/content/actions"
 import type { CommercialDiscipline } from "@/types/cre"
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
 
 const disciplineModalSchema = z.object({
   titleEn: z.string().min(2, "English title is required"),
@@ -74,6 +82,7 @@ function DisciplineFormModal({
 
   const {
     register,
+    control,
     handleSubmit,
     formState: { errors, isSubmitting },
   } = useForm<DisciplineModalFormData>({
@@ -232,15 +241,36 @@ function DisciplineFormModal({
 
           <div className="space-y-1.5">
             <Label className="text-xs font-medium">Icon Selection</Label>
-            <select
-              {...register("iconName")}
-              className="flex h-8 w-full rounded-lg border border-input bg-transparent px-2.5 py-1 text-xs"
-            >
-              <option value="building-2">Building 2 (Office)</option>
-              <option value="shopping-bag">Shopping Bag (Retail)</option>
-              <option value="warehouse">Warehouse (Industrial & Business Parks)</option>
-              <option value="hard-hat">Hard Hat (Turnkey EPC)</option>
-            </select>
+            <Controller
+              control={control}
+              name="iconName"
+              render={({ field }) => (
+                <Select
+                  value={field.value}
+                  onValueChange={field.onChange}
+                >
+                  <SelectTrigger className="h-8 w-full text-xs">
+                    <SelectValue placeholder="Select icon..." />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectGroup>
+                      <SelectItem value="building-2">
+                        Building 2 (Office)
+                      </SelectItem>
+                      <SelectItem value="shopping-bag">
+                        Shopping Bag (Retail)
+                      </SelectItem>
+                      <SelectItem value="warehouse">
+                        Warehouse (Industrial & Business Parks)
+                      </SelectItem>
+                      <SelectItem value="hard-hat">
+                        Hard Hat (Turnkey EPC)
+                      </SelectItem>
+                    </SelectGroup>
+                  </SelectContent>
+                </Select>
+              )}
+            />
           </div>
 
           <div className="space-y-1.5">

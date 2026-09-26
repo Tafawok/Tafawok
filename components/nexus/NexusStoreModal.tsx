@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { useForm } from "react-hook-form"
+import { useForm, Controller } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { toast } from "sonner"
 import {
@@ -24,6 +24,14 @@ import {
 } from "@/lib/validations/cre-schemas"
 import type { Property, StoreItem } from "@/types/cre"
 import { Loader2 } from "lucide-react"
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
 
 interface NexusStoreModalProps {
   open: boolean
@@ -72,6 +80,7 @@ function StoreFormContent({
   const {
     register,
     handleSubmit,
+    control,
     formState: { errors, isSubmitting },
   } = useForm<StoreFormData>({
     resolver: zodResolver(storeFormSchema),
@@ -79,7 +88,11 @@ function StoreFormContent({
   })
 
   const onSubmit = async (data: StoreFormData) => {
-    const slugPart = data.nameEn.trim().toLowerCase().replace(/[^a-z0-9]+/g, "-") || "store"
+    const slugPart =
+      data.nameEn
+        .trim()
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, "-") || "store"
     const storeId = id.trim() ? id.trim() : `store-${slugPart}`
 
     const updatedStore: StoreItem = {
@@ -132,18 +145,33 @@ function StoreFormContent({
               <Label htmlFor="propertySelect" className="text-xs font-medium">
                 Assigned Asset
               </Label>
-              <select
-                id="propertySelect"
-                {...register("propertyId")}
-                disabled={isEditing}
-                className="flex h-8 w-full rounded-lg border border-input bg-transparent px-2.5 py-1 text-xs"
-              >
-                {properties.map((p) => (
-                  <option key={p.id} value={p.id}>
-                    {p.name.en} ({p.id})
-                  </option>
-                ))}
-              </select>
+              <Controller
+                control={control}
+                name="propertyId"
+                render={({ field }) => (
+                  <Select
+                    value={field.value}
+                    disabled={isEditing}
+                    onValueChange={field.onChange}
+                  >
+                    <SelectTrigger
+                      id="propertySelect"
+                      className="h-8 w-full text-xs"
+                    >
+                      <SelectValue placeholder="Select property asset..." />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectGroup>
+                        {properties.map((p) => (
+                          <SelectItem key={p.id} value={p.id}>
+                            {p.name.en} ({p.id})
+                          </SelectItem>
+                        ))}
+                      </SelectGroup>
+                    </SelectContent>
+                  </Select>
+                )}
+              />
               {errors.propertyId && (
                 <p className="text-[11px] text-destructive">
                   {errors.propertyId.message}
@@ -155,15 +183,27 @@ function StoreFormContent({
               <Label htmlFor="statusSelect" className="text-xs font-medium">
                 Lease / Open Status
               </Label>
-              <select
-                id="statusSelect"
-                {...register("status")}
-                className="flex h-8 w-full rounded-lg border border-input bg-transparent px-2.5 py-1 text-xs"
-              >
-                <option value="open">Open / Operating</option>
-                <option value="coming_soon">Coming Soon</option>
-                <option value="leased">Leased</option>
-              </select>
+              <Controller
+                control={control}
+                name="status"
+                render={({ field }) => (
+                  <Select
+                    value={field.value}
+                    onValueChange={field.onChange}
+                  >
+                    <SelectTrigger id="statusSelect" className="h-8 w-full text-xs">
+                      <SelectValue placeholder="Select status..." />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectGroup>
+                        <SelectItem value="open">Open / Operating</SelectItem>
+                        <SelectItem value="coming_soon">Coming Soon</SelectItem>
+                        <SelectItem value="leased">Leased</SelectItem>
+                      </SelectGroup>
+                    </SelectContent>
+                  </Select>
+                )}
+              />
             </div>
           </div>
 

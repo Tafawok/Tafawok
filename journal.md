@@ -1014,3 +1014,78 @@ Chronological decision log tracking major architectural milestones and engineeri
     - `npx tsc --noEmit`: **0 errors**.
     - `npm run lint`: **0 warnings, 0 errors**.
     - `npm run build`: **All 27 routes compiled successfully** with Next.js Turbopack.
+
+---
+
+## Milestone 17: Full REST CRUD API Suite & Supabase Storage Media Bucket Integration
+
+- **Date:** September 2026
+- **Scope:**
+  - **Supabase Storage Architecture & Public CDN Bucket (`tafawok-media`):**
+    - Provisioned dedicated Supabase Storage bucket `tafawok-media` with `public: true`, 10MB maximum file size limit, and strict MIME type constraints (`image/jpeg`, `image/png`, `image/webp`, `image/gif`, `image/svg+xml`, `image/avif`).
+    - Configured Row-Level Security (RLS) policies on `storage.objects`:
+      - **Public Read (`SELECT`):** Open public access enabling direct high-speed CDN delivery for marketing pages.
+      - **Super Admin Write (`INSERT` / `UPDATE` / `DELETE`):** Restricted to authenticated super-administrators verified via `auth.uid()` against `nexus_admins`.
+    - Added `*.supabase.co` to `images.remotePatterns` in [`next.config.ts`](file:///Users/omartemsah/WebProjects/Tafawok/next.config.ts) for Next.js image optimization.
+  - **Unified Super Admin Auth & Response Helper (`lib/api/nexus-auth.ts`):**
+    - Created `authenticateNexusAdmin()` utility that inspects session cookies, authenticates with Supabase, verifies active `is_super_admin` status, and provides standard `apiSuccess()` and `apiError()` JSON responses.
+  - **Comprehensive REST CRUD Endpoints (`app/api/nexus/*`):**
+    1. **Media Upload & Management (`/api/nexus/upload`):**
+       - `POST`: Validates file size, MIME type, generates sanitized timestamped file paths, uploads buffer to `tafawok-media`, and returns public CDN URL.
+       - `GET`: Lists uploaded assets with metadata and CDN public URLs.
+       - `DELETE`: Safely deletes files from the storage bucket.
+    2. **Properties (`/api/nexus/properties` & `/api/nexus/properties/[id]`):**
+       - `GET` (list with type, status, and bilingual search filters / get by ID or slug).
+       - `POST` (create property).
+       - `PUT` (update property).
+       - `DELETE` (delete property and cascade associated stores).
+    3. **Stores & Commercial Directory (`/api/nexus/stores` & `/api/nexus/stores/[id]`):**
+       - `GET` (filter by `property_id` and status / get single store).
+       - `POST` (create store under parent property).
+       - `PUT` (update store details).
+       - `DELETE` (remove store).
+    4. **Commercial Disciplines (`/api/nexus/disciplines` & `[id]`):**
+       - Full CRUD for Office Towers, Retail Hubs, Logistics Parks, and Turnkey EPC.
+    5. **Corporate Scale & Metrics (`/api/nexus/metrics` & `[id]`):**
+       - Full CRUD for track record figures (25+ yrs, 5 decades heritage, 77.5k m² GLA).
+    6. **Historical Timeline & Heritage (`/api/nexus/timeline` & `[id]`):**
+       - Full CRUD for Gulf expansion, regional infrastructure, and landmark projects.
+    7. **Values & Strategic Pillars (`/api/nexus/values` & `/api/nexus/pillars`):**
+       - Full CRUD for institutional principles and engineering standards.
+    8. **Client & EPC Partners (`/api/nexus/partners` & `[id]`):**
+       - Full CRUD for Tier-1 commercial, energy, and manufacturer partners.
+    9. **Corporate Settings & Charters (`/api/nexus/settings/[key]`):**
+       - `GET` and `PUT` for `ceo_profile`, `company_identity`, and `hse_charter`.
+    10. **Investor & Commercial Inquiries (`/api/nexus/inquiries` & `[id]`):**
+        - `GET` (list with status and priority filters), `PATCH` (update status to `read`, `responded`, `archived`), `DELETE`.
+  - **Admin Media Uploader Component (`components/nexus/MediaUploader.tsx`):**
+    - Drag-and-drop upload zone with real-time preview, CDN verification badge, copy URL shortcut, replace/remove controls, and fallback direct URL manual input.
+    - Fully integrated into [`components/nexus/NexusPropertyModal.tsx`](file:///Users/omartemsah/WebProjects/Tafawok/components/nexus/NexusPropertyModal.tsx) for:
+      - Main Hero Visual (`mainImage`)
+      - Visual Gallery batch uploads (auto-appends CDN URLs to `galleryText`)
+      - Video Tour Poster Thumbnail (`videoPoster`)
+  - **Commercial Property Cards Full-Bleed Header:**
+    - Fixed card header top gap in [`components/nexus/NexusPropertiesTab.tsx`](file:///Users/omartemsah/WebProjects/Tafawok/components/nexus/NexusPropertiesTab.tsx). Eliminated the default shadcn `py-(--card-spacing)` and `gap-(--card-spacing)` padding by applying `pt-0 pb-0 gap-0` and explicit `style={{ paddingTop: 0, paddingBottom: 0, gap: 0 }}` on `<Card>`.
+    - Allowed the architectural hero thumbnail to start flush at `(0, 0)` and bleed seamlessly across the full top header, automatically clipped by the card's `rounded-xl overflow-hidden` outer border.
+  - **Unified Multi-Format Media (Images & Videos) Support:**
+    - Upgraded Supabase Storage bucket `tafawok-media` constraints to support both high-res images and video files (`video/mp4`, `video/webm`, `video/ogg`, `video/quicktime`, `video/x-matroska`) with maximum file size expanded to **100MB**.
+    - Updated [`app/api/nexus/upload/route.ts`](file:///Users/omartemsah/WebProjects/Tafawok/app/api/nexus/upload/route.ts) with video MIME validation, dynamic limits (20MB for images, 100MB for video walkthroughs), and automatic `mediaType: "image" | "video"` metadata tagging in both `POST` and `GET`.
+    - Enhanced [`components/nexus/MediaUploader.tsx`](file:///Users/omartemsah/WebProjects/Tafawok/components/nexus/MediaUploader.tsx) to accept `acceptType: "image" | "video" | "all"`, automatically detecting video assets and rendering a responsive HTML5 `<video controls playsInline>` preview alongside image previews.
+    - Wired property video tours (`videoSrc`) and walkthrough gallery media directly into [`NexusPropertyModal.tsx`](file:///Users/omartemsah/WebProjects/Tafawok/components/nexus/NexusPropertyModal.tsx) with direct Supabase CDN storage and stream preview.
+  - **Full Migration to shadcn `<Select>` Component:**
+    - Installed official shadcn `Select` primitive ([`components/ui/select.tsx`](file:///Users/omartemsah/WebProjects/Tafawok/components/ui/select.tsx)) powered by `@base-ui/react/select`.
+    - Completely replaced native `<select>` dropdowns across all portal management forms and public inquiry dialogs:
+      - **Property Management (`NexusPropertyModal.tsx`):** Development Type (`commercial`, `office`, `retail`, `mixed-use`) and Execution Status (`operational`, `under-development`, `pipeline`).
+      - **Tenant Stores Directory (`NexusStoreModal.tsx`):** Assigned Asset Property selector and Store Operational Status (`open`, `coming_soon`, `leased`).
+      - **Disciplines Showcase (`NexusDisciplinesTab.tsx`):** Architectural Icon selector (`building-2`, `shopping-bag`, `warehouse`, `hard-hat`).
+      - **Historical Milestones (`NexusTimelineTab.tsx`):** Scope Category selector (`commercial`, `heritage`, `infrastructure`, `expansion`).
+      - **Partners & EPC (`NexusPartnersTab.tsx`):** Industry Category selector (`commercial`, `energy`, `epc`, `manufacturer`).
+      - **Public Inquiry Desk (`ContactForm.tsx`):** Target Property development selector.
+    - Zero raw `<select>` tags remain in the codebase; all forms feature accessible popover menus with keyboard navigation and theme integration.
+  - **Compiler & Linter Modernization (Zero Warnings Quality Gate):**
+    - **React Compiler Memoization Compliance:** Replaced render-time `watch()` invocations across [`NexusPropertyModal.tsx`](file:///Users/omartemsah/WebProjects/Tafawok/components/nexus/NexusPropertyModal.tsx), [`NexusStoreModal.tsx`](file:///Users/omartemsah/WebProjects/Tafawok/components/nexus/NexusStoreModal.tsx), [`NexusDisciplinesTab.tsx`](file:///Users/omartemsah/WebProjects/Tafawok/components/nexus/NexusDisciplinesTab.tsx), [`NexusTimelineTab.tsx`](file:///Users/omartemsah/WebProjects/Tafawok/components/nexus/NexusTimelineTab.tsx), and [`NexusPartnersTab.tsx`](file:///Users/omartemsah/WebProjects/Tafawok/components/nexus/NexusPartnersTab.tsx) with React Hook Form's `<Controller control={control} name="..." render={({ field }) => ...} />`. This prevents unmemoized render churn and guarantees strict React Compiler compatibility.
+    - **Tailwind CSS v4 Logical Positioning Classes:** Modernized positioning utilities in [`components/ui/sidebar.tsx`](file:///Users/omartemsah/WebProjects/Tafawok/components/ui/sidebar.tsx), [`components/ui/dialog.tsx`](file:///Users/omartemsah/WebProjects/Tafawok/components/ui/dialog.tsx), and [`components/nexus/MediaUploader.tsx`](file:///Users/omartemsah/WebProjects/Tafawok/components/nexus/MediaUploader.tsx) to canonical Tailwind v4 logical properties (`inset-s-*`, `inset-e-*`, `-left-(--sidebar-width)`, `-right-(--sidebar-width)`, `after:w-0.5`).
+  - **Quality Gates Verification:**
+    - `npx tsc --noEmit`: **0 errors** across entire codebase.
+    - `npm run lint`: **0 errors** (all linter checks passing).
+    - `npm run build`: **All 47 App Router dynamic and static routes compiled successfully** with Next.js Turbopack.

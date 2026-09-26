@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { useForm } from "react-hook-form"
+import { useForm, Controller } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { toast } from "sonner"
 import {
@@ -25,6 +25,15 @@ import {
 } from "@/lib/validations/cre-schemas"
 import type { Property, PropertyType, PropertyStatus } from "@/types/cre"
 import { Loader2 } from "lucide-react"
+import { MediaUploader } from "@/components/nexus/MediaUploader"
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
 
 interface NexusPropertyModalProps {
   open: boolean
@@ -115,6 +124,9 @@ function PropertyFormContent({
   const {
     register,
     handleSubmit,
+    control,
+    setValue,
+    getValues,
     formState: { errors, isSubmitting },
   } = useForm<PropertyFormData>({
     resolver: zodResolver(propertyFormSchema),
@@ -336,31 +348,55 @@ function PropertyFormContent({
                   <Label htmlFor="type" className="text-xs font-medium">
                     Development Type
                   </Label>
-                  <select
-                    id="type"
-                    {...register("type")}
-                    className="flex h-8 w-full rounded-lg border border-input bg-transparent px-2.5 py-1 text-xs"
-                  >
-                    <option value="commercial">Commercial</option>
-                    <option value="office">Prime Office</option>
-                    <option value="retail">Retail Hub</option>
-                    <option value="mixed-use">Mixed-Use</option>
-                  </select>
+                  <Controller
+                    control={control}
+                    name="type"
+                    render={({ field }) => (
+                      <Select
+                        value={field.value}
+                        onValueChange={field.onChange}
+                      >
+                        <SelectTrigger id="type" className="h-8 w-full text-xs">
+                          <SelectValue placeholder="Select type..." />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectGroup>
+                            <SelectItem value="commercial">Commercial Hub</SelectItem>
+                            <SelectItem value="office">Prime Office</SelectItem>
+                            <SelectItem value="retail">Retail Hub</SelectItem>
+                            <SelectItem value="mixed-use">Mixed-Use</SelectItem>
+                          </SelectGroup>
+                        </SelectContent>
+                      </Select>
+                    )}
+                  />
                 </div>
 
                 <div className="space-y-1.5">
                   <Label htmlFor="status" className="text-xs font-medium">
                     Execution Status
                   </Label>
-                  <select
-                    id="status"
-                    {...register("status")}
-                    className="flex h-8 w-full rounded-lg border border-input bg-transparent px-2.5 py-1 text-xs"
-                  >
-                    <option value="operational">Operational</option>
-                    <option value="under-development">Under Development</option>
-                    <option value="pipeline">Strategic Pipeline</option>
-                  </select>
+                  <Controller
+                    control={control}
+                    name="status"
+                    render={({ field }) => (
+                      <Select
+                        value={field.value}
+                        onValueChange={field.onChange}
+                      >
+                        <SelectTrigger id="status" className="h-8 w-full text-xs">
+                          <SelectValue placeholder="Select status..." />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectGroup>
+                            <SelectItem value="operational">Operational</SelectItem>
+                            <SelectItem value="under-development">Under Development</SelectItem>
+                            <SelectItem value="pipeline">Strategic Pipeline</SelectItem>
+                          </SelectGroup>
+                        </SelectContent>
+                      </Select>
+                    )}
+                  />
                 </div>
               </div>
 
@@ -442,15 +478,20 @@ function PropertyFormContent({
             </TabsContent>
 
             {/* TAB 3: MEDIA & GALLERY */}
-            <TabsContent value="media" className="space-y-4 pt-4">
-              <div className="space-y-1.5">
-                <Label htmlFor="mainImage" className="text-xs font-medium">
-                  Main Hero Image URL / Path
-                </Label>
-                <Input
-                  id="mainImage"
-                  {...register("mainImage")}
-                  placeholder="/FagalaPlaza/ef0aed6e-0521-483c-886d-cf366d835f71.webp"
+            <TabsContent value="media" className="space-y-6 pt-4">
+              <div className="space-y-2">
+                <Controller
+                  control={control}
+                  name="mainImage"
+                  render={({ field }) => (
+                    <MediaUploader
+                      label="Main Hero Architectural Visual"
+                      value={field.value || ""}
+                      onChange={(url) => field.onChange(url)}
+                      folder="properties"
+                      aspectRatio="video"
+                    />
+                  )}
                 />
                 {errors.mainImage && (
                   <p className="text-[11px] text-destructive">
@@ -459,37 +500,74 @@ function PropertyFormContent({
                 )}
               </div>
 
-              <div className="space-y-1.5">
-                <Label htmlFor="gallery" className="text-xs font-medium">
-                  Photo Gallery URLs (One per line)
-                </Label>
-                <Textarea
-                  id="gallery"
-                  rows={5}
-                  {...register("galleryText")}
-                  placeholder="/FagalaPlaza/image1.webp&#10;/FagalaPlaza/image2.webp"
+              <div className="space-y-3 rounded-lg border border-border/60 bg-muted/20 p-4">
+                <div className="flex items-center justify-between">
+                  <Label htmlFor="gallery" className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                    Property Visual & Video Gallery
+                  </Label>
+                  <span className="text-[11px] text-muted-foreground">
+                    Upload images & videos directly to Supabase CDN or enter URLs
+                  </span>
+                </div>
+
+                <MediaUploader
+                  label="Upload Gallery Image or Video Walkthrough"
+                  acceptType="all"
+                  value=""
+                  onChange={(url) => {
+                    const current = getValues("galleryText") || ""
+                    const updated = current.trim() ? `${current.trim()}\n${url}` : url
+                    setValue("galleryText", updated, { shouldDirty: true })
+                    toast.success("Media asset uploaded & appended to gallery list!")
+                  }}
+                  folder="properties/gallery"
+                  aspectRatio="video"
                 />
+
+                <div className="space-y-1.5 pt-2">
+                  <Label htmlFor="gallery" className="text-xs font-medium">
+                    Gallery Asset URLs (One per line)
+                  </Label>
+                  <Textarea
+                    id="gallery"
+                    rows={4}
+                    {...register("galleryText")}
+                    placeholder="/FagalaPlaza/image1.webp&#10;/FagalaPlaza/image2.webp"
+                  />
+                </div>
               </div>
 
               <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                 <div className="space-y-1.5">
-                  <Label htmlFor="videoSrc" className="text-xs font-medium">
-                    Video Tour URL (.webm / .mp4)
-                  </Label>
-                  <Input
-                    id="videoSrc"
-                    {...register("videoSrc")}
-                    placeholder="/FagalaPlaza/IMG_6803.webm"
+                  <Controller
+                    control={control}
+                    name="videoSrc"
+                    render={({ field }) => (
+                      <MediaUploader
+                        label="Video Tour Stream (.webm / .mp4)"
+                        acceptType="video"
+                        value={field.value || ""}
+                        onChange={(url) => field.onChange(url)}
+                        folder="properties/videos"
+                        aspectRatio="video"
+                      />
+                    )}
                   />
                 </div>
                 <div className="space-y-1.5">
-                  <Label htmlFor="videoPoster" className="text-xs font-medium">
-                    Video Poster Thumbnail URL
-                  </Label>
-                  <Input
-                    id="videoPoster"
-                    {...register("videoPoster")}
-                    placeholder="/FagalaPlaza/IMG_6803.webp"
+                  <Controller
+                    control={control}
+                    name="videoPoster"
+                    render={({ field }) => (
+                      <MediaUploader
+                        label="Video Poster Thumbnail (Image)"
+                        acceptType="image"
+                        value={field.value || ""}
+                        onChange={(url) => field.onChange(url)}
+                        folder="properties/posters"
+                        aspectRatio="video"
+                      />
+                    )}
                   />
                 </div>
               </div>

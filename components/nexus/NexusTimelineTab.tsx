@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { useForm } from "react-hook-form"
+import { useForm, Controller } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { z } from "zod"
 import { toast } from "sonner"
@@ -27,6 +27,14 @@ import {
   deleteMilestoneAction,
 } from "@/lib/content/actions"
 import type { TimelineMilestone } from "@/types/cre"
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
 
 const timelineModalSchema = z.object({
   year: z.string().min(4, "Year must be at least 4 digits"),
@@ -82,6 +90,7 @@ function MilestoneFormModal({
   const {
     register,
     handleSubmit,
+    control,
     formState: { errors, isSubmitting },
   } = useForm<TimelineModalFormData>({
     resolver: zodResolver(timelineModalSchema),
@@ -200,15 +209,28 @@ function MilestoneFormModal({
 
           <div className="space-y-1.5">
             <Label className="text-xs font-medium">Core Scope Category</Label>
-            <select
-              {...register("scopeCategory")}
-              className="flex h-8 w-full rounded-lg border border-input bg-transparent px-2.5 py-1 text-xs"
-            >
-              <option value="commercial">Commercial Real Estate</option>
-              <option value="heritage">Heritage & Founding</option>
-              <option value="infrastructure">Infrastructure & Contracting</option>
-              <option value="expansion">Regional Expansion</option>
-            </select>
+            <Controller
+              control={control}
+              name="scopeCategory"
+              render={({ field }) => (
+                <Select
+                  value={field.value}
+                  onValueChange={field.onChange}
+                >
+                  <SelectTrigger className="h-8 w-full text-xs">
+                    <SelectValue placeholder="Select scope category..." />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectGroup>
+                      <SelectItem value="commercial">Commercial Real Estate</SelectItem>
+                      <SelectItem value="heritage">Heritage & Founding</SelectItem>
+                      <SelectItem value="infrastructure">Infrastructure & Contracting</SelectItem>
+                      <SelectItem value="expansion">Regional Expansion</SelectItem>
+                    </SelectGroup>
+                  </SelectContent>
+                </Select>
+              )}
+            />
           </div>
 
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">

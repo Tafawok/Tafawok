@@ -11,6 +11,14 @@ import {
   contactFormSchema,
   type ContactFormData,
 } from "@/lib/validations/cre-schemas"
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
 
 interface ContactFormProps {
   initialProperty?: string
@@ -58,6 +66,12 @@ export function ContactForm({
     control,
     name: "inquiryType",
     defaultValue: "leasing",
+  })
+
+  const currentProperty = useWatch({
+    control,
+    name: "property",
+    defaultValue: initialProperty || "all",
   })
 
   const onSubmit = async (data: ContactFormData) => {
@@ -290,18 +304,34 @@ export function ContactForm({
               >
                 {t("contactForm.propertyLabel")}
               </label>
-              <select
-                id="property"
-                {...register("property")}
-                className="mt-2 w-full rounded-xl border border-border/80 bg-background px-4 py-2.5 text-xs text-foreground transition-colors focus:border-primary focus:ring-2 focus:ring-primary/20 focus:outline-none sm:text-sm"
+              <Select
+                value={currentProperty}
+                onValueChange={(val) => {
+                  if (val) {
+                    setValue("property", val, {
+                      shouldValidate: true,
+                      shouldDirty: true,
+                    })
+                  }
+                }}
               >
-                <option value="all">{t("contactForm.anyProperty")}</option>
-                {PROPERTIES.map((prop) => (
-                  <option key={prop.slug} value={prop.slug}>
-                    {prop.name[locale]} ({prop.name.en})
-                  </option>
-                ))}
-              </select>
+                <SelectTrigger
+                  id="property"
+                  className="mt-2 h-11 w-full rounded-xl border-border/80 bg-background px-4 text-xs text-foreground sm:text-sm"
+                >
+                  <SelectValue placeholder={t("contactForm.anyProperty")} />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectGroup>
+                    <SelectItem value="all">{t("contactForm.anyProperty")}</SelectItem>
+                    {PROPERTIES.map((prop) => (
+                      <SelectItem key={prop.slug} value={prop.slug}>
+                        {prop.name[locale]} ({prop.name.en})
+                      </SelectItem>
+                    ))}
+                  </SelectGroup>
+                </SelectContent>
+              </Select>
             </div>
           </div>
 
