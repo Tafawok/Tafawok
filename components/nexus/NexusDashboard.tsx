@@ -19,7 +19,6 @@ import {
   ExternalLink,
   LogOut,
   Loader2,
-  Sparkles,
 } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { toast } from "sonner"
@@ -46,9 +45,9 @@ import {
   SidebarSeparator,
 } from "@/components/ui/sidebar"
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
-import { Badge } from "@/components/ui/badge"
 import { LanguageToggle } from "@/components/layout/LanguageToggle"
 import { ThemeToggle } from "@/components/layout/ThemeToggle"
+import { PageImpactGuide } from "@/components/nexus/PageImpactGuide"
 
 import { NexusOverviewTab } from "@/components/nexus/NexusOverviewTab"
 import { NexusPropertiesTab } from "@/components/nexus/NexusPropertiesTab"
@@ -472,11 +471,17 @@ export function NexusDashboard({
         <SidebarInset className="flex min-w-0 flex-col bg-background">
           {/* TOP BAR / DASHBOARD HEADER */}
           <header className="sticky top-0 z-30 flex h-14 shrink-0 items-center justify-between border-b border-border/70 bg-card/85 px-4 backdrop-blur-md transition-all sm:px-6">
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-2.5">
               <SidebarTrigger className="-ms-1 size-8 rounded-lg text-muted-foreground hover:bg-muted hover:text-foreground" />
-              <span className="text-sm font-semibold tracking-tight text-foreground">
-                {isArabic ? activeItem.labelAr : activeItem.label}
-              </span>
+              <div className="flex items-center gap-2">
+                <span className="flex size-7 items-center justify-center rounded-md border border-primary/20 bg-primary/10 text-primary">
+                  <ActiveIcon className="size-3.5" />
+                </span>
+                <span className="text-sm font-semibold tracking-tight text-foreground">
+                  {isArabic ? activeItem.labelAr : activeItem.label}
+                </span>
+                <PageImpactGuide activeId={activeItem.id} isArabic={isArabic} />
+              </div>
             </div>
 
             {/* Right Controls Cluster */}
@@ -500,46 +505,8 @@ export function NexusDashboard({
           {/* MAIN VIEWPORT CANVAS */}
           <main className="flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8">
             <div className="mx-auto max-w-7xl space-y-6">
-              {/* Active Tab Hero / Action Header */}
-              <div className="flex flex-col gap-2 border-b border-border/50 pb-3 sm:flex-row sm:items-center sm:justify-between">
-                <div className="space-y-1">
-                  <div className="flex items-center gap-2.5">
-                    <div className="flex size-8 items-center justify-center rounded-lg border border-primary/20 bg-primary/10 text-primary">
-                      <ActiveIcon className="size-4" />
-                    </div>
-                    <h1 className="text-xl font-bold tracking-tight text-foreground sm:text-2xl">
-                      {isArabic ? activeItem.labelAr : activeItem.label}
-                    </h1>
-                  </div>
-                  <p className="text-xs text-muted-foreground sm:text-sm">
-                    {activeItem.description}
-                  </p>
-                </div>
-
-                {/* Status Badges */}
-                <div className="flex items-center gap-2 self-start sm:self-auto">
-                  <Badge
-                    variant="outline"
-                    className="border-primary/30 bg-primary/10 px-2.5 py-1 text-xs text-primary"
-                  >
-                    <Sparkles className="me-1 size-3" />
-                    Super Admin Suite
-                  </Badge>
-                  {activeItem.badge !== null &&
-                    activeItem.badge !== undefined && (
-                      <Badge
-                        variant={activeItem.badgeVariant || "secondary"}
-                        className="px-2.5 py-1 text-xs"
-                      >
-                        {activeItem.badge}{" "}
-                        {typeof activeItem.badge === "number" ? "items" : ""}
-                      </Badge>
-                    )}
-                </div>
-              </div>
-
               {/* ACTIVE TAB RENDER */}
-              <div className="pt-1">
+              <div>
                 {activeTab === "overview" && (
                   <NexusOverviewTab
                     properties={properties}

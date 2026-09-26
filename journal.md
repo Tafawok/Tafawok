@@ -1115,6 +1115,10 @@ Chronological decision log tracking major architectural milestones and engineeri
     - **Interactive Canvas Visual Control:** Powered by [`MediaUploader`](file:///Users/omartemsah/WebProjects/Tafawok/components/nexus/MediaUploader.tsx) supporting direct drag-and-drop file uploads to Supabase Storage, CDN link generation, real-time media preview, and manual URL input.
     - **Bilingual Content Editing:** Live EN/AR fields for hero headline, subheadline, CTA text, credentials, section headers, overlay card copy, and 3-column showcase statistics.
     - **Instant Revalidation:** Mutation via `saveSiteSettingAction("homepage_settings", ...)` immediately triggers Next.js tag-based cache revalidation across `/`, `/about`, `/ceo-message`, `/contact`, and `/properties`.
+  - **Nexus Dashboard UX Refinement & Interactive Public Impact Guide (`PageImpactGuide.tsx`):**
+    - Removed redundant hero header section containing the "Super Admin Suite" badge from [`components/nexus/NexusDashboardLayout.tsx`](file:///Users/omartemsah/WebProjects/Tafawok/components/nexus/NexusDashboardLayout.tsx) and [`components/nexus/NexusDashboard.tsx`](file:///Users/omartemsah/WebProjects/Tafawok/components/nexus/NexusDashboard.tsx), eliminating visual clutter above individual tabs.
+    - Integrated shadcn `<HoverCard>` component (`components/ui/hover-card.tsx` via `@base-ui/react/preview-card`) and built [`components/nexus/PageImpactGuide.tsx`](file:///Users/omartemsah/WebProjects/Tafawok/components/nexus/PageImpactGuide.tsx).
+    - Added an intuitive Info icon (`(i)`) directly alongside the active section title in the sticky top header. On hover, displays an architectural guide detailing exactly what the current page controls, bullet points of every affected public URL and section, direct "Open in New Tab" preview action buttons, and administrator guidelines in both English and Arabic.
   - **Quality Gates Verification:**
     - `npx tsc --noEmit`: **0 errors** across entire codebase.
     - `npm run lint`: **0 errors, 0 warnings**.
