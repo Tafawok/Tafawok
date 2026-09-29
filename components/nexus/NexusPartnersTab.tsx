@@ -15,6 +15,7 @@ import {
   Factory,
   HardHat,
   Loader2,
+  AlertTriangle,
 } from "lucide-react"
 import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
@@ -30,6 +31,17 @@ import {
   DialogDescription,
   DialogFooter,
 } from "@/components/ui/dialog"
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogMedia,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog"
 import { useRouter } from "next/navigation"
 import { savePartnerAction, deletePartnerAction } from "@/lib/content/actions"
 import type { ClientPartner } from "@/types/cre"
@@ -219,6 +231,10 @@ export function NexusPartnersTab({
     React.useState<ClientPartner | null>(null)
   const [selectedIndex, setSelectedIndex] = React.useState<number>(0)
   const [modalOpen, setModalOpen] = React.useState(false)
+  const [partnerToDelete, setPartnerToDelete] = React.useState<{
+    partner: ClientPartner
+    idx: number
+  } | null>(null)
   const [deletingId, setDeletingId] = React.useState<string | null>(null)
 
   const handleCreate = () => {
@@ -233,17 +249,16 @@ export function NexusPartnersTab({
     setModalOpen(true)
   }
 
-  const handleDelete = async (p: ClientPartner, idx: number) => {
+  const confirmDelete = async () => {
+    if (!partnerToDelete) return
+    const { partner, idx } = partnerToDelete
     const partnerId = `partner-${idx + 1}`
-    const confirmed = window.confirm(
-      `Are you sure you want to delete partner "${p.name}"?`
-    )
-    if (!confirmed) return
 
     setDeletingId(partnerId)
     try {
       await deletePartnerAction(partnerId)
-      toast.success(`Deleted ${p.name} successfully.`)
+      toast.success(`Deleted ${partner.name} successfully.`)
+      setPartnerToDelete(null)
       handleRefresh()
     } catch (err: unknown) {
       const message =
@@ -330,7 +345,7 @@ export function NexusPartnersTab({
                 <Button
                   variant="outline"
                   size="sm"
-                  onClick={() => handleDelete(p, idx)}
+                  onClick={() => setPartnerToDelete({ partner: p, idx })}
                   disabled={deletingId === `partner-${idx + 1}`}
                   className="h-6 px-2 text-xs text-destructive hover:bg-destructive/10"
                 >
@@ -356,6 +371,40 @@ export function NexusPartnersTab({
           )}
         </DialogContent>
       </Dialog>
+
+      {/* Delete Confirmation Alert Dialog */}
+      <AlertDialog
+        open={Boolean(partnerToDelete)}
+        onOpenChange={(open) => !open && setPartnerToDelete(null)}
+      >
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogMedia>
+              <AlertTriangle />
+            </AlertDialogMedia>
+            <AlertDialogTitle>Delete Strategic Partner?</AlertDialogTitle>
+            <AlertDialogDescription>
+              Are you sure you want to permanently delete partner{" "}
+              <strong className="text-foreground">
+                {partnerToDelete?.partner.name}
+              </strong>
+              ? This action cannot be undone.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel disabled={Boolean(deletingId)}>
+              Cancel
+            </AlertDialogCancel>
+            <AlertDialogAction
+              variant="danger"
+              disabled={Boolean(deletingId)}
+              onClick={confirmDelete}
+            >
+              {deletingId ? "Deleting..." : "Permanently Delete"}
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   )
 }

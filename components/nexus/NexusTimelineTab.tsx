@@ -5,7 +5,7 @@ import { useForm, Controller } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { z } from "zod"
 import { toast } from "sonner"
-import { Plus, Pencil, Trash2, CheckCircle2, Loader2 } from "lucide-react"
+import { Plus, Pencil, Trash2, CheckCircle2, Loader2, AlertTriangle } from "lucide-react"
 import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -21,6 +21,17 @@ import {
   DialogDescription,
   DialogFooter,
 } from "@/components/ui/dialog"
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogMedia,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog"
 import { useRouter } from "next/navigation"
 import {
   saveMilestoneAction,
@@ -319,6 +330,8 @@ export function NexusTimelineTab({
   const [selectedMilestone, setSelectedMilestone] =
     React.useState<TimelineMilestone | null>(null)
   const [modalOpen, setModalOpen] = React.useState(false)
+  const [milestoneToDelete, setMilestoneToDelete] =
+    React.useState<TimelineMilestone | null>(null)
   const [deletingId, setDeletingId] = React.useState<string | null>(null)
 
   const handleCreate = () => {
@@ -331,14 +344,16 @@ export function NexusTimelineTab({
     setModalOpen(true)
   }
 
-  const handleDelete = async (m: TimelineMilestone) => {
-    if (!confirm(`Are you sure you want to delete milestone ${m.year}?`)) return
+  const confirmDelete = async () => {
+    if (!milestoneToDelete) return
+    const m = milestoneToDelete
     const milestoneId = `milestone-${m.year}`
     setDeletingId(milestoneId)
 
     try {
       await deleteMilestoneAction(milestoneId)
       toast.success("Milestone deleted successfully!")
+      setMilestoneToDelete(null)
       handleRefresh()
     } catch (err: unknown) {
       const message =
@@ -437,7 +452,7 @@ export function NexusTimelineTab({
                 <Button
                   variant="outline"
                   size="sm"
-                  onClick={() => handleDelete(m)}
+                  onClick={() => setMilestoneToDelete(m)}
                   disabled={deletingId === `milestone-${m.year}`}
                   className="h-7 text-xs text-destructive hover:bg-destructive/10"
                 >
@@ -462,6 +477,40 @@ export function NexusTimelineTab({
           )}
         </DialogContent>
       </Dialog>
+
+      {/* Delete Confirmation Alert Dialog */}
+      <AlertDialog
+        open={Boolean(milestoneToDelete)}
+        onOpenChange={(open) => !open && setMilestoneToDelete(null)}
+      >
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogMedia>
+              <AlertTriangle />
+            </AlertDialogMedia>
+            <AlertDialogTitle>Delete Timeline Milestone?</AlertDialogTitle>
+            <AlertDialogDescription>
+              Are you sure you want to permanently delete the milestone for year{" "}
+              <strong className="text-foreground">
+                {milestoneToDelete?.year}
+              </strong>{" "}
+              ({milestoneToDelete?.title.en})? This action cannot be undone.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel disabled={Boolean(deletingId)}>
+              Cancel
+            </AlertDialogCancel>
+            <AlertDialogAction
+              variant="danger"
+              disabled={Boolean(deletingId)}
+              onClick={confirmDelete}
+            >
+              {deletingId ? "Deleting..." : "Permanently Delete"}
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   )
 }

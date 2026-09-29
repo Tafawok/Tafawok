@@ -1464,6 +1464,8 @@ export const UI_DICTIONARY = {
     },
   },
   contactForm: {
+    badge: { en: en.contactForm.badge, ar: ar.contactForm.badge },
+    sla: { en: en.contactForm.sla, ar: ar.contactForm.sla },
     title: { en: en.contactForm.title, ar: ar.contactForm.title },
     subtitle: { en: en.contactForm.subtitle, ar: ar.contactForm.subtitle },
     nameLabel: { en: en.contactForm.nameLabel, ar: ar.contactForm.nameLabel },
@@ -1529,13 +1531,29 @@ export const UI_DICTIONARY = {
       en: en.contactForm.submitBtn,
       ar: ar.contactForm.submitBtn,
     },
+    submitButton: {
+      en: en.contactForm.submitButton,
+      ar: ar.contactForm.submitButton,
+    },
     submittingBtn: {
       en: en.contactForm.submittingBtn,
       ar: ar.contactForm.submittingBtn,
     },
+    sending: {
+      en: en.contactForm.sending,
+      ar: ar.contactForm.sending,
+    },
+    successTitle: {
+      en: en.contactForm.successTitle,
+      ar: ar.contactForm.successTitle,
+    },
     successMessage: {
       en: en.contactForm.successMessage,
       ar: ar.contactForm.successMessage,
+    },
+    sendAnother: {
+      en: en.contactForm.sendAnother,
+      ar: ar.contactForm.sendAnother,
     },
     errorMessage: {
       en: en.contactForm.errorMessage,

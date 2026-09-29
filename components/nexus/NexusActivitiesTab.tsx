@@ -20,19 +20,23 @@ import {
   Store,
   Compass,
   Users,
+  AlertTriangle,
 } from "lucide-react"
 import { toast } from "sonner"
 import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogDescription,
-  DialogFooter,
-} from "@/components/ui/dialog"
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogMedia,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog"
 import { NexusActivityModal } from "@/components/nexus/NexusActivityModal"
 import { NexusBannerModal } from "@/components/nexus/NexusBannerModal"
 import {
@@ -42,7 +46,11 @@ import {
   toggleBannerActiveAction,
 } from "@/lib/content/actions"
 import { NotificationBanner as BannerPreviewComponent } from "@/components/layout/NotificationBanner"
-import type { Activity, NotificationBanner, ActivityCategory } from "@/types/cre"
+import type {
+  Activity,
+  NotificationBanner,
+  ActivityCategory,
+} from "@/types/cre"
 
 interface NexusActivitiesTabProps {
   initialActivities: Activity[]
@@ -63,9 +71,13 @@ export function NexusActivitiesTab({
 }: NexusActivitiesTabProps) {
   const router = useRouter()
 
-  const [activeTab, setActiveTab] = React.useState<"activities" | "banners">("activities")
-  const [activitiesList, setActivitiesList] = React.useState<Activity[]>(initialActivities)
-  const [bannersList, setBannersList] = React.useState<NotificationBanner[]>(initialBanners)
+  const [activeTab, setActiveTab] = React.useState<"activities" | "banners">(
+    "activities"
+  )
+  const [activitiesList, setActivitiesList] =
+    React.useState<Activity[]>(initialActivities)
+  const [bannersList, setBannersList] =
+    React.useState<NotificationBanner[]>(initialBanners)
   const [searchQuery, setSearchQuery] = React.useState("")
 
   // Synchronize state if props change without cascading effect renders
@@ -84,10 +96,13 @@ export function NexusActivitiesTab({
 
   // Modal States
   const [activityModalOpen, setActivityModalOpen] = React.useState(false)
-  const [editingActivity, setEditingActivity] = React.useState<Activity | null>(null)
+  const [editingActivity, setEditingActivity] = React.useState<Activity | null>(
+    null
+  )
 
   const [bannerModalOpen, setBannerModalOpen] = React.useState(false)
-  const [editingBanner, setEditingBanner] = React.useState<NotificationBanner | null>(null)
+  const [editingBanner, setEditingBanner] =
+    React.useState<NotificationBanner | null>(null)
 
   // Delete Dialog States
   const [deleteDialogOpen, setDeleteDialogOpen] = React.useState(false)
@@ -118,7 +133,9 @@ export function NexusActivitiesTab({
     try {
       if (itemToDelete.type === "activity") {
         await deleteActivityAction(itemToDelete.id)
-        setActivitiesList((prev) => prev.filter((a) => a.id !== itemToDelete.id))
+        setActivitiesList((prev) =>
+          prev.filter((a) => a.id !== itemToDelete.id)
+        )
         toast.success("Activity deleted successfully.")
       } else {
         await deleteNotificationBannerAction(itemToDelete.id)
@@ -141,14 +158,20 @@ export function NexusActivitiesTab({
     try {
       await toggleActivityPublishedAction(activity.id, newStatus)
       setActivitiesList((prev) =>
-        prev.map((a) => (a.id === activity.id ? { ...a, isPublished: newStatus } : a))
+        prev.map((a) =>
+          a.id === activity.id ? { ...a, isPublished: newStatus } : a
+        )
       )
       toast.success(
-        newStatus ? "Activity published to live site!" : "Activity hidden from public site."
+        newStatus
+          ? "Activity published to live site!"
+          : "Activity hidden from public site."
       )
       router.refresh()
     } catch (err) {
-      toast.error(err instanceof Error ? err.message : "Failed to toggle status.")
+      toast.error(
+        err instanceof Error ? err.message : "Failed to toggle status."
+      )
     }
   }
 
@@ -158,14 +181,18 @@ export function NexusActivitiesTab({
     try {
       await toggleBannerActiveAction(banner.id, newStatus)
       setBannersList((prev) =>
-        prev.map((b) => (b.id === banner.id ? { ...b, isActive: newStatus } : b))
+        prev.map((b) =>
+          b.id === banner.id ? { ...b, isActive: newStatus } : b
+        )
       )
       toast.success(
         newStatus ? "Banner activated for live display!" : "Banner deactivated."
       )
       router.refresh()
     } catch (err) {
-      toast.error(err instanceof Error ? err.message : "Failed to toggle banner.")
+      toast.error(
+        err instanceof Error ? err.message : "Failed to toggle banner."
+      )
     }
   }
 
@@ -191,7 +218,8 @@ export function NexusActivitiesTab({
             Activities, Bazaars & Announcement Banners
           </h1>
           <p className="text-xs text-muted-foreground sm:text-sm">
-            Publish company happenings, retail expos, and configure time-scheduled top ribbons.
+            Publish company happenings, retail expos, and configure
+            time-scheduled top ribbons.
           </p>
         </div>
 
@@ -202,7 +230,7 @@ export function NexusActivitiesTab({
                 setEditingActivity(null)
                 setActivityModalOpen(true)
               }}
-              className="gap-1.5 cursor-pointer shadow-xs"
+              className="cursor-pointer gap-1.5 shadow-xs"
             >
               <Plus className="h-4 w-4" />
               <span>Create Activity</span>
@@ -213,7 +241,7 @@ export function NexusActivitiesTab({
                 setEditingBanner(null)
                 setBannerModalOpen(true)
               }}
-              className="gap-1.5 cursor-pointer shadow-xs"
+              className="cursor-pointer gap-1.5 shadow-xs"
             >
               <Plus className="h-4 w-4" />
               <span>Create Announcement Banner</span>
@@ -227,7 +255,7 @@ export function NexusActivitiesTab({
         <button
           type="button"
           onClick={() => setActiveTab("activities")}
-          className={`flex items-center gap-2 border-b-2 px-4 py-2.5 text-xs font-semibold transition-colors cursor-pointer select-none sm:text-sm ${
+          className={`flex cursor-pointer items-center gap-2 border-b-2 px-4 py-2.5 text-xs font-semibold transition-colors select-none sm:text-sm ${
             activeTab === "activities"
               ? "border-primary text-primary"
               : "border-transparent text-muted-foreground hover:text-foreground"
@@ -240,7 +268,7 @@ export function NexusActivitiesTab({
         <button
           type="button"
           onClick={() => setActiveTab("banners")}
-          className={`flex items-center gap-2 border-b-2 px-4 py-2.5 text-xs font-semibold transition-colors cursor-pointer select-none sm:text-sm ${
+          className={`flex cursor-pointer items-center gap-2 border-b-2 px-4 py-2.5 text-xs font-semibold transition-colors select-none sm:text-sm ${
             activeTab === "banners"
               ? "border-primary text-primary"
               : "border-transparent text-muted-foreground hover:text-foreground"
@@ -262,7 +290,7 @@ export function NexusActivitiesTab({
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Search activities..."
-              className="h-9 w-full rounded-lg border border-border bg-background pe-3 ps-9 text-xs outline-none placeholder:text-muted-foreground focus:border-primary"
+              className="h-9 w-full rounded-lg border border-border bg-background ps-9 pe-3 text-xs outline-none placeholder:text-muted-foreground focus:border-primary"
             />
           </div>
 
@@ -270,9 +298,12 @@ export function NexusActivitiesTab({
             <Card>
               <CardContent className="flex flex-col items-center justify-center p-10 text-center">
                 <Calendar className="h-10 w-10 text-muted-foreground/60" />
-                <p className="mt-3 text-sm font-semibold text-foreground">No activities found</p>
+                <p className="mt-3 text-sm font-semibold text-foreground">
+                  No activities found
+                </p>
                 <p className="text-xs text-muted-foreground">
-                  Create your first company bazaar, launch, or event announcement.
+                  Create your first company bazaar, launch, or event
+                  announcement.
                 </p>
               </CardContent>
             </Card>
@@ -284,7 +315,9 @@ export function NexusActivitiesTab({
                   <Card
                     key={act.id}
                     className={`overflow-hidden border transition-all ${
-                      act.isPublished ? "border-border" : "border-amber-500/40 opacity-75"
+                      act.isPublished
+                        ? "border-border"
+                        : "border-amber-500/40 opacity-75"
                     }`}
                   >
                     <div className="relative aspect-[16/9] w-full bg-muted">
@@ -296,12 +329,17 @@ export function NexusActivitiesTab({
                         sizes="(max-width: 640px) 100vw, 33vw"
                       />
                       <div className="absolute start-2 top-2 flex items-center gap-1.5">
-                        <Badge variant="secondary" className="gap-1 text-[10px] backdrop-blur-sm">
+                        <Badge
+                          variant="secondary"
+                          className="gap-1 text-[10px] backdrop-blur-sm"
+                        >
                           <Icon className="h-3 w-3" />
                           <span className="capitalize">{act.category}</span>
                         </Badge>
                         <Badge
-                          variant={act.status === "ongoing" ? "default" : "outline"}
+                          variant={
+                            act.status === "ongoing" ? "default" : "outline"
+                          }
                           className="text-[10px] capitalize"
                         >
                           {act.status}
@@ -310,27 +348,32 @@ export function NexusActivitiesTab({
 
                       {act.featured && (
                         <div className="absolute end-2 top-2">
-                          <Badge className="bg-amber-500 text-white text-[10px]">
-                            <Sparkles className="h-2.5 w-2.5 me-1" />
+                          <Badge className="bg-amber-500 text-[10px] text-white">
+                            <Sparkles className="me-1 h-2.5 w-2.5" />
                             Featured
                           </Badge>
                         </div>
                       )}
                     </div>
 
-                    <CardContent className="p-4 space-y-3">
+                    <CardContent className="space-y-3 p-4">
                       <div>
-                        <div className="flex items-center gap-1 text-[11px] font-mono text-muted-foreground">
+                        <div className="flex items-center gap-1 font-mono text-[11px] text-muted-foreground">
                           <Clock className="h-3 w-3 text-primary" />
                           <span>
                             {formatShortDate(act.startDate)}{" "}
-                            {act.endDate ? `– ${formatShortDate(act.endDate)}` : ""}
+                            {act.endDate
+                              ? `– ${formatShortDate(act.endDate)}`
+                              : ""}
                           </span>
                         </div>
-                        <h3 className="mt-1 line-clamp-1 font-bold text-sm text-foreground">
+                        <h3 className="mt-1 line-clamp-1 text-sm font-bold text-foreground">
                           {act.title.en}
                         </h3>
-                        <p className="text-[11px] text-muted-foreground font-arabic text-right line-clamp-1" dir="rtl">
+                        <p
+                          className="font-arabic line-clamp-1 text-right text-[11px] text-muted-foreground"
+                          dir="rtl"
+                        >
                           {act.title.ar}
                         </p>
                       </div>
@@ -352,7 +395,11 @@ export function NexusActivitiesTab({
                             size="icon"
                             className="h-8 w-8 cursor-pointer"
                             onClick={() => handleTogglePublished(act)}
-                            title={act.isPublished ? "Unpublish activity" : "Publish activity"}
+                            title={
+                              act.isPublished
+                                ? "Unpublish activity"
+                                : "Publish activity"
+                            }
                           >
                             {act.isPublished ? (
                               <Eye className="h-4 w-4 text-emerald-600" />
@@ -365,7 +412,7 @@ export function NexusActivitiesTab({
                             href={`/activities/${act.slug}`}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="inline-flex h-8 w-8 items-center justify-center rounded-md text-muted-foreground transition-colors hover:text-foreground hover:bg-secondary"
+                            className="inline-flex h-8 w-8 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground"
                             title="Preview public page"
                           >
                             <ExternalLink className="h-3.5 w-3.5" />
@@ -418,22 +465,27 @@ export function NexusActivitiesTab({
         <div className="space-y-6">
           {/* Live Preview Box */}
           {bannersList.length > 0 && (
-            <div className="rounded-xl border border-primary/30 bg-card p-4 space-y-2">
+            <div className="space-y-2 rounded-xl border border-primary/30 bg-card p-4">
               <div className="flex items-center justify-between text-xs font-semibold text-muted-foreground">
                 <span className="flex items-center gap-1 text-primary">
                   <Sparkles className="h-3.5 w-3.5" />
                   Live Ribbon Rendering Sample (Preview)
                 </span>
-                <span className="text-[11px] font-mono">
-                  {bannersList.find((b) => b.isActive) ? "Active Banner Enabled" : "No Active Banner"}
+                <span className="font-mono text-[11px]">
+                  {bannersList.find((b) => b.isActive)
+                    ? "Active Banner Enabled"
+                    : "No Active Banner"}
                 </span>
               </div>
               <div className="overflow-hidden rounded-lg border border-border">
                 {bannersList.find((b) => b.isActive) ? (
-                  <BannerPreviewComponent banner={bannersList.find((b) => b.isActive)} />
+                  <BannerPreviewComponent
+                    banner={bannersList.find((b) => b.isActive)}
+                  />
                 ) : (
                   <div className="p-4 text-center text-xs text-muted-foreground">
-                    Currently no banners are toggled active. Toggle a banner below to activate the public ribbon.
+                    Currently no banners are toggled active. Toggle a banner
+                    below to activate the public ribbon.
                   </div>
                 )}
               </div>
@@ -444,9 +496,12 @@ export function NexusActivitiesTab({
             <Card>
               <CardContent className="flex flex-col items-center justify-center p-10 text-center">
                 <Bell className="h-10 w-10 text-muted-foreground/60" />
-                <p className="mt-3 text-sm font-semibold text-foreground">No announcement banners</p>
+                <p className="mt-3 text-sm font-semibold text-foreground">
+                  No announcement banners
+                </p>
                 <p className="text-xs text-muted-foreground">
-                  Create a banner to announce launches, active bazaars, or events on the top of the site.
+                  Create a banner to announce launches, active bazaars, or
+                  events on the top of the site.
                 </p>
               </CardContent>
             </Card>
@@ -456,13 +511,18 @@ export function NexusActivitiesTab({
                 <Card
                   key={banner.id}
                   className={`p-4 transition-all ${
-                    banner.isActive ? "border-primary/50 shadow-xs" : "border-border/60 opacity-70"
+                    banner.isActive
+                      ? "border-primary/50 shadow-xs"
+                      : "border-border/60 opacity-70"
                   }`}
                 >
                   <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-                    <div className="space-y-1.5 flex-1">
+                    <div className="flex-1 space-y-1.5">
                       <div className="flex flex-wrap items-center gap-2">
-                        <Badge variant="outline" className="capitalize text-[10px]">
+                        <Badge
+                          variant="outline"
+                          className="text-[10px] capitalize"
+                        >
                           {banner.type}
                         </Badge>
                         <Badge
@@ -476,7 +536,7 @@ export function NexusActivitiesTab({
                         </span>
                       </div>
 
-                      <h4 className="font-bold text-sm text-foreground">
+                      <h4 className="text-sm font-bold text-foreground">
                         {banner.title.en}
                       </h4>
                       <p className="text-xs text-muted-foreground">
@@ -485,7 +545,8 @@ export function NexusActivitiesTab({
 
                       <div className="flex flex-wrap items-center gap-3 text-[11px] text-muted-foreground">
                         <span className="font-mono">
-                          Schedule: {formatShortDate(banner.startDate)} – {formatShortDate(banner.endDate)}
+                          Schedule: {formatShortDate(banner.startDate)} –{" "}
+                          {formatShortDate(banner.endDate)}
                         </span>
                         {banner.location && (
                           <span>• Location: {banner.location.en}</span>
@@ -501,7 +562,7 @@ export function NexusActivitiesTab({
                         variant={banner.isActive ? "secondary" : "default"}
                         size="sm"
                         onClick={() => handleToggleBannerActive(banner)}
-                        className="cursor-pointer text-xs h-8"
+                        className="h-8 cursor-pointer text-xs"
                       >
                         {banner.isActive ? "Deactivate" : "Activate"}
                       </Button>
@@ -558,34 +619,32 @@ export function NexusActivitiesTab({
         onSaved={() => router.refresh()}
       />
 
-      {/* Delete Confirmation Dialog */}
-      <Dialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
-        <DialogContent className="max-w-md">
-          <DialogHeader>
-            <DialogTitle>Confirm Deletion</DialogTitle>
-            <DialogDescription>
+      {/* Delete Confirmation Alert Dialog */}
+      <AlertDialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogMedia>
+              <AlertTriangle />
+            </AlertDialogMedia>
+            <AlertDialogTitle>Confirm Deletion</AlertDialogTitle>
+            <AlertDialogDescription>
               Are you sure you want to permanently delete{" "}
-              <strong>{itemToDelete?.title}</strong>? This action cannot be undone.
-            </DialogDescription>
-          </DialogHeader>
-          <DialogFooter className="mt-4">
-            <Button
-              variant="outline"
-              onClick={() => setDeleteDialogOpen(false)}
+              <strong className="text-foreground">{itemToDelete?.title}</strong>
+              ? This action cannot be undone.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel disabled={isDeleting}>Cancel</AlertDialogCancel>
+            <AlertDialogAction
+              variant="danger"
               disabled={isDeleting}
-            >
-              Cancel
-            </Button>
-            <Button
-              variant="destructive"
               onClick={confirmDelete}
-              disabled={isDeleting}
             >
               {isDeleting ? "Deleting..." : "Permanently Delete"}
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   )
 }

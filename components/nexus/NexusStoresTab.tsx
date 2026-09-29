@@ -2,10 +2,21 @@
 
 import * as React from "react"
 import { toast } from "sonner"
-import { Plus, Pencil, Trash2, Phone, MapPin, Tag } from "lucide-react"
+import { Plus, Pencil, Trash2, Phone, MapPin, Tag, AlertTriangle } from "lucide-react"
 import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogMedia,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog"
 import { useRouter } from "next/navigation"
 import { NexusStoreModal } from "@/components/nexus/NexusStoreModal"
 import { deleteStoreAction } from "@/lib/content/actions"
@@ -25,6 +36,7 @@ export function NexusStoresTab({ properties, onRefresh }: NexusStoresTabProps) {
   const [selectedStore, setSelectedStore] = React.useState<
     (StoreItem & { propertyId?: string }) | null
   >(null)
+  const [storeToDelete, setStoreToDelete] = React.useState<StoreItem | null>(null)
   const [deletingId, setDeletingId] = React.useState<string | null>(null)
 
   // Flatten all stores with their property id & name
@@ -61,16 +73,14 @@ export function NexusStoresTab({ properties, onRefresh }: NexusStoresTabProps) {
     setModalOpen(true)
   }
 
-  const handleDelete = async (s: StoreItem) => {
-    const confirmed = window.confirm(
-      `Are you sure you want to delete store "${s.name.en}"?`
-    )
-    if (!confirmed) return
-
+  const confirmDelete = async () => {
+    if (!storeToDelete) return
+    const s = storeToDelete
     setDeletingId(s.id)
     try {
       await deleteStoreAction(s.id)
       toast.success(`Deleted ${s.name.en} successfully.`)
+      setStoreToDelete(null)
       handleRefresh()
     } catch (err: unknown) {
       const message =
@@ -198,7 +208,7 @@ export function NexusStoresTab({ properties, onRefresh }: NexusStoresTabProps) {
                   <Button
                     variant="outline"
                     size="sm"
-                    onClick={() => handleDelete(s)}
+                    onClick={() => setStoreToDelete(s)}
                     disabled={deletingId === s.id}
                     className="h-6 px-2 text-[11px] text-destructive hover:bg-destructive/10"
                   >
@@ -221,6 +231,39 @@ export function NexusStoresTab({ properties, onRefresh }: NexusStoresTabProps) {
         store={selectedStore}
         onSaved={handleRefresh}
       />
+
+      <AlertDialog
+        open={Boolean(storeToDelete)}
+        onOpenChange={(open) => !open && setStoreToDelete(null)}
+      >
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogMedia>
+              <AlertTriangle />
+            </AlertDialogMedia>
+            <AlertDialogTitle>Delete Retail Tenant?</AlertDialogTitle>
+            <AlertDialogDescription>
+              Are you sure you want to permanently delete{" "}
+              <strong className="text-foreground">
+                {storeToDelete?.name.en}
+              </strong>
+              ? This action cannot be undone.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel disabled={Boolean(deletingId)}>
+              Cancel
+            </AlertDialogCancel>
+            <AlertDialogAction
+              variant="danger"
+              disabled={Boolean(deletingId)}
+              onClick={confirmDelete}
+            >
+              {deletingId ? "Deleting..." : "Permanently Delete"}
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   )
 }

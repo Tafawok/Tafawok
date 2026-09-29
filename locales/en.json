@@ -179,6 +179,8 @@
     "headquartersAddress": "Headquarters Office"
   },
   "contactForm": {
+    "badge": "Direct Commercial Desk",
+    "sla": "24h Response SLA",
     "title": "Send an Official Inquiry",
     "subtitle": "Our corporate leasing and investment desk will respond within 24 business hours.",
     "nameLabel": "Full Name",
@@ -199,8 +201,12 @@
     "messageLabel": "Inquiry Details & Requirements",
     "messagePlaceholder": "Please specify required floor area, preferred property, intended commercial use, and any special technical requirements...",
     "submitBtn": "Submit Official Inquiry",
+    "submitButton": "Submit Official Inquiry",
     "submittingBtn": "Transmitting via Secure SMTP...",
+    "sending": "Transmitting via Secure SMTP...",
+    "successTitle": "Inquiry Transmitted Successfully",
     "successMessage": "Inquiry successfully received. Our executive commercial team has been notified.",
+    "sendAnother": "Send Another Inquiry",
     "errorMessage": "Transmission failed. Please check connection or reach our owner directly by phone."
   },
   "footer": {
@@ -267,7 +273,8 @@
     "chapterAddress": "Formal Address",
     "chapterDoctrine": "Strategic Doctrine",
     "chapterMilestones": "Career Milestones",
-    "chapterReach": "Direct Reach"
+    "chapterReach": "Direct Reach",
+    "experienceYears": "Years Commercial Experience"
   },
   "contactPage": {
     "badge": "Official Communication Channel",

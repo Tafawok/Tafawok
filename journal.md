@@ -1282,3 +1282,30 @@ Chronological decision log tracking major architectural milestones and engineeri
     - `npx tsc --noEmit`: **0 errors**.
     - `npm run lint`: **0 warnings, 0 errors**.
     - `npm run build`: **100% successful compilation** across all 20 routes.
+
+- **Milestone 16: Static Content Translation Audit & shadcn Danger AlertDialog Integration (2026-09-30):**
+  - **Static Content Translation Review & Parity Audit:**
+    - Performed a full static content and i18n dictionary audit across the codebase to eliminate raw key fallbacks.
+    - Added missing translation keys to both [`locales/en.json`](file:///Users/omartemsah/WebProjects/Tafawok/locales/en.json) and [`locales/ar.json`](file:///Users/omartemsah/WebProjects/Tafawok/locales/ar.json) with strict bilingual parity:
+      - `contactForm.badge`: "Direct Commercial Desk" / "مكتب الاستفسارات التجارية"
+      - `contactForm.sla`: "24h Response SLA" / "استجابة خلال 24 ساعة عمل"
+      - `contactForm.successTitle`: "Inquiry Transmitted Successfully" / "تم إرسال استفسارك بنجاح"
+      - `contactForm.sendAnother`: "Send Another Inquiry" / "إرسال استفسار آخر"
+      - `contactForm.submitButton`: "Submit Official Inquiry" / "إرسال الاستفسار الآن"
+      - `contactForm.sending`: "Transmitting via Secure SMTP..." / "جاري الإرسال عبر المخدم الآمن..."
+      - `ceoMessage.experienceYears`: "Years Commercial Experience" / "عاماً من الخبرة التجارية"
+    - Synchronized [`content/cre-data.ts`](file:///Users/omartemsah/WebProjects/Tafawok/content/cre-data.ts) `STATIC_CRE_CONTENT.contactForm` to expose all new bilingual properties cleanly.
+  - **shadcn AlertDialog with Danger Variant Implementation:**
+    - Installed and styled [`components/ui/alert-dialog.tsx`](file:///Users/omartemsah/WebProjects/Tafawok/components/ui/alert-dialog.tsx) following shadcn `@base-ui/react` conventions with true RTL support (`inset-s-1/2`, `rtl:translate-x-1/2`), blurred backdrop overlay, and architectural card framing.
+    - Added dedicated `danger` variant to [`components/ui/button.tsx`](file:///Users/omartemsah/WebProjects/Tafawok/components/ui/button.tsx) (`bg-destructive text-white hover:bg-destructive/90 shadow-xs font-semibold`) for high-contrast, accessible destructive confirmations.
+    - Replaced all legacy browser `window.confirm()` and native alert dialogs across the Nexus management portal with `AlertDialog`:
+      - Retail Store Directory ([`components/nexus/NexusStoresTab.tsx`](file:///Users/omartemsah/WebProjects/Tafawok/components/nexus/NexusStoresTab.tsx))
+      - Corporate Inquiries Desk ([`components/nexus/NexusInquiriesTab.tsx`](file:///Users/omartemsah/WebProjects/Tafawok/components/nexus/NexusInquiriesTab.tsx))
+      - Strategic Partners & Clients ([`components/nexus/NexusPartnersTab.tsx`](file:///Users/omartemsah/WebProjects/Tafawok/components/nexus/NexusPartnersTab.tsx))
+      - Heritage Historical Timeline ([`components/nexus/NexusTimelineTab.tsx`](file:///Users/omartemsah/WebProjects/Tafawok/components/nexus/NexusTimelineTab.tsx))
+      - Commercial Asset Developments ([`components/nexus/NexusPropertiesTab.tsx`](file:///Users/omartemsah/WebProjects/Tafawok/components/nexus/NexusPropertiesTab.tsx))
+      - Activities & Announcement Banners ([`components/nexus/NexusActivitiesTab.tsx`](file:///Users/omartemsah/WebProjects/Tafawok/components/nexus/NexusActivitiesTab.tsx))
+      - CDN Storage Media Bucket Assets ([`components/nexus/NexusMediaTab.tsx`](file:///Users/omartemsah/WebProjects/Tafawok/components/nexus/NexusMediaTab.tsx))
+  - **Quality Gates Verification:**
+    - `npm run typecheck` (`tsc --noEmit`): **0 errors**.
+    - `npm run lint`: **0 errors, 0 warnings**.

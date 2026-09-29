@@ -10,10 +10,22 @@ import {
   Trash2,
   Clock,
   MessageSquare,
+  AlertTriangle,
 } from "lucide-react"
 import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogMedia,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog"
 import { useRouter } from "next/navigation"
 import {
   updateInquiryStatusAction,
@@ -36,6 +48,9 @@ export function NexusInquiriesTab({
     "all" | "new" | "contacted" | "archived"
   >("all")
   const [loadingId, setLoadingId] = React.useState<string | null>(null)
+  const [inquiryToDelete, setInquiryToDelete] =
+    React.useState<Tables<"inquiries"> | null>(null)
+  const [isDeleting, setIsDeleting] = React.useState(false)
 
   const filtered = React.useMemo(() => {
     if (filter === "all") return inquiries
@@ -60,23 +75,20 @@ export function NexusInquiriesTab({
     }
   }
 
-  const handleDelete = async (id: string) => {
-    const confirmed = window.confirm(
-      "Are you sure you want to delete this inquiry permanently?"
-    )
-    if (!confirmed) return
-
-    setLoadingId(id)
+  const confirmDelete = async () => {
+    if (!inquiryToDelete) return
+    setIsDeleting(true)
     try {
-      await deleteInquiryAction(id)
+      await deleteInquiryAction(inquiryToDelete.id)
       toast.success("Inquiry deleted successfully.")
+      setInquiryToDelete(null)
       handleRefresh()
     } catch (err: unknown) {
       const message =
         err instanceof Error ? err.message : "Failed to delete inquiry."
       toast.error(message)
     } finally {
-      setLoadingId(null)
+      setIsDeleting(false)
     }
   }
 
@@ -296,8 +308,8 @@ export function NexusInquiriesTab({
                   <Button
                     variant="outline"
                     size="sm"
-                    onClick={() => handleDelete(item.id)}
-                    disabled={loadingId === item.id}
+                    onClick={() => setInquiryToDelete(item)}
+                    disabled={loadingId === item.id || isDeleting}
                     className="h-7 px-2 text-xs text-destructive hover:bg-destructive/10"
                   >
                     <Trash2 className="size-3" />
@@ -308,6 +320,39 @@ export function NexusInquiriesTab({
           ))}
         </div>
       )}
+
+      <AlertDialog
+        open={Boolean(inquiryToDelete)}
+        onOpenChange={(open) => !open && setInquiryToDelete(null)}
+      >
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogMedia>
+              <AlertTriangle />
+            </AlertDialogMedia>
+            <AlertDialogTitle>Delete Corporate Inquiry?</AlertDialogTitle>
+            <AlertDialogDescription>
+              Are you sure you want to permanently delete the inquiry from{" "}
+              <strong className="text-foreground">
+                {inquiryToDelete?.name}
+              </strong>{" "}
+              ({inquiryToDelete?.email})? This action cannot be undone.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel disabled={isDeleting}>
+              Cancel
+            </AlertDialogCancel>
+            <AlertDialogAction
+              variant="danger"
+              disabled={isDeleting}
+              onClick={confirmDelete}
+            >
+              {isDeleting ? "Deleting..." : "Permanently Delete"}
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   )
 }

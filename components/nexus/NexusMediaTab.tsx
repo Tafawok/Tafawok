@@ -31,13 +31,16 @@ import {
   TooltipContent,
 } from "@/components/ui/tooltip"
 import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogDescription,
-  DialogFooter,
-} from "@/components/ui/dialog"
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogMedia,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog"
 
 export interface StorageAsset {
   id: string
@@ -64,7 +67,9 @@ export function NexusMediaTab() {
   const [assets, setAssets] = React.useState<StorageAsset[]>([])
   const [isLoading, setIsLoading] = React.useState(true)
   const [searchQuery, setSearchQuery] = React.useState("")
-  const [typeFilter, setTypeFilter] = React.useState<"all" | "image" | "document" | "video">("all")
+  const [typeFilter, setTypeFilter] = React.useState<
+    "all" | "image" | "document" | "video"
+  >("all")
   const [folderFilter, setFolderFilter] = React.useState<string>("all")
   const [copiedUrl, setCopiedUrl] = React.useState<string | null>(null)
 
@@ -75,7 +80,9 @@ export function NexusMediaTab() {
   const fileInputRef = React.useRef<HTMLInputElement | null>(null)
 
   // Delete dialog state
-  const [assetToDelete, setAssetToDelete] = React.useState<StorageAsset | null>(null)
+  const [assetToDelete, setAssetToDelete] = React.useState<StorageAsset | null>(
+    null
+  )
   const [isDeleting, setIsDeleting] = React.useState(false)
 
   const loadAssets = React.useCallback(async (setSpinner: boolean = true) => {
@@ -156,7 +163,9 @@ export function NexusMediaTab() {
     }
 
     if (!isImageFile && !isVideoFile && !isDocFile) {
-      toast.error("Invalid file format. Only images, videos, and PDF documents are supported.")
+      toast.error(
+        "Invalid file format. Only images, videos, and PDF documents are supported."
+      )
       return
     }
 
@@ -189,7 +198,8 @@ export function NexusMediaTab() {
       toast.success(`Asset '${file.name}' uploaded successfully to CDN!`)
       await loadAssets(false)
     } catch (err: unknown) {
-      const message = err instanceof Error ? err.message : "Failed to upload file."
+      const message =
+        err instanceof Error ? err.message : "Failed to upload file."
       toast.error(message)
     } finally {
       setIsUploading(false)
@@ -243,11 +253,14 @@ export function NexusMediaTab() {
         throw new Error(json.error || "Failed to delete file.")
       }
 
-      toast.success(`File '${assetToDelete.name}' permanently deleted from bucket.`)
+      toast.success(
+        `File '${assetToDelete.name}' permanently deleted from bucket.`
+      )
       setAssets((prev) => prev.filter((a) => a.path !== assetToDelete.path))
       setAssetToDelete(null)
     } catch (err: unknown) {
-      const message = err instanceof Error ? err.message : "Failed to delete asset."
+      const message =
+        err instanceof Error ? err.message : "Failed to delete asset."
       toast.error(message)
     } finally {
       setIsDeleting(false)
@@ -262,8 +275,7 @@ export function NexusMediaTab() {
         asset.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
         asset.path.toLowerCase().includes(searchQuery.toLowerCase())
 
-      const matchesType =
-        typeFilter === "all" || asset.mediaType === typeFilter
+      const matchesType = typeFilter === "all" || asset.mediaType === typeFilter
 
       const matchesFolder =
         folderFilter === "all" || asset.folder === folderFilter
@@ -312,7 +324,8 @@ export function NexusMediaTab() {
             Media Library & CDN Assets
           </h2>
           <p className="text-xs text-muted-foreground sm:text-sm">
-            Upload new corporate media, inspect live CDN assets, and permanently delete images, videos, and PDF documents from the Supabase bucket.
+            Upload new corporate media, inspect live CDN assets, and permanently
+            delete images, videos, and PDF documents from the Supabase bucket.
           </p>
         </div>
 
@@ -420,8 +433,12 @@ export function NexusMediaTab() {
                 className="h-8 rounded-md border border-border/80 bg-background px-2.5 text-xs text-foreground focus:border-primary focus:outline-hidden"
               >
                 <option value="general">general (Miscellaneous)</option>
-                <option value="documents">documents (Company Profiles & Portfolios)</option>
-                <option value="properties">properties (Towers & Asset Renders)</option>
+                <option value="documents">
+                  documents (Company Profiles & Portfolios)
+                </option>
+                <option value="properties">
+                  properties (Towers & Asset Renders)
+                </option>
                 <option value="stores">stores (Retail Tenant Logos)</option>
               </select>
             </div>
@@ -457,7 +474,7 @@ export function NexusMediaTab() {
             className={cn(
               "flex cursor-pointer flex-col items-center justify-center rounded-xl border-2 border-dashed p-8 text-center transition-all duration-200",
               dragActive
-                ? "border-primary bg-primary/10 scale-[0.99]"
+                ? "scale-[0.99] border-primary bg-primary/10"
                 : "border-border/80 hover:border-primary/50 hover:bg-muted/40"
             )}
           >
@@ -519,7 +536,7 @@ export function NexusMediaTab() {
               className={cn(
                 "rounded-md px-2.5 py-1 text-xs font-medium transition-colors",
                 typeFilter === "all"
-                  ? "bg-primary text-primary-foreground font-semibold"
+                  ? "bg-primary font-semibold text-primary-foreground"
                   : "text-muted-foreground hover:text-foreground"
               )}
             >
@@ -531,7 +548,7 @@ export function NexusMediaTab() {
               className={cn(
                 "rounded-md px-2.5 py-1 text-xs font-medium transition-colors",
                 typeFilter === "image"
-                  ? "bg-primary text-primary-foreground font-semibold"
+                  ? "bg-primary font-semibold text-primary-foreground"
                   : "text-muted-foreground hover:text-foreground"
               )}
             >
@@ -543,7 +560,7 @@ export function NexusMediaTab() {
               className={cn(
                 "rounded-md px-2.5 py-1 text-xs font-medium transition-colors",
                 typeFilter === "document"
-                  ? "bg-primary text-primary-foreground font-semibold"
+                  ? "bg-primary font-semibold text-primary-foreground"
                   : "text-muted-foreground hover:text-foreground"
               )}
             >
@@ -555,7 +572,7 @@ export function NexusMediaTab() {
               className={cn(
                 "rounded-md px-2.5 py-1 text-xs font-medium transition-colors",
                 typeFilter === "video"
-                  ? "bg-primary text-primary-foreground font-semibold"
+                  ? "bg-primary font-semibold text-primary-foreground"
                   : "text-muted-foreground hover:text-foreground"
               )}
             >
@@ -592,7 +609,9 @@ export function NexusMediaTab() {
       ) : filteredAssets.length === 0 ? (
         <div className="flex h-64 flex-col items-center justify-center gap-2 rounded-xl border border-dashed border-border/80 bg-card/30 p-8 text-center">
           <FolderArchive className="size-10 text-muted-foreground/60" />
-          <p className="text-sm font-bold text-foreground">No media assets found</p>
+          <p className="text-sm font-bold text-foreground">
+            No media assets found
+          </p>
           <p className="text-xs text-muted-foreground">
             {searchQuery || typeFilter !== "all" || folderFilter !== "all"
               ? "Try adjusting your search terms or filter selection."
@@ -617,7 +636,8 @@ export function NexusMediaTab() {
       ) : (
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
           {filteredAssets.map((asset) => {
-            const isProfileDoc = asset.path === "documents/tafawok-company-profile.pdf"
+            const isProfileDoc =
+              asset.path === "documents/tafawok-company-profile.pdf"
             const isVideo = asset.mediaType === "video"
             const isDoc = asset.mediaType === "document"
 
@@ -708,12 +728,17 @@ export function NexusMediaTab() {
                     </Tooltip>
 
                     <div className="flex items-center justify-between text-[11px] text-muted-foreground">
-                      <span className="font-mono">{formatBytes(asset.size)}</span>
+                      <span className="font-mono">
+                        {formatBytes(asset.size)}
+                      </span>
                       <span>
-                        {new Date(asset.createdAt).toLocaleDateString(undefined, {
-                          month: "short",
-                          day: "numeric",
-                        })}
+                        {new Date(asset.createdAt).toLocaleDateString(
+                          undefined,
+                          {
+                            month: "short",
+                            day: "numeric",
+                          }
+                        )}
                       </span>
                     </div>
                   </div>
@@ -799,51 +824,42 @@ export function NexusMediaTab() {
         </div>
       )}
 
-      {/* Permanent Deletion Confirm Dialog */}
-      <Dialog
+      {/* Permanent Deletion Confirm Alert Dialog */}
+      <AlertDialog
         open={Boolean(assetToDelete)}
         onOpenChange={(open) => !open && setAssetToDelete(null)}
       >
-        <DialogContent className="max-w-md">
-          <DialogHeader>
-            <div className="flex items-center gap-2 text-destructive">
-              <AlertTriangle className="size-5" />
-              <DialogTitle className="text-base font-bold text-foreground">
-                Delete Asset from Storage Bucket?
-              </DialogTitle>
-            </div>
-            <DialogDescription className="space-y-2 pt-2 text-xs leading-relaxed text-muted-foreground">
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogMedia>
+              <AlertTriangle />
+            </AlertDialogMedia>
+            <AlertDialogTitle>
+              Delete Asset from Storage Bucket?
+            </AlertDialogTitle>
+            <AlertDialogDescription className="space-y-2 pt-1 text-xs leading-relaxed text-muted-foreground">
               <span>
                 You are about to permanently delete{" "}
                 <strong className="font-mono text-foreground">
                   {assetToDelete?.name}
                 </strong>{" "}
-                from the <code className="text-primary">tafawok-media</code> Supabase Storage bucket.
+                from the{" "}
+                <code className="font-mono text-primary">tafawok-media</code>{" "}
+                Supabase Storage bucket.
               </span>
-              <span className="block text-destructive font-semibold">
-                ⚠️ Warning: Any pages or cards currently linking to this CDN URL will lose access to this file immediately.
+              <span className="block font-semibold text-destructive">
+                ⚠️ Warning: Any pages or cards currently linking to this CDN URL
+                will lose access to this file immediately.
               </span>
-            </DialogDescription>
-          </DialogHeader>
+            </AlertDialogDescription>
+          </AlertDialogHeader>
 
-          <DialogFooter className="mt-4 flex gap-2 sm:justify-end">
-            <Button
-              type="button"
-              variant="outline"
-              size="sm"
-              disabled={isDeleting}
-              onClick={() => setAssetToDelete(null)}
-              className="text-xs"
-            >
-              Cancel
-            </Button>
-            <Button
-              type="button"
-              variant="destructive"
-              size="sm"
+          <AlertDialogFooter>
+            <AlertDialogCancel disabled={isDeleting}>Cancel</AlertDialogCancel>
+            <AlertDialogAction
+              variant="danger"
               disabled={isDeleting}
               onClick={confirmDeleteAsset}
-              className="text-xs font-semibold"
             >
               {isDeleting ? (
                 <>
@@ -856,10 +872,10 @@ export function NexusMediaTab() {
                   Permanently Delete File
                 </>
               )}
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   )
 }

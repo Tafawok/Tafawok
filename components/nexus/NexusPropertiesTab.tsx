@@ -14,10 +14,22 @@ import {
   Building2,
   Calendar,
   Layers,
+  AlertTriangle,
 } from "lucide-react"
 import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogMedia,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog"
 import { useRouter } from "next/navigation"
 import { NexusPropertyModal } from "@/components/nexus/NexusPropertyModal"
 import { deletePropertyAction } from "@/lib/content/actions"
@@ -37,6 +49,8 @@ export function NexusPropertiesTab({
   const [modalOpen, setModalOpen] = React.useState(false)
   const [selectedProperty, setSelectedProperty] =
     React.useState<Property | null>(null)
+  const [propertyToDelete, setPropertyToDelete] =
+    React.useState<Property | null>(null)
   const [deletingId, setDeletingId] = React.useState<string | null>(null)
 
   const handleCreate = () => {
@@ -49,16 +63,14 @@ export function NexusPropertiesTab({
     setModalOpen(true)
   }
 
-  const handleDelete = async (p: Property) => {
-    const confirmed = window.confirm(
-      `Are you sure you want to delete "${p.name.en}"? All associated retail store records will also be removed.`
-    )
-    if (!confirmed) return
-
+  const confirmDelete = async () => {
+    if (!propertyToDelete) return
+    const p = propertyToDelete
     setDeletingId(p.id)
     try {
       await deletePropertyAction(p.id)
       toast.success(`Deleted ${p.name.en} successfully.`)
+      setPropertyToDelete(null)
       handleRefresh()
     } catch (err: unknown) {
       const message =
@@ -191,7 +203,7 @@ export function NexusPropertiesTab({
                     <Button
                       variant="outline"
                       size="sm"
-                      onClick={() => handleDelete(p)}
+                      onClick={() => setPropertyToDelete(p)}
                       disabled={deletingId === p.id}
                       className="h-7 px-2 text-xs text-destructive hover:border-destructive/40 hover:bg-destructive/10"
                     >
@@ -211,6 +223,41 @@ export function NexusPropertiesTab({
         property={selectedProperty}
         onSaved={handleRefresh}
       />
+
+      {/* Delete Confirmation Alert Dialog */}
+      <AlertDialog
+        open={Boolean(propertyToDelete)}
+        onOpenChange={(open) => !open && setPropertyToDelete(null)}
+      >
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogMedia>
+              <AlertTriangle />
+            </AlertDialogMedia>
+            <AlertDialogTitle>Delete Commercial Asset?</AlertDialogTitle>
+            <AlertDialogDescription>
+              Are you sure you want to permanently delete{" "}
+              <strong className="text-foreground">
+                {propertyToDelete?.name.en}
+              </strong>
+              ? All associated retail store and tenant records for this
+              development will also be removed. This action cannot be undone.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel disabled={Boolean(deletingId)}>
+              Cancel
+            </AlertDialogCancel>
+            <AlertDialogAction
+              variant="danger"
+              disabled={Boolean(deletingId)}
+              onClick={confirmDelete}
+            >
+              {deletingId ? "Deleting..." : "Permanently Delete Asset"}
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   )
 }
