@@ -98,50 +98,76 @@ export async function signOutAction() {
 export async function savePropertyAction(
   property: Property,
   sortOrder: number = 0
-) {
-  const { supabase } = await requireSuperAdmin()
+): Promise<{ success: boolean; error?: string }> {
+  try {
+    const { supabase } = await requireSuperAdmin()
 
-  const { error } = await supabase.from("properties").upsert({
-    id: property.id,
-    slug: property.slug,
-    name: property.name as unknown as DbJson,
-    tagline: property.tagline as unknown as DbJson,
-    type: property.type || "retail",
-    status: property.status || "active",
-    category: property.category as unknown as DbJson,
-    description: property.description as unknown as DbJson,
-    full_overview: property.fullOverview as unknown as DbJson,
-    main_image: property.mainImage,
-    gallery: (property.gallery || []) as unknown as DbJson,
-    video: (property.video || null) as unknown as Json,
-    location: property.location as unknown as DbJson,
-    contact: property.contact as unknown as DbJson,
-    key_stats: property.keyStats as unknown as DbJson,
-    specs: (property.specs || []) as unknown as DbJson,
-    highlights: (property.highlights || []) as unknown as DbJson,
-    amenities: (property.amenities || []) as unknown as DbJson,
-    sort_order: sortOrder,
-    is_published: true,
-    updated_at: new Date().toISOString(),
-  })
+    // Normalize IDs and Slugs
+    const id = property.id.trim().toLowerCase()
+    const slug = property.slug.trim().toLowerCase()
 
-  if (error) throw new Error(`Failed to save property: ${error.message}`)
+    const { error } = await supabase.from("properties").upsert({
+      id,
+      slug,
+      name: property.name as unknown as DbJson,
+      tagline: property.tagline as unknown as DbJson,
+      type: property.type || "retail",
+      status: property.status || "active",
+      category: property.category as unknown as DbJson,
+      description: property.description as unknown as DbJson,
+      full_overview: property.fullOverview as unknown as DbJson,
+      main_image: property.mainImage,
+      gallery: (property.gallery || []) as unknown as DbJson,
+      video: (property.video || null) as unknown as Json,
+      location: property.location as unknown as DbJson,
+      contact: property.contact as unknown as DbJson,
+      key_stats: property.keyStats as unknown as DbJson,
+      specs: (property.specs || []) as unknown as DbJson,
+      highlights: (property.highlights || []) as unknown as DbJson,
+      amenities: (property.amenities || []) as unknown as DbJson,
+      sort_order: sortOrder,
+      is_published: true,
+      updated_at: new Date().toISOString(),
+    })
 
-  revalidatePublicContent()
-  return { success: true }
+    if (error) {
+      console.error("[savePropertyAction] Database error:", error)
+      return { success: false, error: error.message }
+    }
+
+    revalidatePublicContent()
+    return { success: true }
+  } catch (err: unknown) {
+    const message =
+      err instanceof Error ? err.message : "Failed to save property."
+    console.error("[savePropertyAction] Error:", message)
+    return { success: false, error: message }
+  }
 }
 
-export async function deletePropertyAction(propertyId: string) {
-  const { supabase } = await requireSuperAdmin()
+export async function deletePropertyAction(
+  propertyId: string
+): Promise<{ success: boolean; error?: string }> {
+  try {
+    const { supabase } = await requireSuperAdmin()
 
-  const { error } = await supabase
-    .from("properties")
-    .delete()
-    .eq("id", propertyId)
-  if (error) throw new Error(`Failed to delete property: ${error.message}`)
+    const { error } = await supabase
+      .from("properties")
+      .delete()
+      .eq("id", propertyId)
+    if (error) {
+      console.error("[deletePropertyAction] Database error:", error)
+      return { success: false, error: error.message }
+    }
 
-  revalidatePublicContent()
-  return { success: true }
+    revalidatePublicContent()
+    return { success: true }
+  } catch (err: unknown) {
+    const message =
+      err instanceof Error ? err.message : "Failed to delete property."
+    console.error("[deletePropertyAction] Error:", message)
+    return { success: false, error: message }
+  }
 }
 
 export async function saveStoreAction(

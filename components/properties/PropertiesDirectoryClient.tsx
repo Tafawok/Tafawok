@@ -32,8 +32,10 @@ export function PropertiesDirectoryClient({
 
   const filterTabs = [
     { id: "all", label: t("propertiesPage.filterAll") },
+    { id: "commercial", label: t("propertiesPage.filterCommercial") },
     { id: "office", label: t("propertiesPage.filterOffice") },
     { id: "retail", label: t("propertiesPage.filterRetail") },
+    { id: "mixed-use", label: t("propertiesPage.filterMixedUse") },
     { id: "logistics", label: t("propertiesPage.filterLogistics") },
   ]
 

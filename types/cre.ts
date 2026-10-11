@@ -29,8 +29,19 @@ export interface StoreItem {
 
 export type Store = StoreItem
 
-export type PropertyType = "office" | "retail" | "logistics"
-export type PropertyStatus = "active" | "completed" | "pipeline"
+export type PropertyType =
+  | "office"
+  | "retail"
+  | "commercial"
+  | "mixed-use"
+  | "logistics"
+
+export type PropertyStatus =
+  | "active"
+  | "operational"
+  | "completed"
+  | "under-development"
+  | "pipeline"
 
 export interface PropertyVideo {
   src: string

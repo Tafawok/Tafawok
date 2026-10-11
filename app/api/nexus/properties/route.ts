@@ -58,7 +58,11 @@ export async function POST(req: NextRequest) {
     }
 
     const sortOrder = body.sortOrder ?? 0
-    await savePropertyAction(body as Property, sortOrder)
+    const result = await savePropertyAction(body as Property, sortOrder)
+
+    if (!result.success) {
+      return apiError(result.error || "Failed to save property.", 400)
+    }
 
     return apiSuccess({ property: body }, 201, "Property created successfully.")
   } catch (err: unknown) {

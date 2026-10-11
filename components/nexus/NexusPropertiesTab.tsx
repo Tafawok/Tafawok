@@ -68,7 +68,11 @@ export function NexusPropertiesTab({
     const p = propertyToDelete
     setDeletingId(p.id)
     try {
-      await deletePropertyAction(p.id)
+      const res = await deletePropertyAction(p.id)
+      if (res && !res.success) {
+        toast.error(res.error || "Failed to delete property.")
+        return
+      }
       toast.success(`Deleted ${p.name.en} successfully.`)
       setPropertyToDelete(null)
       handleRefresh()

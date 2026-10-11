@@ -1309,3 +1309,40 @@ Chronological decision log tracking major architectural milestones and engineeri
   - **Quality Gates Verification:**
     - `npm run typecheck` (`tsc --noEmit`): **0 errors**.
     - `npm run lint`: **0 errors, 0 warnings**.
+
+---
+
+## Milestone 21: Nexus Property Creation Check Constraint Fix & Resilient Server Action Error Handling
+
+- **Date:** October 2026
+- **Context & Bug Analysis:**
+  - When creating a new commercial property asset (e.g., _Mahlawy Market_ at `/nexus-portal/properties`), the client encountered an HTTP 500 Internal Server Error with React flight payload digest `1:E{"digest":"..."}` and client-side crash `Minified React error #441`.
+  - **Root Cause 1 (PostgreSQL Check Constraint Discrepancy):**
+    - The PostgreSQL `public.properties` table had strict check constraints:
+      - `properties_type_check`: `CHECK (type IN ('office', 'retail', 'logistics'))`
+      - `properties_status_check`: `CHECK (status IN ('active', 'completed', 'pipeline'))`
+    - However, the Nexus Admin Portal modal ([`components/nexus/NexusPropertyModal.tsx`](file:///Users/omartemsah/WebProjects/Tafawok/components/nexus/NexusPropertyModal.tsx)) and Zod validation schema ([`lib/validations/cre-schemas.ts`](file:///Users/omartemsah/WebProjects/Tafawok/lib/validations/cre-schemas.ts)) defaulted to `type: "commercial"` and `status: "operational"`.
+    - PostgreSQL rejected new rows with code `23514` (`violates check constraint "properties_status_check"`).
+  - **Root Cause 2 (Next.js Production Server Action Error Masking):**
+    - [`lib/content/actions.ts`](file:///Users/omartemsah/WebProjects/Tafawok/lib/content/actions.ts) threw unhandled `new Error()` inside Server Actions (`savePropertyAction`), causing Next.js production runtime to mask the error with a server digest and return HTTP 500, which in turn triggered React Error #441 on the client instead of displaying a helpful error message.
+  - **Root Cause 3 (Frontend Type Lookup Mismatch):**
+    - [`components/properties/PropertyCard.tsx`](file:///Users/omartemsah/WebProjects/Tafawok/components/properties/PropertyCard.tsx) and [`components/properties/PropertyDetailClient.tsx`](file:///Users/omartemsah/WebProjects/Tafawok/components/properties/PropertyDetailClient.tsx) had `typeLabels` mapping only `office`, `retail`, and `logistics`, causing potential `undefined` lookup errors when rendering `commercial` or `mixed-use` assets.
+- **Architectural & Schema Remediation:**
+  - **PostgreSQL Database Migration ([`supabase/migrations/20261011000000_expand_property_types_and_statuses.sql`](file:///Users/omartemsah/WebProjects/Tafawok/supabase/migrations/20261011000000_expand_property_types_and_statuses.sql)):**
+    - Dropped and recreated `properties_type_check` to accept all CRE disciplines: `'office'`, `'retail'`, `'commercial'`, `'mixed-use'`, `'logistics'`.
+    - Dropped and recreated `properties_status_check` to accept all operational states: `'active'`, `'operational'`, `'completed'`, `'under-development'`, `'pipeline'`.
+    - Applied directly to live Supabase PostgreSQL database and verified with round-trip test insertion.
+  - **Core Domain Types ([`types/cre.ts`](file:///Users/omartemsah/WebProjects/Tafawok/types/cre.ts)):**
+    - Expanded `PropertyType` to `"office" | "retail" | "commercial" | "mixed-use" | "logistics"`.
+    - Expanded `PropertyStatus` to `"active" | "operational" | "completed" | "under-development" | "pipeline"`.
+  - **Zod Validation Schema ([`lib/validations/cre-schemas.ts`](file:///Users/omartemsah/WebProjects/Tafawok/lib/validations/cre-schemas.ts)):**
+    - Synchronized `propertyFormSchema` to allow all valid property types and statuses.
+  - **Resilient Server Action Result Pattern ([`lib/content/actions.ts`](file:///Users/omartemsah/WebProjects/Tafawok/lib/content/actions.ts)):**
+    - Refactored `savePropertyAction` and `deletePropertyAction` to catch errors internally, sanitize IDs/slugs, log diagnostics, and return structured `{ success: boolean; error?: string }` responses instead of throwing unhandled exceptions.
+  - **UI & Public Portal Polish:**
+    - Updated [`components/nexus/NexusPropertyModal.tsx`](file:///Users/omartemsah/WebProjects/Tafawok/components/nexus/NexusPropertyModal.tsx) to sanitize IDs and slugs (e.g., auto-hyphenate spaces), include all development types and statuses in select dropdowns, and check action result responses before triggering UI notifications.
+    - Updated [`components/properties/PropertyCard.tsx`](file:///Users/omartemsah/WebProjects/Tafawok/components/properties/PropertyCard.tsx) and [`components/properties/PropertyDetailClient.tsx`](file:///Users/omartemsah/WebProjects/Tafawok/components/properties/PropertyDetailClient.tsx) with comprehensive `typeLabels` and safe null-coalescing fallbacks.
+    - Enhanced [`components/properties/PropertiesDirectoryClient.tsx`](file:///Users/omartemsah/WebProjects/Tafawok/components/properties/PropertiesDirectoryClient.tsx), [`locales/en.json`](file:///Users/omartemsah/WebProjects/Tafawok/locales/en.json), and [`locales/ar.json`](file:///Users/omartemsah/WebProjects/Tafawok/locales/ar.json) with bilingual filters for Commercial Retail Plazas and Mixed-Use developments.
+- **Quality Gates Verification:**
+  - `npx tsc --noEmit`: **0 errors**.
+  - `npm run build`: **Compiled cleanly with 100% route success**.

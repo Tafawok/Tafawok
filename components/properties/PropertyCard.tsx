@@ -34,6 +34,11 @@ export function PropertyCard({
   const typeLabels: Record<PropertyType, { en: string; ar: string }> = {
     office: { en: "Corporate Office Hub", ar: "مجمع إداري للشركات" },
     retail: { en: "Destination Retail Mall", ar: "مركز تجاري ومول" },
+    commercial: { en: "Commercial Retail Plaza", ar: "مول تجاري متكامل" },
+    "mixed-use": {
+      en: "Mixed-Use Commercial Asset",
+      ar: "أصل تجاري وإداري متكامل",
+    },
     logistics: { en: "Logistics & Trade Complex", ar: "مجمع لوجستي وتجاري" },
   }
 
@@ -62,17 +67,21 @@ export function PropertyCard({
         <div className="absolute inset-x-3.5 top-3.5 flex items-center justify-between gap-2">
           <span className="inline-flex items-center rounded-md border border-border/60 bg-background/85 px-2.5 py-1 text-[11px] font-semibold text-foreground backdrop-blur-md">
             <span className="me-1.5 size-1.5 rounded-full bg-primary" />
-            {t(typeLabels[propType])}
+            {t(typeLabels[propType] || { en: propType, ar: propType })}
           </span>
-          <span className="inline-flex items-center rounded-md border border-border/60 bg-background/80 px-2 py-0.5 font-mono text-[10px] font-semibold text-muted-foreground backdrop-blur-md">
-            <BiDiIsolate>{property.keyStats.builtUpArea}</BiDiIsolate>
-          </span>
+          {property.keyStats?.builtUpArea ? (
+            <span className="inline-flex items-center rounded-md border border-border/60 bg-background/80 px-2 py-0.5 font-mono text-[10px] font-semibold text-muted-foreground backdrop-blur-md">
+              <BiDiIsolate>{property.keyStats.builtUpArea}</BiDiIsolate>
+            </span>
+          ) : null}
         </div>
 
         {/* Location chip pinned over bottom of image */}
         <div className="absolute inset-x-3.5 bottom-2.5 flex items-center gap-1.5 text-xs font-medium text-foreground/90 drop-shadow-xs">
           <MapPin className="size-3.5 shrink-0 text-primary" />
-          <span className="truncate">{t(property.location.address)}</span>
+          <span className="truncate">
+            {property.location?.address ? t(property.location.address) : ""}
+          </span>
         </div>
       </div>
 

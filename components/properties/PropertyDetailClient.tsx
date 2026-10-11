@@ -58,6 +58,11 @@ export function PropertyDetailClient({ property }: PropertyDetailClientProps) {
   const typeLabels: Record<PropertyType, { en: string; ar: string }> = {
     office: { en: "Corporate Office Hub", ar: "مجمع إداري للشركات" },
     retail: { en: "Destination Retail Mall", ar: "مركز تجاري ومول" },
+    commercial: { en: "Commercial Retail Plaza", ar: "مول تجاري متكامل" },
+    "mixed-use": {
+      en: "Mixed-Use Commercial Asset",
+      ar: "أصل تجاري وإداري متكامل",
+    },
     logistics: { en: "Logistics & Trade Complex", ar: "مجمع لوجستي وتجاري" },
   }
 
@@ -109,9 +114,15 @@ export function PropertyDetailClient({ property }: PropertyDetailClientProps) {
             <div className="space-y-6">
               {/* Classification metadata line */}
               <div className="flex flex-wrap items-center gap-3 text-xs font-semibold tracking-wider text-muted-foreground uppercase">
-                <span className="text-primary">{t(typeLabels[propType])}</span>
-                <span>•</span>
-                <span>{t(property.keyStats.zoning)}</span>
+                <span className="text-primary">
+                  {t(typeLabels[propType] || { en: propType, ar: propType })}
+                </span>
+                {property.keyStats?.zoning ? (
+                  <>
+                    <span>•</span>
+                    <span>{t(property.keyStats.zoning)}</span>
+                  </>
+                ) : null}
               </div>
 
               {/* Title & Tagline */}

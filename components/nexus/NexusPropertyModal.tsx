@@ -63,11 +63,9 @@ function PropertyFormContent({
     taglineEn: property?.tagline?.en || "",
     taglineAr: property?.tagline?.ar || "",
     type:
-      (property?.type as "commercial" | "office" | "mixed-use" | "retail") ||
-      "commercial",
+      (property?.type as PropertyType) || "commercial",
     status:
-      (property?.status as "operational" | "under-development" | "pipeline") ||
-      "operational",
+      (property?.status as PropertyStatus) || "operational",
     categoryEn:
       property?.category?.en || (isEditing ? "" : "Commercial Retail Plaza"),
     categoryAr: property?.category?.ar || (isEditing ? "" : "مول تجاري متكامل"),
@@ -139,9 +137,12 @@ function PropertyFormContent({
       .map((u) => u.trim())
       .filter((u) => u.length > 0)
 
+    const id = data.id.trim().toLowerCase().replace(/\s+/g, "-")
+    const slug = data.slug.trim().toLowerCase().replace(/\s+/g, "-")
+
     const updatedProperty: Property = {
-      id: data.id.trim().toLowerCase(),
-      slug: data.slug.trim().toLowerCase(),
+      id,
+      slug,
       name: { en: data.nameEn.trim(), ar: data.nameAr.trim() },
       tagline: {
         en: data.taglineEn?.trim() || "",
@@ -160,7 +161,7 @@ function PropertyFormContent({
       },
       mainImage: data.mainImage.trim(),
       gallery: galleryUrls,
-      video: data.videoSrc
+      video: data.videoSrc?.trim()
         ? {
             src: data.videoSrc.trim(),
             poster: data.videoPoster?.trim() || "",
@@ -201,7 +202,11 @@ function PropertyFormContent({
     }
 
     try {
-      await savePropertyAction(updatedProperty)
+      const res = await savePropertyAction(updatedProperty)
+      if (res && !res.success) {
+        toast.error(res.error || "Failed to save property.")
+        return
+      }
       toast.success(
         isEditing
           ? "Property updated successfully!"
@@ -366,7 +371,10 @@ function PropertyFormContent({
                             </SelectItem>
                             <SelectItem value="office">Prime Office</SelectItem>
                             <SelectItem value="retail">Retail Hub</SelectItem>
-                            <SelectItem value="mixed-use">Mixed-Use</SelectItem>
+                            <SelectItem value="mixed-use">Mixed-Use Asset</SelectItem>
+                            <SelectItem value="logistics">
+                              Logistics & Trade
+                            </SelectItem>
                           </SelectGroup>
                         </SelectContent>
                       </Select>
@@ -397,9 +405,11 @@ function PropertyFormContent({
                             <SelectItem value="operational">
                               Operational
                             </SelectItem>
+                            <SelectItem value="active">Active</SelectItem>
                             <SelectItem value="under-development">
                               Under Development
                             </SelectItem>
+                            <SelectItem value="completed">Completed</SelectItem>
                             <SelectItem value="pipeline">
                               Strategic Pipeline
                             </SelectItem>
