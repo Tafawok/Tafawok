@@ -101,7 +101,7 @@ export const disciplineFormSchema = z.object({
   metricLabelEn: z.string().min(1, "Metric English label is required"),
   metricLabelAr: z.string().min(1, "Metric Arabic label is required"),
   featuresText: z.string(),
-  iconName: z.enum(["building-2", "store", "factory", "hammer"]),
+  iconName: z.enum(["building-2", "shopping-bag", "warehouse", "hard-hat"]),
 })
 
 export type DisciplineFormData = z.infer<typeof disciplineFormSchema>
@@ -238,3 +238,63 @@ export const hseCharterFormSchema = z.object({
 })
 
 export type HseCharterFormData = z.infer<typeof hseCharterFormSchema>
+
+// 14. COMMERCIAL & CORPORATE ACTIVITY FORM
+export const activityFormSchema = z.object({
+  id: z.string().min(2, "Activity ID is required"),
+  slug: z.string().min(2, "URL Slug is required"),
+  titleEn: z.string().min(2, "English title is required"),
+  titleAr: z.string().min(2, "Arabic title is required"),
+  summaryEn: z.string(),
+  summaryAr: z.string(),
+  contentEn: z.string(),
+  contentAr: z.string(),
+  category: z.enum([
+    "launch",
+    "bazaar",
+    "exhibition",
+    "corporate",
+    "community",
+  ]),
+  status: z.enum(["upcoming", "ongoing", "past"]),
+  startDate: z.string().min(1, "Start date is required"),
+  endDate: z.string().optional(),
+  locationEn: z.string(),
+  locationAr: z.string(),
+  locationUrl: z.string().optional(),
+  mainImage: z.string().min(1, "Hero image path is required"),
+  gallery: z.array(z.string()).default([]),
+  featured: z.boolean().default(false),
+  isPublished: z.boolean().default(true),
+  actionUrl: z.string().optional(),
+  actionLabelEn: z.string().optional(),
+  actionLabelAr: z.string().optional(),
+  sortOrder: z.number().default(0),
+})
+
+export type ActivityFormData = z.infer<typeof activityFormSchema>
+
+// 15. NOTIFICATION BANNER FORM
+export const bannerFormSchema = z.object({
+  id: z.string().min(2, "Banner ID is required"),
+  titleEn: z.string().min(2, "English title is required"),
+  titleAr: z.string().min(2, "Arabic title is required"),
+  messageEn: z.string().min(2, "English message is required"),
+  messageAr: z.string().min(2, "Arabic message is required"),
+  badgeEn: z.string().optional(),
+  badgeAr: z.string().optional(),
+  locationEn: z.string().optional(),
+  locationAr: z.string().optional(),
+  startDate: z.string().min(1, "Start date is required"),
+  endDate: z.string().min(1, "End date is required"),
+  isActive: z.boolean().default(true),
+  type: z.enum(["launch", "bazaar", "announcement", "urgent"]),
+  linkUrl: z.string().optional(),
+  linkLabelEn: z.string().optional(),
+  linkLabelAr: z.string().optional(),
+  dismissible: z.boolean().default(true),
+  priority: z.number().default(0),
+})
+
+export type BannerFormData = z.infer<typeof bannerFormSchema>
+

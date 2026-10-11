@@ -23,13 +23,25 @@ export type NexusAuthResult =
  * Validates that the incoming request is authenticated as a Super Admin.
  * Returns either authorized context or a pre-configured 401/403 NextResponse.
  */
-export async function authenticateNexusAdmin(): Promise<NexusAuthResult> {
+export async function authenticateNexusAdmin(
+  req?: Request
+): Promise<NexusAuthResult> {
   try {
-    const supabase = await createClient()
+    const authHeader = req?.headers.get("authorization") || undefined
+    const supabase = await createClient(authHeader)
+
+    // Support both Bearer token from headers and cookie-based session
+    const bearerToken =
+      authHeader && /^bearer\s+/i.test(authHeader)
+        ? authHeader.replace(/^bearer\s+/i, "").trim()
+        : undefined
+
     const {
       data: { user },
       error: authError,
-    } = await supabase.auth.getUser()
+    } = await (bearerToken
+      ? supabase.auth.getUser(bearerToken)
+      : supabase.auth.getUser())
 
     if (authError || !user) {
       return {
@@ -116,3 +128,33 @@ export function apiError(
     { status }
   )
 }
+
+/**
+ * Safely parses and validates a JSON object from an incoming Request.
+ * Rejects empty bodies, syntax errors, and non-object payloads with descriptive 400 errors.
+ */
+export async function safeParseJson<T = Record<string, unknown>>(
+  req: Request
+): Promise<{ success: true; data: T } | { success: false; error: string }> {
+  try {
+    const text = await req.text()
+    if (!text || !text.trim()) {
+      return { success: false, error: "Request body cannot be empty." }
+    }
+    const data = JSON.parse(text)
+    if (data === null || typeof data !== "object" || Array.isArray(data)) {
+      return {
+        success: false,
+        error: "Request body must be a valid JSON object.",
+      }
+    }
+    return { success: true, data: data as T }
+  } catch (err: unknown) {
+    const message =
+      err instanceof SyntaxError
+        ? "Malformed JSON payload in request body."
+        : "Failed to parse request body."
+    return { success: false, error: message }
+  }
+}
+

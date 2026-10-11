@@ -5,6 +5,7 @@ import {
   authenticateNexusAdmin,
   apiSuccess,
   apiError,
+  safeParseJson,
 } from "@/lib/api/nexus-auth"
 
 const BUCKET_NAME = "tafawok-media"
@@ -97,10 +98,18 @@ async function listAllFiles(
  * Handles multipart media (images, videos, and PDF documents) uploads to Supabase Storage.
  */
 export async function POST(req: NextRequest) {
-  const auth = await authenticateNexusAdmin()
+  const auth = await authenticateNexusAdmin(req)
   if (!auth.authorized) return auth.response
 
   try {
+    const reqContentType = req.headers.get("content-type") || ""
+    if (!reqContentType.includes("multipart/form-data")) {
+      return apiError(
+        "Invalid Content-Type. Request must be 'multipart/form-data'.",
+        400
+      )
+    }
+
     const formData = await req.formData()
     const file = formData.get("file") as File | null
     const folder =
@@ -257,7 +266,7 @@ export async function POST(req: NextRequest) {
  * Supports folder filtering or full recursive listing.
  */
 export async function GET(req: NextRequest) {
-  const auth = await authenticateNexusAdmin()
+  const auth = await authenticateNexusAdmin(req)
   if (!auth.authorized) return auth.response
 
   try {
@@ -331,7 +340,7 @@ export async function GET(req: NextRequest) {
  * Removes an image, video, or document asset from Supabase Storage by path or URL.
  */
 export async function DELETE(req: NextRequest) {
-  const auth = await authenticateNexusAdmin()
+  const auth = await authenticateNexusAdmin(req)
   if (!auth.authorized) return auth.response
 
   try {
@@ -340,9 +349,11 @@ export async function DELETE(req: NextRequest) {
     let rawUrl = searchParams.get("url")
 
     if (!rawPath && !rawUrl) {
-      const body = await req.json().catch(() => ({}))
-      rawPath = body?.path
-      rawUrl = body?.url
+      const parsed = await safeParseJson<{ path?: string; url?: string }>(req)
+      if (parsed.success && parsed.data) {
+        rawPath = parsed.data.path ?? null
+        rawUrl = parsed.data.url ?? null
+      }
     }
 
     const targetPath = extractStoragePath(rawPath || rawUrl || "")

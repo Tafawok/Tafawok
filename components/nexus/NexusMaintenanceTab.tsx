@@ -79,7 +79,11 @@ export function NexusMaintenanceTab({ initialSettings }: NexusMaintenanceTabProp
         emergencyEmail: emergencyEmail.trim(),
       }
 
-      await saveMaintenanceSettingsAction(payload)
+      const res = await saveMaintenanceSettingsAction(payload)
+      if (!res.success) {
+        toast.error(res.error || "Failed to save maintenance settings.")
+        return
+      }
       toast.success("Maintenance settings saved successfully!")
       router.refresh()
     } catch (err) {
@@ -107,7 +111,12 @@ export function NexusMaintenanceTab({ initialSettings }: NexusMaintenanceTabProp
         emergencyEmail: emergencyEmail.trim(),
       }
 
-      await saveMaintenanceSettingsAction(payload)
+      const res = await saveMaintenanceSettingsAction(payload)
+      if (!res.success) {
+        setEnabled(!nextState)
+        toast.error(res.error || "Failed to toggle maintenance mode.")
+        return
+      }
       toast.success(
         nextState
           ? "⚠️ Maintenance mode is now ACTIVE for the public!"

@@ -122,7 +122,11 @@ function BannerFormContent({
         isActive,
       }
 
-      await saveNotificationBannerAction(payload)
+      const res = await saveNotificationBannerAction(payload)
+      if (!res.success) {
+        toast.error(res.error || "Failed to save banner.")
+        return
+      }
       toast.success(isEditing ? "Banner updated successfully!" : "Banner created successfully!")
       onSaved()
       onClose()

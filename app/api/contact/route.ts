@@ -12,8 +12,44 @@ interface ContactPayload {
 
 export async function POST(req: NextRequest) {
   try {
-    const body = (await req.json()) as Partial<ContactPayload>
+    let body: Partial<ContactPayload>
+    try {
+      const text = await req.text()
+      if (!text || !text.trim()) {
+        return NextResponse.json(
+          {
+            success: false,
+            message: "Validation failed: Request body cannot be empty.",
+            errors: { body: "Empty request payload." },
+          },
+          { status: 400 }
+        )
+      }
+      const parsed = JSON.parse(text)
+      if (parsed === null || typeof parsed !== "object" || Array.isArray(parsed)) {
+        return NextResponse.json(
+          {
+            success: false,
+            message: "Validation failed: Request body must be a valid JSON object.",
+            errors: { body: "Invalid JSON format." },
+          },
+          { status: 400 }
+        )
+      }
+      body = parsed as Partial<ContactPayload>
+    } catch {
+      return NextResponse.json(
+        {
+          success: false,
+          message: "Validation failed: Malformed JSON payload.",
+          errors: { body: "Malformed JSON payload." },
+        },
+        { status: 400 }
+      )
+    }
+
     const { name, email, phone, property, inquiryType, message } = body
+
 
     // 1. Validation
     const errors: Record<string, string> = {}
@@ -60,7 +96,7 @@ export async function POST(req: NextRequest) {
     try {
       const { createClient } = await import("@/lib/supabase/server")
       const supabase = await createClient()
-      await supabase.from("inquiries").insert({
+      const { error: dbInsertError } = await supabase.from("inquiries").insert({
         name: cleanPayload.name,
         email: cleanPayload.email,
         phone: cleanPayload.phone,
@@ -69,6 +105,9 @@ export async function POST(req: NextRequest) {
         message: cleanPayload.message,
         status: "new",
       })
+      if (dbInsertError) {
+        console.error("[INQUIRIES_DB_PERSIST_ERROR]", dbInsertError)
+      }
     } catch (dbErr) {
       console.error("[INQUIRIES_DB_PERSIST_ERROR]", dbErr)
     }

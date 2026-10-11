@@ -1,7 +1,7 @@
 import { NextRequest } from "next/server"
 import { getProperties } from "@/lib/content/cre-service"
 import { savePropertyAction, deletePropertyAction } from "@/lib/content/actions"
-import { authenticateNexusAdmin, apiSuccess, apiError } from "@/lib/api/nexus-auth"
+import { authenticateNexusAdmin, apiSuccess, apiError, safeParseJson } from "@/lib/api/nexus-auth"
 import type { Property } from "@/types/cre"
 
 export const dynamic = "force-dynamic"
@@ -38,18 +38,38 @@ export async function PUT(
   req: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
-  const auth = await authenticateNexusAdmin()
+  const auth = await authenticateNexusAdmin(req)
   if (!auth.authorized) return auth.response
 
   try {
     const { id } = await params
-    const body = (await req.json()) as Partial<Property> & { sortOrder?: number }
+    const parsed = await safeParseJson<Partial<Property> & { sortOrder?: number }>(req)
+    if (!parsed.success) {
+      return apiError(parsed.error, 400)
+    }
+    const body = parsed.data
 
     const properties = await getProperties()
     const existing = properties.find((p) => p.id === id)
 
     if (!existing) {
       return apiError(`Property '${id}' not found for update.`, 404)
+    }
+
+    const validTypes = ["office", "retail", "commercial", "mixed-use", "logistics"] as const
+    if (body.type && !validTypes.includes(body.type as (typeof validTypes)[number])) {
+      return apiError(
+        `Invalid property type '${body.type}'. Allowed values: ${validTypes.join(", ")}`,
+        400
+      )
+    }
+
+    const validStatuses = ["active", "operational", "completed", "under-development", "pipeline"] as const
+    if (body.status && !validStatuses.includes(body.status as (typeof validStatuses)[number])) {
+      return apiError(
+        `Invalid property status '${body.status}'. Allowed values: ${validStatuses.join(", ")}`,
+        400
+      )
     }
 
     const updated: Property = {
@@ -59,7 +79,11 @@ export async function PUT(
     }
 
     const sortOrder = body.sortOrder ?? 0
-    await savePropertyAction(updated, sortOrder)
+    const result = await savePropertyAction(updated, sortOrder)
+
+    if (!result.success) {
+      return apiError(result.error || "Failed to update property.", 400)
+    }
 
     return apiSuccess({ property: updated }, 200, `Property '${id}' updated successfully.`)
   } catch (err: unknown) {
@@ -73,15 +97,21 @@ export async function PUT(
  * Deletes a commercial property and cascades to associated stores.
  */
 export async function DELETE(
-  _req: NextRequest,
+  req: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
-  const auth = await authenticateNexusAdmin()
+  const auth = await authenticateNexusAdmin(req)
   if (!auth.authorized) return auth.response
 
   try {
     const { id } = await params
-    await deletePropertyAction(id)
+    const result = await deletePropertyAction(id)
+
+    if (!result.success) {
+      const status = result.error?.includes("not found") ? 404 : 400
+      return apiError(result.error || "Failed to delete property.", status)
+    }
+
     return apiSuccess({ deletedId: id }, 200, `Property '${id}' deleted successfully.`)
   } catch (err: unknown) {
     const message = err instanceof Error ? err.message : "Failed to delete property."

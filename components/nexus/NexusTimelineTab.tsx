@@ -133,7 +133,11 @@ function MilestoneFormModal({
     }
 
     try {
-      await saveMilestoneAction(milestoneId, updated)
+      const res = await saveMilestoneAction(milestoneId, updated)
+      if (!res.success) {
+        toast.error(res.error || "Failed to save milestone.")
+        return
+      }
       toast.success(
         isEditing
           ? "Milestone updated successfully!"
@@ -351,7 +355,11 @@ export function NexusTimelineTab({
     setDeletingId(milestoneId)
 
     try {
-      await deleteMilestoneAction(milestoneId)
+      const res = await deleteMilestoneAction(milestoneId)
+      if (!res.success) {
+        toast.error(res.error || "Failed to delete milestone.")
+        return
+      }
       toast.success("Milestone deleted successfully!")
       setMilestoneToDelete(null)
       handleRefresh()

@@ -125,7 +125,11 @@ export function NexusCeoTab({ ceoProfile, onRefresh }: NexusCeoTabProps) {
     }
 
     try {
-      await saveSiteSettingAction("ceo_profile", updated)
+      const res = await saveSiteSettingAction("ceo_profile", updated)
+      if (!res.success) {
+        toast.error(res.error || "Failed to save CEO profile.")
+        return
+      }
       toast.success("CEO Profile & Address updated successfully!")
       if (onRefresh) {
         onRefresh()

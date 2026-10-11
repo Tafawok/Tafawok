@@ -1,7 +1,7 @@
 import { NextRequest } from "next/server"
 import { getInvestmentPillars } from "@/lib/content/cre-service"
 import { savePillarAction, deletePillarAction } from "@/lib/content/actions"
-import { authenticateNexusAdmin, apiSuccess, apiError } from "@/lib/api/nexus-auth"
+import { authenticateNexusAdmin, apiSuccess, apiError, safeParseJson } from "@/lib/api/nexus-auth"
 import type { InvestmentPillar } from "@/types/cre"
 
 export const dynamic = "force-dynamic"
@@ -38,12 +38,16 @@ export async function PUT(
   req: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
-  const auth = await authenticateNexusAdmin()
+  const auth = await authenticateNexusAdmin(req)
   if (!auth.authorized) return auth.response
 
   try {
     const { id } = await params
-    const body = (await req.json()) as { pillar: Partial<InvestmentPillar>; sortOrder?: number }
+    const parsed = await safeParseJson<{ pillar?: Partial<InvestmentPillar>; sortOrder?: number }>(req)
+    if (!parsed.success) {
+      return apiError(parsed.error, 400)
+    }
+    const body = parsed.data
 
     const pillars = await getInvestmentPillars()
     const existing = pillars.find((p) => p.id === id)
@@ -54,12 +58,15 @@ export async function PUT(
 
     const updated: InvestmentPillar = {
       ...existing,
-      ...body.pillar,
+      ...(body.pillar || {}),
       id,
     }
 
     const sortOrder = body.sortOrder ?? 0
-    await savePillarAction(updated, sortOrder)
+    const result = await savePillarAction(updated, sortOrder)
+    if (!result.success) {
+      return apiError(result.error || "Failed to update pillar.", 400)
+    }
 
     return apiSuccess({ pillar: updated }, 200, `Investment pillar '${id}' updated.`)
   } catch (err: unknown) {
@@ -73,15 +80,20 @@ export async function PUT(
  * Deletes an investment pillar.
  */
 export async function DELETE(
-  _req: NextRequest,
+  req: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
-  const auth = await authenticateNexusAdmin()
+  const auth = await authenticateNexusAdmin(req)
   if (!auth.authorized) return auth.response
 
   try {
     const { id } = await params
-    await deletePillarAction(id)
+    const result = await deletePillarAction(id)
+    if (!result.success) {
+      const status = result.error?.includes("not found") ? 404 : 400
+      return apiError(result.error || "Failed to delete pillar.", status)
+    }
+
     return apiSuccess({ deletedId: id }, 200, `Investment pillar '${id}' deleted.`)
   } catch (err: unknown) {
     const message = err instanceof Error ? err.message : "Failed to delete pillar."

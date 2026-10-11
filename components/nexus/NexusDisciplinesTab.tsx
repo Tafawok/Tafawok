@@ -117,7 +117,11 @@ function DisciplineFormModal({
     }
 
     try {
-      await saveDisciplineAction(updated)
+      const res = await saveDisciplineAction(updated)
+      if (!res.success) {
+        toast.error(res.error || "Failed to update discipline.")
+        return
+      }
       toast.success("Discipline updated successfully!")
       onRefresh()
       onClose()

@@ -1,7 +1,7 @@
 import { NextRequest } from "next/server"
 import { getProperties } from "@/lib/content/cre-service"
 import { saveStoreAction } from "@/lib/content/actions"
-import { authenticateNexusAdmin, apiSuccess, apiError } from "@/lib/api/nexus-auth"
+import { authenticateNexusAdmin, apiSuccess, apiError, safeParseJson } from "@/lib/api/nexus-auth"
 import type { StoreItem } from "@/types/cre"
 
 export const dynamic = "force-dynamic"
@@ -27,7 +27,7 @@ export async function GET(req: NextRequest) {
           allStores.push({
             ...s,
             propertyId: p.id,
-            propertyName: p.name.en,
+            propertyName: p.name?.en || "",
           })
         }
       }
@@ -40,8 +40,8 @@ export async function GET(req: NextRequest) {
     if (search) {
       filtered = filtered.filter(
         (s) =>
-          s.name.en.toLowerCase().includes(search) ||
-          s.name.ar.includes(search) ||
+          (s.name?.en && s.name.en.toLowerCase().includes(search)) ||
+          (s.name?.ar && s.name.ar.includes(search)) ||
           (s.unitNumber && s.unitNumber.toLowerCase().includes(search))
       )
     }
@@ -58,12 +58,15 @@ export async function GET(req: NextRequest) {
  * Creates a new retail tenant store under a specified property.
  */
 export async function POST(req: NextRequest) {
-  const auth = await authenticateNexusAdmin()
+  const auth = await authenticateNexusAdmin(req)
   if (!auth.authorized) return auth.response
 
   try {
-    const body = (await req.json()) as { propertyId: string; store: StoreItem }
-    const { propertyId, store } = body
+    const parsed = await safeParseJson<{ propertyId: string; store: StoreItem }>(req)
+    if (!parsed.success) {
+      return apiError(parsed.error, 400)
+    }
+    const { propertyId, store } = parsed.data
 
     if (!propertyId || !store || !store.id || !store.name?.en || !store.name?.ar) {
       return apiError(
@@ -72,8 +75,25 @@ export async function POST(req: NextRequest) {
       )
     }
 
-    await saveStoreAction(propertyId, store)
-    return apiSuccess({ store, propertyId }, 201, "Store created successfully.")
+    const validStatuses = ["open", "coming_soon", "leased"] as const
+    if (store.status && !validStatuses.includes(store.status as (typeof validStatuses)[number])) {
+      return apiError(
+        `Invalid store status '${store.status}'. Allowed values: ${validStatuses.join(", ")}`,
+        400
+      )
+    }
+
+    const cleanStore: StoreItem = {
+      ...store,
+      status: store.status || "open",
+    }
+
+    const result = await saveStoreAction(propertyId, cleanStore)
+    if (!result.success) {
+      return apiError(result.error || "Failed to create store.", 400)
+    }
+
+    return apiSuccess({ store: cleanStore, propertyId }, 201, "Store created successfully.")
   } catch (err: unknown) {
     const message = err instanceof Error ? err.message : "Failed to create store."
     return apiError(message, 500)

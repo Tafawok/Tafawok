@@ -73,7 +73,9 @@ export function NexusPropertiesTab({
         toast.error(res.error || "Failed to delete property.")
         return
       }
-      toast.success(`Deleted ${p.name.en} successfully.`)
+      toast.success(
+        `Deleted ${p.name?.en || p.name?.ar || "Property"} successfully.`
+      )
       setPropertyToDelete(null)
       handleRefresh()
     } catch (err: unknown) {
@@ -122,7 +124,7 @@ export function NexusPropertiesTab({
                 {p.mainImage ? (
                   <Image
                     src={p.mainImage}
-                    alt={p.name.en}
+                    alt={p.name?.en || p.name?.ar || "Property"}
                     fill
                     className="object-cover transition-transform duration-500 group-hover:scale-105"
                     sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
@@ -148,10 +150,10 @@ export function NexusPropertiesTab({
 
                 <div className="absolute inset-s-3 inset-e-3 bottom-3 text-white">
                   <h3 className="text-base leading-tight font-bold drop-shadow-sm">
-                    {p.name.en}
+                    {p.name?.en || p.name?.ar || p.slug}
                   </h3>
                   <p className="mt-0.5 line-clamp-1 text-xs text-white/80">
-                    {p.tagline.en}
+                    {p.tagline?.en || p.tagline?.ar || ""}
                   </p>
                 </div>
               </div>
@@ -242,7 +244,9 @@ export function NexusPropertiesTab({
             <AlertDialogDescription>
               Are you sure you want to permanently delete{" "}
               <strong className="text-foreground">
-                {propertyToDelete?.name.en}
+                {propertyToDelete?.name?.en ||
+                  propertyToDelete?.name?.ar ||
+                  propertyToDelete?.id}
               </strong>
               ? All associated retail store and tenant records for this
               development will also be removed. This action cannot be undone.

@@ -96,7 +96,11 @@ function ValueFormModal({ value, onRefresh, onClose }: ValueFormModalProps) {
     }
 
     try {
-      await saveValueAction(updated)
+      const res = await saveValueAction(updated)
+      if (!res.success) {
+        toast.error(res.error || "Failed to save corporate value.")
+        return
+      }
       toast.success("Corporate value updated successfully!")
       onRefresh()
       onClose()
@@ -263,7 +267,11 @@ function PillarFormModal({ pillar, onRefresh, onClose }: PillarFormModalProps) {
     }
 
     try {
-      await savePillarAction(updated)
+      const res = await savePillarAction(updated)
+      if (!res.success) {
+        toast.error(res.error || "Failed to save investment pillar.")
+        return
+      }
       toast.success("Investment pillar updated successfully!")
       onRefresh()
       onClose()

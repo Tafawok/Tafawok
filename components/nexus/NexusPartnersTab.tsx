@@ -108,7 +108,11 @@ function PartnerFormModal({
     }
 
     try {
-      await savePartnerAction(partnerId, updated, index)
+      const res = await savePartnerAction(partnerId, updated, index)
+      if (!res.success) {
+        toast.error(res.error || "Failed to save partner.")
+        return
+      }
       toast.success(
         isEditing
           ? "Partner updated successfully!"
@@ -256,7 +260,11 @@ export function NexusPartnersTab({
 
     setDeletingId(partnerId)
     try {
-      await deletePartnerAction(partnerId)
+      const res = await deletePartnerAction(partnerId)
+      if (!res.success) {
+        toast.error(res.error || "Failed to delete partner.")
+        return
+      }
       toast.success(`Deleted ${partner.name} successfully.`)
       setPartnerToDelete(null)
       handleRefresh()

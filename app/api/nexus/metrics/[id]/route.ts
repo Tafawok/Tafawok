@@ -1,7 +1,7 @@
 import { NextRequest } from "next/server"
 import { getCorporateMetrics } from "@/lib/content/cre-service"
 import { saveMetricAction, deleteMetricAction } from "@/lib/content/actions"
-import { authenticateNexusAdmin, apiSuccess, apiError } from "@/lib/api/nexus-auth"
+import { authenticateNexusAdmin, apiSuccess, apiError, safeParseJson } from "@/lib/api/nexus-auth"
 import type { CorporateMetric } from "@/types/cre"
 
 export const dynamic = "force-dynamic"
@@ -39,12 +39,16 @@ export async function PUT(
   req: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
-  const auth = await authenticateNexusAdmin()
+  const auth = await authenticateNexusAdmin(req)
   if (!auth.authorized) return auth.response
 
   try {
     const { id } = await params
-    const body = (await req.json()) as { metric: Partial<CorporateMetric>; sortOrder?: number }
+    const parsed = await safeParseJson<{ metric?: Partial<CorporateMetric>; sortOrder?: number }>(req)
+    if (!parsed.success) {
+      return apiError(parsed.error, 400)
+    }
+    const body = parsed.data
 
     const metrics = await getCorporateMetrics()
     const index = parseInt(id, 10)
@@ -56,13 +60,17 @@ export async function PUT(
 
     const updated: CorporateMetric = {
       ...existing,
-      ...body.metric,
+      ...(body.metric || {}),
     }
 
     const metricDbId = isNaN(index) ? id : `metric-${index + 1}`
     const sortOrder = body.sortOrder ?? (isNaN(index) ? 0 : index)
 
-    await saveMetricAction(metricDbId, updated, sortOrder)
+    const result = await saveMetricAction(metricDbId, updated, sortOrder)
+    if (!result.success) {
+      return apiError(result.error || "Failed to update metric.", 400)
+    }
+
     return apiSuccess({ id: metricDbId, metric: updated }, 200, `Metric '${id}' updated.`)
   } catch (err: unknown) {
     const message = err instanceof Error ? err.message : "Failed to update metric."
@@ -75,16 +83,24 @@ export async function PUT(
  * Deletes a corporate metric.
  */
 export async function DELETE(
-  _req: NextRequest,
+  req: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
-  const auth = await authenticateNexusAdmin()
+  const auth = await authenticateNexusAdmin(req)
   if (!auth.authorized) return auth.response
 
   try {
     const { id } = await params
-    await deleteMetricAction(id)
-    return apiSuccess({ deletedId: id }, 200, `Metric '${id}' deleted successfully.`)
+    const index = parseInt(id, 10)
+    const metricDbId = isNaN(index) ? id : `metric-${index + 1}`
+
+    const result = await deleteMetricAction(metricDbId)
+    if (!result.success) {
+      const status = result.error?.includes("not found") ? 404 : 400
+      return apiError(result.error || "Failed to delete metric.", status)
+    }
+
+    return apiSuccess({ deletedId: metricDbId }, 200, `Metric '${id}' deleted successfully.`)
   } catch (err: unknown) {
     const message = err instanceof Error ? err.message : "Failed to delete metric."
     return apiError(message, 500)

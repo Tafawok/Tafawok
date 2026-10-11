@@ -1,7 +1,7 @@
 import { NextRequest } from "next/server"
 import { getTimelineMilestones } from "@/lib/content/cre-service"
 import { saveMilestoneAction, deleteMilestoneAction } from "@/lib/content/actions"
-import { authenticateNexusAdmin, apiSuccess, apiError } from "@/lib/api/nexus-auth"
+import { authenticateNexusAdmin, apiSuccess, apiError, safeParseJson } from "@/lib/api/nexus-auth"
 import type { TimelineMilestone } from "@/types/cre"
 
 export const dynamic = "force-dynamic"
@@ -38,12 +38,16 @@ export async function PUT(
   req: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
-  const auth = await authenticateNexusAdmin()
+  const auth = await authenticateNexusAdmin(req)
   if (!auth.authorized) return auth.response
 
   try {
     const { id } = await params
-    const body = (await req.json()) as { milestone: Partial<TimelineMilestone>; sortOrder?: number }
+    const parsed = await safeParseJson<{ milestone?: Partial<TimelineMilestone>; sortOrder?: number }>(req)
+    if (!parsed.success) {
+      return apiError(parsed.error, 400)
+    }
+    const body = parsed.data
 
     const milestones = await getTimelineMilestones()
     const existing = milestones.find((m) => m.year === id || `milestone-${m.year}` === id)
@@ -52,15 +56,30 @@ export async function PUT(
       return apiError(`Milestone '${id}' not found for update.`, 404)
     }
 
+    const validScopes = ["heritage", "infrastructure", "commercial", "expansion"] as const
+    if (
+      body.milestone?.scopeCategory &&
+      !validScopes.includes(body.milestone.scopeCategory as (typeof validScopes)[number])
+    ) {
+      return apiError(
+        `Invalid scopeCategory '${body.milestone.scopeCategory}'. Allowed: ${validScopes.join(", ")}`,
+        400
+      )
+    }
+
     const updated: TimelineMilestone = {
       ...existing,
-      ...body.milestone,
+      ...(body.milestone || {}),
     }
 
     const milestoneDbId = id.startsWith("milestone-") ? id : `milestone-${updated.year}`
     const sortOrder = body.sortOrder ?? 0
 
-    await saveMilestoneAction(milestoneDbId, updated, sortOrder)
+    const result = await saveMilestoneAction(milestoneDbId, updated, sortOrder)
+    if (!result.success) {
+      return apiError(result.error || "Failed to update milestone.", 400)
+    }
+
     return apiSuccess({ id: milestoneDbId, milestone: updated }, 200, `Milestone '${id}' updated.`)
   } catch (err: unknown) {
     const message = err instanceof Error ? err.message : "Failed to update milestone."
@@ -73,16 +92,21 @@ export async function PUT(
  * Deletes a timeline milestone.
  */
 export async function DELETE(
-  _req: NextRequest,
+  req: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
-  const auth = await authenticateNexusAdmin()
+  const auth = await authenticateNexusAdmin(req)
   if (!auth.authorized) return auth.response
 
   try {
     const { id } = await params
     const milestoneDbId = id.startsWith("milestone-") ? id : `milestone-${id}`
-    await deleteMilestoneAction(milestoneDbId)
+    const result = await deleteMilestoneAction(milestoneDbId)
+    if (!result.success) {
+      const status = result.error?.includes("not found") ? 404 : 400
+      return apiError(result.error || "Failed to delete milestone.", status)
+    }
+
     return apiSuccess({ deletedId: milestoneDbId }, 200, `Milestone '${id}' deleted successfully.`)
   } catch (err: unknown) {
     const message = err instanceof Error ? err.message : "Failed to delete milestone."

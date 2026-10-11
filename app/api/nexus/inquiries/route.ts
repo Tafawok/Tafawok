@@ -9,7 +9,7 @@ export const dynamic = "force-dynamic"
  * Lists all contact & commercial leasing inquiries.
  */
 export async function GET(req: NextRequest) {
-  const auth = await authenticateNexusAdmin()
+  const auth = await authenticateNexusAdmin(req)
   if (!auth.authorized) return auth.response
 
   try {

@@ -68,7 +68,11 @@ export function NexusHseTab({ hseCharter, onRefresh }: NexusHseTabProps) {
     }
 
     try {
-      await saveSiteSettingAction("hse_charter", updated)
+      const res = await saveSiteSettingAction("hse_charter", updated)
+      if (!res.success) {
+        toast.error(res.error || "Failed to save HSE Charter.")
+        return
+      }
       toast.success("HSE Charter & Quality Policy updated successfully!")
       if (onRefresh) {
         onRefresh()

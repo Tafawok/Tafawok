@@ -256,7 +256,11 @@ export function NexusHomepageTab({
         },
       }
 
-      await saveSiteSettingAction("homepage_settings", updatedSettings)
+      const res = await saveSiteSettingAction("homepage_settings", updatedSettings)
+      if (!res.success) {
+        toast.error(res.error || "Failed to save homepage settings")
+        return
+      }
       toast.success(
         "Homepage & Showcase settings successfully saved and published!"
       )

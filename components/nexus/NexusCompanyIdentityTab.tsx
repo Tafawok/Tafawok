@@ -109,7 +109,11 @@ export function NexusCompanyIdentityTab({
     }
 
     try {
-      await saveSiteSettingAction("company_identity", updated)
+      const res = await saveSiteSettingAction("company_identity", updated)
+      if (!res.success) {
+        toast.error(res.error || "Failed to update identity.")
+        return
+      }
       toast.success("Company identity, coordinates & profile document updated successfully!")
       if (onRefresh) {
         onRefresh()

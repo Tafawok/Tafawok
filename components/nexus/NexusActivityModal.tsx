@@ -315,7 +315,11 @@ function ActivityFormContent({
         sortOrder: Number(sortOrder) || 0,
       }
 
-      await saveActivityAction(payload)
+      const res = await saveActivityAction(payload)
+      if (!res.success) {
+        toast.error(res.error || "Failed to save activity.")
+        return
+      }
       toast.success(
         isEditing
           ? "Activity updated successfully!"

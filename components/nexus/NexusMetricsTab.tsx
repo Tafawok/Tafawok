@@ -85,7 +85,11 @@ function MetricFormModal({
     }
 
     try {
-      await saveMetricAction(metricId, updated, index)
+      const res = await saveMetricAction(metricId, updated, index)
+      if (!res.success) {
+        toast.error(res.error || "Failed to update metric.")
+        return
+      }
       toast.success("Corporate metric updated successfully!")
       onRefresh()
       onClose()

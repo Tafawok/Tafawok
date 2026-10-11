@@ -132,13 +132,21 @@ export function NexusActivitiesTab({
 
     try {
       if (itemToDelete.type === "activity") {
-        await deleteActivityAction(itemToDelete.id)
+        const res = await deleteActivityAction(itemToDelete.id)
+        if (!res.success) {
+          toast.error(res.error || "Failed to delete activity.")
+          return
+        }
         setActivitiesList((prev) =>
           prev.filter((a) => a.id !== itemToDelete.id)
         )
         toast.success("Activity deleted successfully.")
       } else {
-        await deleteNotificationBannerAction(itemToDelete.id)
+        const res = await deleteNotificationBannerAction(itemToDelete.id)
+        if (!res.success) {
+          toast.error(res.error || "Failed to delete banner.")
+          return
+        }
         setBannersList((prev) => prev.filter((b) => b.id !== itemToDelete.id))
         toast.success("Banner deleted successfully.")
       }
@@ -156,7 +164,11 @@ export function NexusActivitiesTab({
   const handleTogglePublished = async (activity: Activity) => {
     const newStatus = !activity.isPublished
     try {
-      await toggleActivityPublishedAction(activity.id, newStatus)
+      const res = await toggleActivityPublishedAction(activity.id, newStatus)
+      if (!res.success) {
+        toast.error(res.error || "Failed to toggle status.")
+        return
+      }
       setActivitiesList((prev) =>
         prev.map((a) =>
           a.id === activity.id ? { ...a, isPublished: newStatus } : a
@@ -179,7 +191,11 @@ export function NexusActivitiesTab({
   const handleToggleBannerActive = async (banner: NotificationBanner) => {
     const newStatus = !banner.isActive
     try {
-      await toggleBannerActiveAction(banner.id, newStatus)
+      const res = await toggleBannerActiveAction(banner.id, newStatus)
+      if (!res.success) {
+        toast.error(res.error || "Failed to toggle banner.")
+        return
+      }
       setBannersList((prev) =>
         prev.map((b) =>
           b.id === banner.id ? { ...b, isActive: newStatus } : b

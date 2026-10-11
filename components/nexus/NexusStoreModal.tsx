@@ -110,7 +110,11 @@ function StoreFormContent({
     }
 
     try {
-      await saveStoreAction(data.propertyId, updatedStore)
+      const res = await saveStoreAction(data.propertyId, updatedStore)
+      if (!res.success) {
+        toast.error(res.error || "Failed to save store.")
+        return
+      }
       toast.success(
         isEditing ? "Store updated successfully!" : "Store added successfully!"
       )
@@ -164,7 +168,7 @@ function StoreFormContent({
                       <SelectGroup>
                         {properties.map((p) => (
                           <SelectItem key={p.id} value={p.id}>
-                            {p.name.en} ({p.id})
+                            {p.name?.en || p.name?.ar || p.id} ({p.id})
                           </SelectItem>
                         ))}
                       </SelectGroup>

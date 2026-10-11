@@ -63,7 +63,11 @@ export function NexusInquiriesTab({
   ) => {
     setLoadingId(id)
     try {
-      await updateInquiryStatusAction(id, status)
+      const res = await updateInquiryStatusAction(id, status)
+      if (!res.success) {
+        toast.error(res.error || "Failed to update inquiry status.")
+        return
+      }
       toast.success(`Inquiry marked as ${status}.`)
       handleRefresh()
     } catch (err: unknown) {
@@ -79,7 +83,11 @@ export function NexusInquiriesTab({
     if (!inquiryToDelete) return
     setIsDeleting(true)
     try {
-      await deleteInquiryAction(inquiryToDelete.id)
+      const res = await deleteInquiryAction(inquiryToDelete.id)
+      if (!res.success) {
+        toast.error(res.error || "Failed to delete inquiry.")
+        return
+      }
       toast.success("Inquiry deleted successfully.")
       setInquiryToDelete(null)
       handleRefresh()

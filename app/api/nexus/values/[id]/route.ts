@@ -1,7 +1,7 @@
 import { NextRequest } from "next/server"
 import { getCorporateValues } from "@/lib/content/cre-service"
 import { saveValueAction, deleteValueAction } from "@/lib/content/actions"
-import { authenticateNexusAdmin, apiSuccess, apiError } from "@/lib/api/nexus-auth"
+import { authenticateNexusAdmin, apiSuccess, apiError, safeParseJson } from "@/lib/api/nexus-auth"
 import type { CorporateValue } from "@/types/cre"
 
 export const dynamic = "force-dynamic"
@@ -38,12 +38,16 @@ export async function PUT(
   req: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
-  const auth = await authenticateNexusAdmin()
+  const auth = await authenticateNexusAdmin(req)
   if (!auth.authorized) return auth.response
 
   try {
     const { id } = await params
-    const body = (await req.json()) as { value: Partial<CorporateValue>; sortOrder?: number }
+    const parsed = await safeParseJson<{ value?: Partial<CorporateValue>; sortOrder?: number }>(req)
+    if (!parsed.success) {
+      return apiError(parsed.error, 400)
+    }
+    const body = parsed.data
 
     const values = await getCorporateValues()
     const existing = values.find((v) => v.id === id)
@@ -54,12 +58,15 @@ export async function PUT(
 
     const updated: CorporateValue = {
       ...existing,
-      ...body.value,
+      ...(body.value || {}),
       id,
     }
 
     const sortOrder = body.sortOrder ?? 0
-    await saveValueAction(updated, sortOrder)
+    const result = await saveValueAction(updated, sortOrder)
+    if (!result.success) {
+      return apiError(result.error || "Failed to update value.", 400)
+    }
 
     return apiSuccess({ value: updated }, 200, `Corporate value '${id}' updated.`)
   } catch (err: unknown) {
@@ -73,15 +80,19 @@ export async function PUT(
  * Deletes a corporate value.
  */
 export async function DELETE(
-  _req: NextRequest,
+  req: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
-  const auth = await authenticateNexusAdmin()
+  const auth = await authenticateNexusAdmin(req)
   if (!auth.authorized) return auth.response
 
   try {
     const { id } = await params
-    await deleteValueAction(id)
+    const result = await deleteValueAction(id)
+    if (!result.success) {
+      const status = result.error?.includes("not found") ? 404 : 400
+      return apiError(result.error || "Failed to delete value.", status)
+    }
     return apiSuccess({ deletedId: id }, 200, `Corporate value '${id}' deleted.`)
   } catch (err: unknown) {
     const message = err instanceof Error ? err.message : "Failed to delete value."

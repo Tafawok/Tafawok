@@ -1346,3 +1346,46 @@ Chronological decision log tracking major architectural milestones and engineeri
 - **Quality Gates Verification:**
   - `npx tsc --noEmit`: **0 errors**.
   - `npm run build`: **Compiled cleanly with 100% route success**.
+
+---
+
+## Milestone 22: Full Backend Audit, PostgreSQL Check Constraints & API Route Resilience
+
+- **Date:** October 2026
+- **Context & Audit Objective:**
+  - Complete, systematic audit of the entire backend infrastructure across all 25 Next.js API route handlers, Server Actions, PostgreSQL check constraints, and Zod validation schemas.
+  - Objective: eliminate unhandled 500 digest exceptions, guarantee check constraint alignment between PostgreSQL, domain schemas, and admin UI forms, and implement resilient structured response handling.
+- **Key Findings & Remediations:**
+  - **1. Server Actions Result Pattern Harmonization ([`lib/content/actions.ts`](file:///Users/omartemsah/webProjects/tafawok/lib/content/actions.ts)):**
+    - Refactored all 20+ Server Actions (`savePropertyAction`, `deletePropertyAction`, `saveStoreAction`, `deleteStoreAction`, `saveDisciplineAction`, `deleteDisciplineAction`, `saveMetricAction`, `deleteMetricAction`, `saveMilestoneAction`, `deleteMilestoneAction`, `saveValueAction`, `deleteValueAction`, `savePillarAction`, `deletePillarAction`, `savePartnerAction`, `deletePartnerAction`, `saveSiteSettingAction`, `updateInquiryStatusAction`, `deleteInquiryAction`, `saveActivityAction`, `deleteActivityAction`, `toggleActivityPublishedAction`, `saveNotificationBannerAction`, `deleteNotificationBannerAction`, `toggleBannerActiveAction`, `saveMaintenanceSettingsAction`) to return standardized `{ success: boolean; error?: string }` result objects.
+    - Wrapped all database interactions in defensive `try/catch` blocks with console diagnostics to prevent Next.js production runtime 500 error masking (React Error #441).
+    - Normalized all primary keys and slugs with `.trim().toLowerCase()` prior to database mutations to ensure deterministic lookups.
+  - **2. PostgreSQL Check Constraint Alignment & Validation ([`lib/validations/cre-schemas.ts`](file:///Users/omartemsah/webProjects/tafawok/lib/validations/cre-schemas.ts)):**
+    - `properties`: Enforced `type` (`'office'`, `'retail'`, `'commercial'`, `'mixed-use'`, `'logistics'`) and `status` (`'active'`, `'operational'`, `'completed'`, `'under-development'`, `'pipeline'`).
+    - `property_stores`: Validated `status` against `'open'`, `'coming_soon'`, `'leased'`.
+    - `timeline_milestones`: Validated `scope_category` against `'heritage'`, `'infrastructure'`, `'commercial'`, `'expansion'`.
+    - `client_partners`: Validated `category` against `'energy'`, `'epc'`, `'commercial'`, `'manufacturer'`.
+    - `activities`: Validated `category` against `'launch'`, `'bazaar'`, `'exhibition'`, `'corporate'`, `'community'` and `status` against `'upcoming'`, `'ongoing'`, `'past'`.
+    - `notification_banners`: Validated `type` against `'launch'`, `'bazaar'`, `'announcement'`, `'urgent'`.
+    - Created explicit exported schemas: `activityFormSchema` and `bannerFormSchema`.
+  - **3. API Route Defense-in-Depth ([`app/api/nexus/...`](file:///Users/omartemsah/webProjects/tafawok/app/api/nexus)):**
+    - Authenticated all write routes and sensitive endpoints using [`authenticateNexusAdmin(req)`](file:///Users/omartemsah/webProjects/tafawok/lib/api/nexus-auth.ts), supporting both request Authorization Bearer JWT headers and browser cookie sessions.
+    - Added pre-mutation check constraint validation in `POST` / `PUT` handlers returning descriptive 400 Bad Request responses before calling database actions.
+    - Reinforced safe optional chaining across store, property, and banner lookup handlers (e.g., `p.name?.en || ""`) preventing unhandled `TypeError` exceptions.
+  - **4. Admin Portal UI Components Resilience ([`components/nexus/...`](file:///Users/omartemsah/webProjects/tafawok/components/nexus)):**
+    - Updated all management tab modals and deletion dialogs to check Server Action result objects (`if (!res.success)`) and display error toasts rather than crashing silently.
+    - Added robust fallbacks for localized labels and names in deletion dialogs and list tables.
+  - **5. Deep Hardening & Resilience Pass:**
+    - **Bearer Auth Header PostgREST Forwarding:** Enhanced `createClient(customAuthHeader)` and `authenticateNexusAdmin` to extract `Bearer` tokens case-insensitively and forward `global: { headers: { Authorization: authHeader } }` to `createServerClient`. Fixes PostgREST RLS bypass failures where admin queries failed RLS because bearer tokens were not propagated to PostgREST.
+    - **Universal `safeParseJson` Payload Guard:** Replaced all raw `req.json()` calls across all 25 API routes and `/api/contact` with `safeParseJson<T>(req)`. Safely validates JSON syntax and rejects empty bodies, malformed JSON, and non-object payloads with descriptive 400 Bad Request responses instead of throwing unhandled 500 `SyntaxError` / `TypeError` exceptions.
+    - **RESTful Completeness:** Implemented missing `GET /api/nexus/inquiries/[id]` handler backed by `getInquiryByIdAction` with UUID regex validation.
+    - **Metric Index Resolution:** Fixed `DELETE /api/nexus/metrics/[id]` to properly resolve numerical indices (e.g., `0`) to `metric-1` matching GET and PUT handlers.
+    - **Proper HTTP 404 Semantic Responses:** Updated DELETE and PATCH route handlers across properties, stores, disciplines, metrics, partners, timeline, values, pillars, inquiries, activities, and banners to return HTTP 404 when target IDs are not found in the database.
+    - **Upload Request Header Guard:** Guarded `POST /api/nexus/upload` against non-multipart requests, returning 400 Bad Request if Content-Type is not `multipart/form-data`.
+- **Verification & Automated Test Suite:**
+  - [`scripts/test-backend-audit.ts`](file:///Users/omartemsah/webProjects/tafawok/scripts/test-backend-audit.ts): 55 automated assertions verifying constraint boundaries, Zod parsing, invalid value rejection, and standardized API payload formats (**55/55 passed**).
+  - [`scripts/test-api-routes.ts`](file:///Users/omartemsah/webProjects/tafawok/scripts/test-api-routes.ts): 90 automated assertions executing live route handlers across GET, POST, PUT, PATCH, DELETE, contact submission, malformed JSON edge cases, and 401 authentication gates (**90/90 passed**).
+  - **Total Automated Assertions: 145/145 passed cleanly (100% pass rate).**
+  - `tsc --noEmit`: **0 errors**.
+  - `eslint`: **0 errors, 0 warnings**.
+  - `next build`: **Compiled cleanly with 100% route success across all 25 API routes and static pages**.

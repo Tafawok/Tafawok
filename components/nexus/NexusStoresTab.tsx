@@ -50,7 +50,7 @@ export function NexusStoresTab({ properties, onRefresh }: NexusStoresTabProps) {
           list.push({
             ...s,
             propertyId: p.id,
-            propertyName: p.name.en,
+            propertyName: p.name?.en || "",
           })
         }
       }
@@ -78,8 +78,12 @@ export function NexusStoresTab({ properties, onRefresh }: NexusStoresTabProps) {
     const s = storeToDelete
     setDeletingId(s.id)
     try {
-      await deleteStoreAction(s.id)
-      toast.success(`Deleted ${s.name.en} successfully.`)
+      const res = await deleteStoreAction(s.id)
+      if (!res.success) {
+        toast.error(res.error || "Failed to delete store.")
+        return
+      }
+      toast.success(`Deleted ${s.name?.en || s.name?.ar || "Store"} successfully.`)
       setStoreToDelete(null)
       handleRefresh()
     } catch (err: unknown) {
@@ -134,7 +138,7 @@ export function NexusStoresTab({ properties, onRefresh }: NexusStoresTabProps) {
               onClick={() => setSelectedPropFilter(p.id)}
               className="text-xs"
             >
-              {p.name.en} ({count})
+              {p.name?.en || p.name?.ar || p.id} ({count})
             </Button>
           )
         })}
@@ -245,7 +249,7 @@ export function NexusStoresTab({ properties, onRefresh }: NexusStoresTabProps) {
             <AlertDialogDescription>
               Are you sure you want to permanently delete{" "}
               <strong className="text-foreground">
-                {storeToDelete?.name.en}
+                {storeToDelete?.name?.en || storeToDelete?.name?.ar || storeToDelete?.id}
               </strong>
               ? This action cannot be undone.
             </AlertDialogDescription>
